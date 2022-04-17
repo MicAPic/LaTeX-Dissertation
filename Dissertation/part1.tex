@@ -1,10 +1,10 @@
-\chapter{Оформление различных элементов}\label{ch:ch1}
+\chapter{Web 1.0}\label{ch:ch1}
 
-\section{Форматирование текста}\label{sec:ch1/sec1}
+\section{Концептуальное назначение}\label{sec:ch1/sec1}
 
 Мы можем сделать \textbf{жирный текст} и \textit{курсив}.
 
-\section{Ссылки}\label{sec:ch1/sec2}
+\section{Обобщенная структура}\label{sec:ch1/sec2}
 
 Сошлёмся на библиографию.
 Одна ссылка: \cite[с.~54]{Sokolov}\cite[с.~36]{Gaidaenko}.
@@ -80,13 +80,14 @@
 Такие инициалы \verb+biblatex+ будет сокращать до одной буквы, что неверно.
 Поправить его работу можно использовав опцию \verb+giveninits=false+.
 Пример использования этой опции можно видеть в ссылке~\cite{initials}.
+\subsection{Анализ топологии крупных сегментов Веба с помощью модели Бродера “Bow-tie”}\label{subsec:ch1/sec2/sub1}
 
-\section{Формулы}\label{sec:ch1/sec3}
+\section{Сбор данных}\label{sec:ch1/sec3}
 
 Благодаря пакету \textit{icomma}, \LaTeX~одинаково хорошо воспринимает
 в~качестве десятичного разделителя и запятую (\(3,1415\)), и точку (\(3.1415\)).
 
-\subsection{Ненумерованные одиночные формулы}\label{subsec:ch1/sec3/sub1}
+\subsection{Построение тематико-ориентированных веб-краулеров с использованием обобщенного ядра}\label{subsec:ch1/sec3/sub1}
 
 Вот так может выглядеть формула, которую необходимо вставить в~строку
 по~тексту: \(x \approx \sin x\) при \(x \to 0\).
@@ -128,7 +129,7 @@
 но~они считаются устаревшими.
 Лучше использовать их функциональные аналоги \verb+\(+\dots\verb+\)+ и \verb+\[+\dots\verb+\]+.
 
-\subsection{Ненумерованные многострочные формулы}\label{subsec:ch1/sec3/sub2}
+\subsection{Веб-краулер как инструмент для вебометрических исследований на примере анализа Веб-пространства СПбГУ}\label{subsec:ch1/sec3/sub2}
 
 Вот так можно написать две формулы, не нумеруя их, чтобы знаки <<равно>> были
 строго друг под другом:
@@ -236,7 +237,7 @@
     \right)
 \]
 
-\subsection{Нумерованные формулы}\label{subsec:ch1/sec3/sub3}
+%\subsection{Нумерованные формулы}\label{subsec:ch1/sec3/sub3}
 
 А вот так пишется нумерованная формула:
 \begin{equation}
@@ -282,7 +283,7 @@
     \end{align}
 \end{subequations}
 
-\subsection{Форматирование чисел и размерностей величин}\label{sec:units}
+%\subsection{Форматирование чисел и размерностей величин}\label{sec:units}
 
 Числа форматируются при помощи команды \verb|\num|:
 \num{5,3};
@@ -482,12 +483,12 @@
     \end{threeparttable}
 \end{table}
 
-\subsection{Заголовки с формулами: \texorpdfstring{\(a^2 + b^2 = c^2\)}{%
-        a\texttwosuperior\ + b\texttwosuperior\ = c\texttwosuperior},
-    \texorpdfstring{\(\left\vert\textrm{{Im}}\Sigma\left(
-            \protect\varepsilon\right)\right\vert\approx const\)}{|ImΣ (ε)| ≈ const},
-    \texorpdfstring{\(\sigma_{xx}^{(1)}\)}{σ\_\{xx\}\textasciicircum\{(1)\}}
-}\label{subsec:with_math}
+%\subsection{Заголовки с формулами: \texorpdfstring{\(a^2 + b^2 = c^2\)}{%
+%        a\texttwosuperior\ + b\texttwosuperior\ = c\texttwosuperior},
+%   \texorpdfstring{\(\left\vert\textrm{{Im}}\Sigma\left(
+%            \protect\varepsilon\right)\right\vert\approx const\)}{|ImΣ (ε)| ≈ const},
+%    \texorpdfstring{\(\sigma_{xx}^{(1)}\)}{σ\_\{xx\}\textasciicircum\{(1)\}}
+%}\label{subsec:with_math}
 
 Пакет \texttt{hyperref} берёт текст для закладок в pdf-файле из~аргументов
 команд типа \verb|\section|, которые могут содержать математические формулы,
@@ -498,7 +499,7 @@
 \verb|\texorpdfstring{}{}|, где в~первых фигурных скобках указывается
 формула, а~во~вторых "--- запись формулы для закладок.
 
-\section{Рецензирование текста}\label{sec:markup}
+\section{Анализ гиперссылочной структуры ресурсов}\label{sec:markup}
 
 В шаблоне для диссертации и автореферата заданы команды рецензирования.
 Они видны при компиляции шаблона в режиме черновика или при установке
@@ -537,7 +538,7 @@
 Этот текст всегда скрыт.
 \end{comment}
 
-\section{Работа со списком сокращений и~условных обозначений}\label{sec:acronyms}
+\section{Анализ текстового контента ресурсов}\label{sec:acronyms}
 
 С помощью пакета \texttt{nomencl} можно создавать удобный сортированный список
 сокращений и условных обозначений во время написания текста. Вызов
