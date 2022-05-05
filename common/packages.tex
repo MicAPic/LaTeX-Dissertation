@@ -83,6 +83,7 @@
     }
     \usepackage{textcomp}
     \usepackage[T1,T2A]{fontenc}                    % Поддержка русских букв
+    \DeclareTextSymbolDefault{\CYRK}{T2A}
     \ifnumequal{\value{usealtfont}}{1}{% Используется pscyr, при наличии
         \IfFileExists{pscyr.sty}{\usepackage{pscyr}}{}  % Подключение pscyr
     }{}
