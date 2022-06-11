@@ -22,7 +22,7 @@
 
 В качестве гуманитарно-ориентированного веб-сегмента был выбран сайт Факультета журналистики (JF) Санкт-Петербургского государственного университета (СПбГУ) -- www.jf.spbu.ru, естественнонаучно-ориентированного -- сайт факультета Прикладной математики -- процессов управления (APMATH) СПбГУ -- www.apmath.spbu.ru.
 
-С помощью специализированной сборки аналитической системы для вебометрических исследований на основе ядра поискового робота, успешно апробированной в исследованиях \cite{BlekanovSergeev,MaksimovBlekanov} , были выявлены гиперссылочные структуры обоих сайтов, которые описываются в виде двух ориентированных веб-графов \(G_{apmath}\) и \(G_{jf}\), в которых вершины соответствуют страницам, а дуги – соединяющим эти страницы гиперссылкам. Для получения глобальных характеристик использовалась модель Бродера “Bow-tie” \cite{BroderKumarMaghoul} , которая во множестве вершин исследуемого графа выделяет четыре основных подмножества: 1) центральное ядро (компонента сильной связности SCC); 2) истоки (IN); 3) стоки (OUT); 4) “TENDRILS” и “TUBES”. Поиск сильно-связной компоненты выполнялся с помощью алгоритма Косарайю \cite{Sedgewick} (Kosaraju's algorithm), время выполнения которого для разреженных графов (а такими являются исследуемые веб-графы) пропорционально сумме всех их вершин и направленных ребер.
+С помощью специализированной сборки аналитической системы для вебометрических исследований на основе ядра поискового робота, успешно апробированной в исследованиях \cite{BlekanovSergeev,MaksimovBlekanov} , были выявлены гиперссылочные структуры обоих сайтов, которые описываются в виде двух ориентированных веб-графов \(G_{apmath}\) и \(G_{jf}\), в которых вершины соответствуют страницам, а дуги – соединяющим эти страницы гиперссылкам. Для получения глобальных характеристик использовалась модель Бродера “Bow-tie” \cite{BroderKumarMaghoul}, которая во множестве вершин исследуемого графа выделяет четыре основных подмножества: 1) центральное ядро (компонента сильной связности SCC); 2) истоки (IN); 3) стоки (OUT); 4) “TENDRILS” и “TUBES”. Поиск сильно-связной компоненты выполнялся с помощью алгоритма Косарайю \cite{Sedgewick} (Kosaraju's algorithm), время выполнения которого для разреженных графов (а такими являются исследуемые веб-графы) пропорционально сумме всех их вершин и направленных ребер.
 
 В эксперименте вычислялись следующие характеристики веб-сайтов:
 \begin{itemize}
@@ -125,6 +125,123 @@
 \paragraph{Выводы.} Результаты эксперимента подтвердили существенные различия между гиперссылочной структурой представителя сайтов естественнонаучной направленности и структурой представителя гуманитарно-ориентированных сайтов. Так, например, в топологии первого сайта (рис.~\cref{fig:webGraphs-1}) большая доля всех веб-страниц сосредоточена в центральном ядре, которое имеет большую связность между своими элементами по сравнению с элементами ядра второго сайта (рис.~\cref{fig:webGraphs}\subcaptionref*{fig:webGraphs-2}). Кроме, того значительное различие компоненты OUT первой топологии в сравнении со второй объясняется наличием в ней большого числа полнотекстовых документов (в формате PDF, DOC, DOCX и др.). Однако, количество гиперссылок в Веб-графе \(G_{jf}\) и характеристик размеров компонент SCC, IN, TUBES/TENDRILS (Таб.~\cref{tab:webGraphTable}) говорят о хорошей коммуникабельности между компонентами топологии Веб-графа \(G_{jf}\).
 
 Для получения статистически достоверных результатов необходимо провести экспериментальные исследования топологий большого числа сайтов для каждой выделенной категории. Опираясь на полученные значения характеристик (Таб.~\cref{tab:webGraphCostTable}), оценивающие трудоемкость поставленного в данной статье эксперимента, можно приблизительно оценить ресурсные затраты на полное исследование любого количества сайтов.
+
+\subsection{Research of University Sites Internal Links Distribution}\label{subsec:ch1/sec2/sub2}
+
+\paragraph{Intoduction.} The paper is concerned with the university sites structural properties study. An oriented graph is used as a generally accepted website structure representation. Nodes of the graph correspond to webpages, while arcs correspond to links between webpages. Consider that webpage does not have its own graph structure in terms of this graph.
+
+Any site is a part of the World Wide Web, so we have to consider how to lay emphasis on a particular site.
+
+First of all, technically speaking, the site has a domain name and actually only webpages corresponding to the domain can be referred to the organization website. Secondly, we consider subdomains to be external in relation to the website main domain. Thirdly, all links that are relevant to the main site webpages and subdomain webpages or other domain webpages are also considered to be external and are not part of the website.
+
+University websites are usually both extremely large and significantly vary in size. A typical website has hundreds or thousands of pages, whereas there are also sites including 25, 10 thousand and 1 million pages (an approximate number of website pages can be estimated using Google's «site:» search term). Since the websites are so large, the task to determine structural, thematic, ergonomic characteristics of the site becomes truly laborious.
+
+Knowledge about these characteristics will allow owners of large scientific and educational organizations’ websites to analyze the quality of their web resources presence in Web. Particularly, studies of structural characteristics will allow to monitor connections between web resources of organizations, to capture target groups of users and to evaluate site relevancy for them, to organize effective logistics of hyperlink structure \cite{StuartThelwallHarries,Thelwall,PechnikovNwohiri,PechnikovNwohiri2}. Ergonomic characteristics are estimating the adaptation of web resources of organizations to relevancy and ranking evaluation criteria of top search engines \cite{Huang,BodrunovaYakuninSmolin,LangvilleMeyer}. Enhancement of these characteristics will help stimulating user interest for every site and extend the time users spend on the sites which is the most important factor of relevancy in search engines rankings. However, estimating these characteristics for big sites is not an easy task in terms of time, computing power and system resources.
+
+It seems natural to try to find an approximate solution to this issue, looking at a relatively small part of the site. Though, when you try to do this, you will get stuck at the point where you need to know what part of the site has already been looked through. To answer this question, you still need to look through the whole site to find out the total number of pages.
+
+In our paper \cite{SergeevBlekanovMaksimov} we offered a method for website size (the number of webpages and links) estimation by its fraction (10\%). By collecting 11 university websites it has been shown that this method gives an estimate site webpages number with an average error of 40\%. The analysis was based on studies in \cite{BarabasiAlbert,BroderKumarMaghoul}, revealing that the pages are distributed according to the power law by the number of incoming links. We developed the idea that university sites are special in some way and that they have a different exponent. The preliminary analysis revealed that the changes of the exponent of the distribution law in our formulas \cite{SergeevBlekanovMaksimov} could have a significant influence on the site’s webpages and hyperlinks count estimation error. So, we performed an experiment using hyperlink structure of 97 universities from top 500 Webometrics  \cite{RankingWeb} rating. The information has been collected by means of authors' specialized web crawler \cite{BlekanovSergeevMartynenko}, adapted for webometric studies. Search engines like Google, Yahoo, etc. do not provide this kind of information.
+
+\paragraph{Experiment.} \textit{Goal.} The experiment specifies the distribution law of university sites webpages by the number of incoming links. We assume that the distribution law is a power law. We need to find out the exponent for a power law.
+
+\textit{Selecting university websites.} Since the websites of the world's leading universities are in great interests of the Webometrics rating, we decided to take first 500 sites into account. In order to reduce the huge amount of work, we have randomly chosen 100 university sites (from 1 to 500 of Webometrics rating), about 2-3 sites from every dozen.
+
+Using web crawler designed by authors all pages and websites internal links of 97 universities have been collected and processed \cite{WebometricsLab}. We were unable to collect data from three sites due to their special layout. As a result of random selection universities were distributed by region as follows:
+\begin{itemize}
+	\item North America -- 42
+	\item South America -- 2
+	\item Europe -- 36
+	\item Asia -- 13
+	\item Australia and New Zealand -- 4
+\end{itemize}
+
+\textit{Experimental results.} Preliminary analysis displayed that university sites can be divided into several distinct groups by the number of webpages (Table~\cref{tab:sitesGroupedByNoOfPages}). This distinction caused some dubiety, whether or not it is possible to calculate the universal distribution exponent. 
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Sites grouped by the number of pages}%
+	\label{tab:sitesGroupedByNoOfPages}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Pages count & Sites count  \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			<1 300 & \textit{12} \\
+			2 000-9 200 & \textit{10} \\
+			10 000-25 000 & \textit{16} \\ 
+			25 000-61 000 & \textit{12} \\
+			61 000-100 000 &  \textit{7} \\
+			100 000-400 000 & \textit{15} \\
+			400 000-1 000 000  & \textit{9} \\ 
+			>1 000 000  & \textit{16} \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+We formed a plane for each university site, where horizontal coordinate is the number of incoming links, and vertical coordinate is the proportion of the page’s number. A set of points was applied to the plane. A power approximating curve was drawn, that helped to determine the exponent. We omitted some of the points while drawing the curve. These were points with the proportion of page count less than \(10^{-5}\). A
+typical picture is shown in figure~\cref{fig:uniCollegeLondonCurve}. 
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{uniCollegeLondonCurve}
+	}
+	\caption{Approximation curve for University College London site.}\label{fig:uniCollegeLondonCurve}
+\end{figure}
+
+We created a plane for each exponent of all university websites pages’ power distribution law where X axis represents the number of pages and Y axis represents exponent module. (Fig.~\cref{fig:sitesExponent}). 
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.4]{sitesExponent}
+	}
+	\caption{The exponent for different sites (X axis represents the number of pages of these sites). Black dot separates sites from first two groups from the rest of the sites.}\label{fig:sitesExponent}
+\end{figure}
+
+Figure 2 shows that sites from first and second groups have a vastly varying exponent that makes them stand out from other sites. This is most likely because their structure is influenced by two factors: management decisions regarding the structure and random spontaneous structure influences by active users. When a website is small (less than 10 thousand pages), management decisions influence is prevailing. And since every university has its own unique administrative unit, sites have different structural characteristics and different incoming link distributions. But when a website is big, the number of random structure influences becomes so large, that the role of management becomes less significant. 
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.4]{bigUniAveragedDistribution}
+	}
+	\caption{Averaged distribution for big university sites. Solid line represents power law distribution from A. Broder and R. Kumar (2000), Barabasi and Albert (1999) papers. Circles show variation areas of the averaged distribution values.}\label{fig:bigUniAveragedDistribution}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.4]{allUniAveragedDistribution}
+	}
+	\caption{Averaged distribution for all university websites. Solid line represents power law distribution from A. Broder and R. Kumar (2000), Barabasi and Albert (1999) papers.}\label{fig:allUniAveragedDistribution}
+\end{figure}
+
+We calculated two average exponents (Fig.~\cref{fig:bigUniAveragedDistribution},~\cref{fig:allUniAveragedDistribution}): \(k_\textit{uni\_all} = 1.8\) for all 97 sites and \(k_\textit{uni\_max} = 1.9\) just for big sites (75 sites with more than 10 thousand pages). These exponents differ from those obtained in \cite{BarabasiAlbert,BroderKumarMaghoul}. 
+
+Figure~\cref{fig:bigUniAveragedDistribution} shows averaged distribution for all big sites. Two splashes (highlighted with circles) attract our attention: large deviations from the approximating curve. The first -- from 8 to 10 incoming links, the second -- around 69-71. The second can obviously be explained by the fact that the main page for most sites is here. The first is harder to explain. Perhaps, such a number of links is typical for main pages of different structural divisions of universities.
+
+Figure~\cref{fig:allUniAveragedDistribution} shows that despite the fact there are many splashes due to considering small sized sites in terms of page count, the average exponent stays the same -- 1.8.
+
+\paragraph{Conclusions and future work.} Our main results: 
+
+\begin{itemize}
+	\item All pages of 97 sites have been collected
+	\item All internal incoming links for each page have been
+	collected
+	\item Exponent of power distribution for each university site
+	has been calculated.
+	\item The proximity of large (more than 10 thousand pages)
+	sites distributions (\(k_\textit{uni\_max} = 1.9\)) and difference in
+	distributions of small sites have been revealed (with
+	the exponent between 0.0 and 5.0).
+	\item The averaged approximating distribution curve (the
+	exponent \(k_\textit{uni\_all} = 1.8\)) has been constructed and
+	analyzed.
+	\item Average exponent values have been calculated.
+	Hyperlink structure of university sites was found to be
+	different from \cite{BarabasiAlbert,BroderKumarMaghoul} in terms of the exponent.
+\end{itemize}
+
+The final results will be used to improve the algorithms for estimation of the size of any university site (page and hyperlink count) by studying just a part of the site. In the future, we plan to estimate structural, thematic and ergonomic characteristics of university websites by studying a randomly selected part. 
 
 \section{Сбор данных}\label{sec:ch1/sec3}
 
@@ -440,7 +557,7 @@
 
 \section{Анализ гиперссылочной структуры ресурсов}\label{sec:ch1/sec4}
 
-\subsection{Исследование закономерностей в гиперссылочной структуре сайтов большой размерности}\label{subsec:ch1/sec4/sub5}
+\subsection{Исследование закономерностей в гиперссылочной структуре сайтов большой размерности (должна быть на англ.)}\label{subsec:ch1/sec4/sub5}
 
 \paragraph{Актуальность.} В настоящее время редкая организация не имеет собственного сайта. Сайт, в определенном смысле, лицо организации и его качеству придается большое значение. Качество сайта складывается из многих составляющих. Это и количество страниц, и их дизайн, и содержание страниц, и структура сайта.
 
