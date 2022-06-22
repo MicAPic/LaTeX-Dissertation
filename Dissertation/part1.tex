@@ -636,6 +636,166 @@ The final results will be used to improve the algorithms for estimation of the s
 Стоит отметить и большое количество веб-страниц, при переходе на которые возникает ошибка, вызванная отсутствием предполагаемых данных в указанном месте сервера или неверной обработкой адреса. Наличие таких страниц снижает доверие пользователей к ресурсам сайта факультета.
 Таким образом, для улучшения присутствия веб-сайта факультета ПМ–ПУ в Вебе и улучшения его показателя цитируемости в поисковых системах необходимо разрешить выявленные в эксперименте проблемы на практике.
 
+\subsection{Noise Removal Methods from Web Pages}\label{subsec:ch1/sec3/sub4}
+
+\paragraph{Intoduction.} For today, in connection with the large number of websites it became necessary to analyze content of Web pages for further information processing (information retrieval, classification, clustering) \cite{Chakrabarti2}. Humans can easily distinguish the main page content from various noisy information such as navigation menus, header and footer elements, advertising and other text portions during website examining. This main content can be considered as semantically significant information. Normally, the Web crawlers that gather Web pages eliminate noise extract semantically significant information and store it for further analysis. There is a variety of techniques for noise detection in Web pages \cite{YiLiuLi}. In this paper we consider three approaches of noisy information removal that are based on the following tools: Boilerpipe library, HTML5 semantic markup, Headless browser with Selenium.
+
+This paper is structured as follows. The Section 2 describes methods that can be used for extraction of main textual content. An experiment to assess the quality of the methods described is presented in the Section 3. The Section 4 is devoted to conclusion.
+
+\paragraph{Noise removal tools.}
+\paragraph{Boilerpipe library.} The Boilerpipe library was written by Christian Kohlschutter for Java platform and released under the Apache License 2.0. It is based on the algorithms that provide detection and removal the surplus "clutter" (templates, boilerplate) which is placed around the main textual content of a Web page. Nowadays, the library supplies specific approaches for common task (e.g., extraction of the news articles) and can be easily enlarged for personal problem issues. The paper "Boilerplate Detection using Shallow Text Features" was the basis of the Boilerpipe library that uses and extends algorithms from it \cite{KohlschutterFankhauserNejdl}. Analysis of small set of shallow text features is the main approach for classifying the particular text elements of a Web page. The main components of the Boilerpipe library are listed below.
+
+\textit{HTML parser.} The main purpose of the HTML parser is to transform an HTML page into set of text "blocks" that can be considered as an internal text-only document model. The parser is based on the third-party library, CyberNeko \cite{CyberNeko}. It transforms an HTML document into a TextDocument which consists of one or more TextBlocks. HTML parser can distinguish specific elements such as Script, Option, etc. and ignore them automatically. Each TextBlock contains a text portion from the HTML document and shallow text statistics for it (e.g., words number and words number in the anchor text).
+
+\textit{Filters.} Every filter is applied to the TextDocument and normally iterates once over all TextBlocks from it. Every individual TextBlock is marked by filter as content or boilerplate. Also filter can assign additional textual label to it. Boilerpipe's filters are grouped as follows:
+
+\begin{enumerate}
+	\item Basic filters.
+	\item English filters, that can be applied to English text (they might also be applied to the other Western languages, but some settings perhaps need to be changed).
+	\item Heuristics Filters were not explored but will be investigated in the future.
+\end{enumerate}
+
+\textit{Extractors.} Extractors are formed by one or more Filters. Their main purpose is to obtain content from a Web page. For instance, extractor that uses "pipelines" filters takes the parsed HTML document and extracts the main textual content from it. There are several different extractors, from generic DefaultExtractor to special extractors (e.g., ArticleExtractor which is used for news articles).
+
+\textit{HTML highlighter.} HTML highlighter is an additional tool to represent extracted main content of a Web page as an HTML document.
+
+The algorithms used in Boilerpipe are quite content- independent. However, if the page contains insufficient HTML text (i.e., PDF, Flash or JavaScript) the correctness of the library work is not guaranteed.
+
+\paragraph{HTML5 Semantic Markup.} Such tags as <div> and <span> have little meaning for those who examines an HTML code whether it is machine or human. <div> elements are typically designed for positioning the content on the page. <span> elements are responsible for special formatting of the content. Developers have been using <div> elements to combine page layout, and the developer usually provides the meaning of each <div> element which is based on its id or CSS class.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{blogLayout}
+	}
+	\caption{A blog site layout container using <div> elements.}\label{fig:blogLayout}
+\end{figure}
+
+HTML5 separates presentation, structure and behavior. Semantic is defined as the study of meaning of linguistic expressions \cite{Johnson}. The HTML5 standard introduces tags that do not serve for presentation purposes but provide meaning. Users usually do not read an HTML code during website surfing, but many machines read it to interpret the Web page. Moreover, Nonvisual Desktop Access (NVDA) devices can provide other means of Web pages processing.
+
+HTML5 semantic elements can be used for creation of layout container which has elements that are meaningful to both the developer and the machine. The following are common elements by which an HTML5 layout container can be created:
+
+\begin{itemize}
+	\item <header> specifies a header section of HTML document and can be used as a page header. Moreover, it can be place at the <article> element.
+	\item <footer> specifies a section that is placed at the bottom of the HTML document. Moreover, it can be placed at the bottom of the <article> tag content.
+	\item <nav> specifies a section that contains a block of links used for navigational purposes.
+	\item <aside> specifies a section that is normally used for sidebars.
+	\item <section> specifies a section that contains <h1> to <h6> internal elements.
+	\item <article> specifies a section that can be considered as a unit of content (e.g., blog posts, news articles).
+\end{itemize}
+
+In Figure~\cref{fig:blogLayoutNew}, all <div> elements have been replaced with the HTML5 semantic elements.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{blogLayoutNew}
+	}
+	\caption{Layout container example, using the new HTML5 elements.}\label{fig:blogLayoutNew}
+\end{figure}
+
+Web Accessible Initiative (WAI) specifies the Accessible Rich Internet Applications (ARIA) suite (WAI-ARIA). WAI-ARIA defines a role classes that can used for providing additional meaning for HTML page elements. For instance, screen readers can use it for accessibility purposes \cite{Thiessen}. There are several parent and child role classes. "Landmark" class is a parent role class that describes regions of the Web page and can be set as an attribute of the HTML tag. The following are child classes of the "Landmark" role class:
+
+\begin{itemize}
+	\item \textit{Application} defines an area that is declared as a Web application.
+	\item \textit{Banner} defines an area with site-specific content (e.g., site name, logo).
+	\item \textit{Complementary} defines an area for an additional page content that can have different meaning than main textual content. 
+	\item \textit{Contentinfo} defines an area that contains information about document (copyright notices, links). It is typically footer content, one per Web page.
+	\item \textit{Form} defines an area that contains input controls sending gathered data to server.
+	\item \textit{Main} defines an area for the main content of Web page.
+	\item \textit{Navigation} defines an area for navigational links.
+	\item \textit{Search} defines an area of input controls for query entering and displaying corresponding information.
+\end{itemize}
+
+An <article> tag can be used for noise removal from Web pages. Furthermore, text that is placed into tags with Role attribute which have an appropriate value (i.e., Main) can be also considered as semantically significant.
+
+\paragraph{Headless browser.} One of the methods of Web site content extraction is based on Headless browser that is a Web browser without a graphical user interface. Usage of the headless browser provides a control a Web page via a command line interface or other network communications in environment that is similar to popular browsers. Using Selenium framework that is designed for testing of Web applications user has access to various elements on the Web page \cite{Sirotkin}. Today, Selenium does not provide methods of noisy information removal. Without any additional methods Selenium framework can extract only all Web page textual content. Therefore the amount of noisy information can be determined among the all textual content of web page. Also Jaccard similarity for headless browser can be compared with Jaccard similarity for other noise reduction methods and determine if these methods should be used for extraction of semantically important text. For instance, method is not appropriate for extraction semantically significant information in case of Jaccard similarity evaluated for this method is less than Jaccard similarity evaluated for headless browser.
+
+\paragraph{Methods evaluation.}
+
+For comparative analysis of methods considered in Section 2 test documents collection was chosen which contains 30 documents with different design, topics and amount of semantically significant information. In these documents all the noise was removed by expertise (manually) and the main content was extracted. This content can be considered as the expected text in comparison with the text that is obtained using the methods of noise removal. In the current paper Jaccard similarity and Shingles algorithm are used to evaluate the similarity of two texts \cite{KorelinBlekanovSergeev}.
+
+\paragraph{Jaccard similarity.} A document represents a string of characters. Shingling is a process that creates sets of \(k\)-shingles. Define a \(k\)-shingle for a document to be any substring of length \(k\) found within the document. For instance, \(k = 2\), \(\textit{doc} = \{a, b\}, \{b, c\}, \{c, a\}\).
+
+Similar documents to each other will have a lot of equal shingles \cite{KorelinBlekanovSergeev}.
+
+In this paper Jaccard similarity is used to determine the similarity of two documents. The Jaccard similarity of sets \(C_1\) and \(C_2\) is the ratio of the cardinality of the intersection of \(C_1\) and \(C_2\) to the cardinality of their union \cite{SingthongchaiNiwattanakul}.
+
+\[
+\textit{Sim}(C_1, C_2) = \frac{\lvert C_1 \cap C_2\rvert}{\lvert C_1 \cup C_2\rvert}
+\]
+
+Every document can be considered as a set of shingles where every shingle contains \(k\) words. Therefore two documents can be represented as boolean matrix with two columns. Rows correspond to the elements of the universal set which is the set of all \(k\)-shingles. Columns correspond to the documents. Value of \(1\) is in the row \(E\) and in the column \(S\) if and only if the document that corresponds the column \(S\) contains the single that corresponds the row \(E\). Otherwise, it is value of \(0\). Therefore, documents similarity is the Jaccard similarity of the sets of their shingles.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.4]{docBooleanMatrix}
+	}
+	\caption{Boolean matrix representing two documents.}\label{fig:docBooleanMatrix}
+\end{figure}
+
+\(\textit{Sim}(C_1, C_2) = \frac{1}{3}\) -- similarity of two documents.
+
+\paragraph{Experimental results.} Tables~\cref{tab:noiseRemovalSmall},~\cref{tab:noiseRemovalMiddle}, and~\cref{tab:noiseRemovalLarge} present the Jaccard similarity between the expected main textual content and the text that was extracted by the methods discussed above. Shingles of different lengths (2, 5, 10 and 15 words per shingle) are used. The test set of documents was divided into 3 groups: sites with small (Table~\cref{tab:noiseRemovalSmall}), middle (Table~\cref{tab:noiseRemovalMiddle}) and large (Table~\cref{tab:noiseRemovalLarge}) main textual content.
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Comparison of the noise removal results for small size main textual content.}%
+	\label{tab:noiseRemovalSmall}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C >{\zz}C >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Method & \(k=2\) &\( k=5\) & \(k=10\) & \(k=15\) & Average \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			Boilerpipe library & 73\% & 71\% & 69\% & 68\% & 70.25\% \\
+			HTML5 Semantic markup & 49\% & 48\% & 48\% & 47\% & 48\% \\
+			Headless browser + Selenium & 24\% & 23\% & 22\% & 21\% & 22.5\%\\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Comparison of the noise removal results for middle size main textual content.}%
+	\label{tab:noiseRemovalMiddle}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C >{\zz}C >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Method & \(k=2\) &\( k=5\) & \(k=10\) & \(k=15\) & Average \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			Boilerpipe library & 83\% & 82\% & 80\% & 78\% & 80.75\% \\
+			HTML5 Semantic markup & 78\% & 76\% & 73\% & 71\% & 74.5\% \\
+			Headless browser + Selenium & 71\% & 70\% & 69\% & 68\% & 69.5\%\\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Comparison of the noise removal results for large size main textual content.}%
+	\label{tab:noiseRemovalLarge}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C >{\zz}C >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Method & \(k = 2\) &\( k = 5\) & \(k = 10\) & \(k = 15\) & Average \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			Boilerpipe library & 93\% & 88\% & 83\% & 79\% & 88.75\% \\
+			HTML5 Semantic markup & 87\% & 83\% & 78\% & 75\% & 80.75\% \\
+			Headless browser + Selenium & 79\% & 75\% & 71\% & 68\% & 73.25\%\\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+Comparative analysis shows that the more semantically significant information is present on the Web page the more Jaccard similarity between the expected main textual content and the text obtained by described methods as the more textual content is on the Web page, the more shingles are in the intersection for both documents. Moreover Jaccard similarity grows as the number of words per shingle \((k)\) decreases because for small values of \(k\) there are more shingles in the intersection than for large \(k\) value. For large size main textual content and small \(k\) value Jaccard similarity is greatest because in large size text the shingle with 2 words is much more common for two documents than the shingle that contains 10 or 15 words. For documents with small and middle size textual content the number of shingles in intersection for \(k = 2\) is not much different from number of shingles in intersection for \(k = 15\). This behavior is typical for all methods.
+
+The highest Jaccard similarity coefficient was shown by the method that is based on Boilerpipe library. Usage of the HTML5 semantic markup eliminates noisy information with less accuracy and can be applied only for those Web sites that use HTML5 semantic markup. Headless browser with Selenium framework renders the entire Web page but cannot remove noisy information. As expected, Jaccard similarity of the last method is significantly lower than Jaccard similarity of the other methods.
+
+\paragraph{Conclusions.} This paper describes three methods of noisy text removal for extraction of semantically significant information from Web pages. These methods were tested on a collection of Web pages that have varying markup and amount of main textual content. Experiment shows that Boilerpipe library removes noisy information with the highest accuracy for all kinds of Web pages.
+
 \section{Анализ гиперссылочной структуры ресурсов}\label{sec:ch1/sec4}
 
 \subsection{Исследование закономерностей в гиперссылочной структуре сайтов большой размерности (должна быть на англ.)}\label{subsec:ch1/sec4/sub5}
