@@ -1518,6 +1518,231 @@ The highest Jaccard similarity coefficient was shown by the method that is based
 
 \section{Анализ гиперссылочной структуры ресурсов}\label{sec:ch1/sec4}
 
+\subsection{An Algorithm to Approximate the Total Number of Site Pages Using a Portion of Its Structure}\label{subsec:ch1/sec4/sub1}
+
+\paragraph{Introduction.} One of the main tasks of webometrics is the massive websites inspection to be split into two -- deep webpages analysis and its’ interaction with web-space \cite{Thelwall}. This article generally considers the websites’ different attributes as inherent properties. The website structure is commonly accepted (i.e. \cite{BroderKumarMaghoul}) to be presented as a direct graph therefore it contains the vertices as webpages, the edges as hyperlinks, connectivity, length etc. In the second place -- the ergonomic factors such as website design and usability. Third is the content attributes -- the main topic, tags etc. Considering these factors is the key for the preset website selection. The evaluation of these factors is possible after inspecting, for example, the one tenth of the total number of website hyperlinks (that is comparable to the proper book selection -- in order to understand the book is worth reading you are to look through the part of it). But to understand what part of the website was inspected already we must possess the number of the webpages (graph vertices). Nowadays there is only one known way to determine the true number of the webpages -- the whole web-graph inspection. As long as the massive organizations’ websites (i.e. universities) been estimated of tens or even hundreds of webpages with the zillions of hyperlinks its measurement is widely considered to be the resource-intensive task.
+
+The main idea of the offered approximate webpages and hyperlinks calculation method premised on its part is as follows. At first all the hyperlinks on every webpage are to be retrieved. Then every page followed by every hyperlink is to be inspected for another set of hyperlinks etc. Some links lead to new pages, some of them are cycled in order the new-leading links share to be reduced. The relevant logic is in the works \cite{BlekanovSergeevKlemeshov,BlekanovSergeevMaksimov2016}. Here the authors put forward the algorithm that allows to measure the website size after the inspection of its part. It is based on the new leading hyperlinks appearing slowdown.
+
+\paragraph{Mathematical model.} Let us consider the approximate procedure of a web-graph random walk.
+
+Let us consider the approximate procedure of a web-graph random walk.
+
+\begin{itemize}
+	\item Making the sets:
+	\begin{enumerate}
+		\item An \textit{NLinks} \(\{ a_i \}\). \(a_i\) set is the number of retrieved hyperlinks in \(i\) steps;
+		\item An \textit{NPage} \(\{ a_i \}\). \(v_i\) set is the number of webpages that retrieved hyperlinks in \(i\) steps lead to;
+		\item An \textit{UrlsList} set is the number of webpages’ domain names that retrieved hyperlinks in \(i\) steps lead to.
+	\end{enumerate}
+	\item Let us retrieve \(\Delta a_i\) hyperlinks from the website and add \(a_i = a_{i-1} + \Delta a_i\) to \textit{NLinks} set. Every retrieved hyperlink is to be collated with the \textit{UrlsList} set. If there is no webpage that hyperlink leads to then the hyperlink joins the \textit{UrlsList} set. The added webpages number is \(v_i = v_{i-1} + \Delta v_i\). Then been added to the \textit{NPage} set.
+\end{itemize}
+
+Let us denote all the website hyperlinks and webpages number by \(a_{total}\) and \(v_{total}\) respectively; the number of retrieved hyperlink by \(a\), and the unique webpages number by \(v\). Let us also intoduce:
+\[
+a_{remain} = a_{total} - a \text{ and } v_{remain} = v_{total} - v.
+\]
+
+Let us denote the unique website pages set by \(V_{total}\) and still unretrieved webpages number by \(V_{remain}\). Let us break the webpages set into subsets by the incoming hyperlinks. Let us
+denote the set of the webpages with \(n\) incoming hyperlinks by \(S^0_n\) and the subset of webpages within \(V_{remain}\), with \(n\) incoming hyperlinks by \(S_n (v_{remain})\).
+
+Then \(s^0_n = \lvert S^0_n \rvert, s_n (v_{remain}) = \lvert S_n (v_{remain}) \rvert\).
+
+The probability of the next retrieved hyperlink leads to the webpage from the \(S_n (v_{remain})\) set equals to:
+\[
+p_n(v_{remain}) = \frac{n S_n (v_{remain})}{a_{remain}} = \frac{n S_n (v_{remain})}{a_{total} - a}
+\]
+Let any step has \(da\) as the number of hyperlinks retrieved. Then the expected value of the increment \(s_n (v_{remain})\):
+\[
+ds_n (v_{remain}) = -\frac{n }{a_{total} - a} da
+\]
+Let us integrate between \(0\) and \(a\). As far as \(v_{remain} = v_{total}\) with \(a = 0\), then:
+\[
+\ln{s_n (v_{remain})} - \ln{s^0_n} = n(\ln{(a_{total} - a)} - \ln{a_{total}})
+\]
+Therefore:
+\[
+s_n(v_{remain}) = s^0_n (\frac{a_{total} - a}{a_{total}})^n
+\]
+Let us use the trivial par:
+\[
+\sum_{n} s_n (v_{remain}) = v_{remain} = v_{total} - v
+\]
+Therefore:
+\begin{equation}
+	\label{eqn:7}
+	v = v_{total} - \sum_{n} s^0_n (\frac{a_{total} - a}{a_{total}})^n
+\end{equation}
+It is known (i.e. \cite{BarabasiAlbert,KumarRaghavanRajagopalan}) that in large networks nodes are distributed by the incoming hyperlinks number follows the law
+\begin{equation}
+	\label{eqn:8}
+	s^0_n = \frac{\gamma v_{total}}{n^q}
+\end{equation} with \(\frac{1}{\gamma} = \sum_{n} \frac{1}{n^q}\), and \(q\) as an invariable.
+\begin{equation}
+	\label{eqn:9}
+	2 < q < 3
+\end{equation}
+
+Let us plug the formula \cref{eqn:8} into the equation \cref{eqn:7}. Then the equation that shows the correlation of the websites pages number \(v_{total}\) and the website hyperlinks number \(a_{total}\) is as follows:
+\begin{equation}
+	\label{eqn:10}
+	v = v_{total}(1 - \gamma \sum_{n} \frac{1}{n^q} (\frac{a_{total} - a}{a_{total}})^n)
+\end{equation}
+Let us perform the \(k\) of consequent steps of hyperlinks and related webpages (the pages these hyperlinks lead to) accidental samplings. Let \(a_i\) hyperlinks and \(v_i\) related webpages were retrieved after the \textit{i}-step. Then the unique equation will correspond to every step. Therefore there is the set of equations that connects the retrieved hyperlinks with the related webpages total numbers \(v_{total}\) and \(a_{total}\) respectively:
+\begin{equation}
+	\label{eqn:11}
+	v_i = v_{total}(1 - \gamma \sum_{n} \frac{1}{n^q}(\frac{a_{total} - a_i}{a_{total}})^n), (i = 1, 2, \ldots , k) 
+\end{equation}
+
+\paragraph{The approximate solution.} As far as we need to get the approximate measurement let us assume
+\begin{equation}
+	\label{eqn:12}
+	\frac{1}{n^q} \approx \frac{1}{n(n+1)}
+\end{equation}
+Then the limits of this distribution were defined by the inequation \cref{eqn:9} (except \(n = 1\)). Therefore the normalizing factor \(\gamma\):
+\begin{equation}
+	\label{eqn:13}
+	\frac{1}{\gamma} = \sum_{n} \frac{1}{n(n+1)} = 1
+\end{equation}
+Let us plug the formula \cref{eqn:12} into the equation \cref{eqn:11} considering \cref{eqn:13}. Therefore:
+\[
+v_i = v_{total}(1 - \sum \frac{1}{n(n+1)} (1 - \frac{a_i}{a_{total}})^n)
+\]
+Let us analyze the sum
+\[
+\sigma = \sum \frac{1}{n(n+1) x^n}
+\]
+\[
+\sigma = \sum_{1}^{N} \frac{x^n}{n} - \frac{1}{x} \sum_{1}^{N} \frac{x^{n+1}}{n + 1} = \sum_{1}^{N} \frac{x^n}{n} - \frac{1}{x} \sum_{2}^{N + 1}\frac{x^n}{n}
+\]
+As far as the massive websites \(N\) value reaches several thousand therefore the approximate value:
+\[
+\sigma = -\ln{(1 - x)} + \frac{1}{x}(\ln{(1 - x)} + 1)
+\]
+Therefore:
+\[
+v_i = v_{total} \frac{\frac{a_i}{a_{total}}}{1 - \frac{a_i}{a_{total}}} \ln{\frac{a_{total}}{a_i}}
+\]
+As far as situation \(a_i \gg a_{total}\) is considered let us assume:
+\[
+v = v_{total}\frac{a}{a_{total}} (\ln{a_{total}} - \ln{a})
+\]
+Let us set
+\[
+\frac{a_{total}}{v_{total}} \equiv x \text{, } \ln{a_{total}} \equiv y
+\]
+Therefore the equation:
+\[
+v_i x + a_i y = -c_i, \text{ где } c_i \equiv a_i \ln{a_i}
+\]
+Let us solve the overspecified set of equations with the LS method. Therefore:
+\[
+A_{11} x + A_{12} y = C_1
+\]
+\[
+A_{21} x + A_{22} y = C_2 
+\]
+with
+\[
+A_{11} = \sum_{1}^{k} v_i^2, A_{12} = A_{21} = -\sum_{1}^{k} a_i v_i, A_{22} = \sum_{1}^{k} a_i^2
+\]
+\begin{equation}
+	\label{eqn:14}
+	C_1 = \sum_{1}^{k} v_i c_i, C_2 = \sum_{1}^{k} a_i c_i
+\end{equation}
+Therefore
+\begin{equation}
+	\label{eqn:15}
+	x = \frac{C_1 A_{22} - C_2 A_{12}}{A_{11} A_{22} - A^2_{12}}, y = \frac{C_2 A_{11} - C_1 A_{12}}{A_{11} A_{22} - A^2_{12}}
+\end{equation}
+And finally
+\begin{equation}
+	\label{eqn:16}
+	a^* = e^y, v^* = \frac{e^y}{x}
+\end{equation}
+with \(a^*\) and \(v^*\) are approximate values of \(a_{total}\) and \(v_{total}\).
+
+The formulae \cref{eqn:14,eqn:15,eqn:16} allow to approximately measure the website size. According to the assumptions made, the formula can be used only with low value of \(a_i\).
+
+\paragraph{The experiment.} Authors were to perform the experiment in order to test the offered method capability using 11 universities' sites (table~\cref{tab:universitiesSites}) and determine the share of the website hyperlinks number needed to measure it approximately (the total number of hyperlinks and the total number of webpages).
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Universities’ sites inspected.}%
+	\label{tab:universitiesSites}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			\# & University & URL \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			1 & Cambridge & www.cam.ac.uk \\
+			2 & MIT & www.web.mit.edu \\
+			3 & Oxford & www.ox.ac.uk \\
+			4 & The University of Turin & www.unito.it \\
+			5 & Cornell University & www.cornell.edu \\
+			6 & Emory University & www.emory.edu \\
+			7 & Berkeley & www.berkeley.edu \\
+			8 & Pierre and Marie Curie &  www.upmc.fr \\
+			9 & The University of Aizu & www.u-aizu.ac.jp \\
+			10 & Syracuse University & www.syr.edu \\
+			11 & Penn State University & www.psu.edu \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+Using a web-crawler all webpages and internal hyperlinks have been collected for the each university (from table~\cref{tab:universitiesSites}). Actual values of \(v_{total}\) and \(a_{total}\) were found. Since the offered method proposed is based on accidental samplings, a Fisher- Yates shuffle algorithm described in \cite{FisherYates} has been used in order to shuffle the every website hyperlinks set. Then a hundredth part of hyperlinks was to be picked from the shuffled set of hyperlinks, that made up \(v_1\) and \(a_1\). Then in order to get \(v_2\) and \(a_2\)
+two hundredth parts of links were to be picked, three hundredth parts for \(v_3\) and \(a_3\) and so on. The obtained values and had been substituted into \cref{eqn:10} to calculate \(a^*\) and \(v^*\). The proportion of the visited hyperlinks was approximately determined as the ratio of \(a_i\) to \(a^*\).
+
+\paragraph{The experiment results.} The table~\cref{tab:actualAndCalculatedWebpages} reports the main experiment results.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Actual and calculated numbers of webpages and hyperlinks of universities’ sites.}%
+	\label{tab:actualAndCalculatedWebpages}% label всегда желательно идти после caption
+	\begin{tabular}{| c | c | c | c | c | c |}% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+		\hline
+		University & \(a_{total}\) & \(a^*\) &  \(v_{total}\) & \(v^*\) & \(\frac{a_k}{a_{total}}\)  \\
+		\hline
+		Cambridge & 2258483 &  2993431 & 69661 & 114226 & 0,12 \\
+		\hline
+		MIT & 590474 & 1363978 & 70751 & 116108 & 0,2 \\
+		\hline
+		Oxford & 1197127 & 2649532 & 26289 & 60634 & 0,2 \\
+		\hline
+		The Universitof Turin & 1195984 & 2975332 & 22796 & 32168 & 0,03 \\
+		\hline
+		Cornell University & 874555 & 205028 & 20908 & 22760 & 0,03 \\
+		\hline
+		Emory University & 190119 & 124999 & 12497 & 13237 & 0,07 \\
+		\hline
+		Berkeley & 116240 & 253220 & 10544 & 13207 & 0,03 \\
+		\hline
+		Pierre and Marie Curie & 548844 & 154885 & 9142 & 6989 & 0,03 \\
+		\hline
+		The University of Aizu & 116098 & 78238 & 3993 & 4375 & 0,07 \\
+		\hline
+		Syracuse University & 184773 & 454720 & 4979 & 7576 & 0,04 \\
+		\hline
+		Penn State University & 32984 & 78880 & 1923 & 3958 & 0,26 \\
+		\hline
+		\multicolumn{6}{|c|}{\makecell{\(a_{total}, v_{total}\) -- website hyperlinks and webpages number \\ respectively; \(a^*, v^*\) -- approximate values of \(a_{total}\) and \(v_{total}\); \\ \(a_k\) -- the number of hyperlinks used for the calculation}}\\
+		\hline
+	\end{tabular}%
+\end{table}
+
+In table~\cref{tab:actualAndCalculatedWebpages} the values and have been obtained by ratio of \(a_k\) to \(a^*\), which is equal to 0.1 that based on 2 factors. At first all of the formulae have been obtained using the assumption that \(\frac{a_k}{a^*} \ll 1\). The second is if the \(a_i\) value is too low then the representativeness of the sample decreases.
+
+Since actual values of the total hyperlinks number differ from the calculated ones, the table shows the actual share of visited links for each university website, for which theoretical values \(a^*\) and \(v^*\) have been obtained.
+
+\paragraph{Conclusion.} The main results of the work are:
+\begin{enumerate}
+	\item The set of equations have been obtained that connects the number of web-crawled website hyperlinks with the webpages being found.
+	\item There was the experiment performed in order to check the possibility to measure the webpages number premised on its part using the total numbers of the fully inspected webpages and hyperlinks of 11 universities’ websites. The experiment proves the worked-out website size measurement method capability after the fractional inspection. Both overestimated and underestimated assumptions (about website size) have been noticed. The relation between the approximately calculated website size value and actual webpages total number is 2.4, and 4.3 -- for the hyperlinks if worst comes to worst. The results of the experiment show that there were needed to inspect 3-26\% of the total hyperlinks number to approximately measure every university website size. According to the universities’ websites information it is apparent that the visited websites’ pages differ by 37 times and the visited hyperlinks by 68 times. Therefore the webpages and hyperlinks numbers measurement errors in 2.4 and 4.3 times respectively are considered to be acceptable. The \cref{eqn:11} set of equation solution method and the measurement may be improved.
+	\item The algorithm that implements the offered method was specified. It allows to reduce the costs of approximate webpages and hyperlinks number as well as web-graph hyperlinks measurements significantly.
+\end{enumerate}
+
 \subsection{Исследование структурных характеристик крупных веб-сегментов}\label{subsec:ch1/sec4/sub2}
 
 Исследование свойств больших сайтов, формулирование убедительных критериев оценки их качества, управление их качеством являются главными задачами вебометрики. Наиболее распространенными критериями качества сайтов служат:
@@ -1734,12 +1959,12 @@ x = \frac{C_1 C_4 - C_2 C_3}{N (C_1^2 - C_3)}, y = \frac{C_1 C_2 - C_4}{C_1^2 - 
 	\item Функция имеет простой вид и зависит от небольшого числа параметров.
 \end{enumerate}
 
-\paragraph{Эксперимент.} Будем сопоставлять функцию с экспериментальным набором \(V_i, E_i (i = 1,2, \dots, N)\), где \(N = \lceil \frac{e_0}{e} \rceil\). Нами исследованы сайты четырех университетов и получены соответствующие наборы (табл.~\cref{tab:uniSites}).
+\paragraph{Эксперимент.} Будем сопоставлять функцию с экспериментальным набором \(V_i, E_i (i = 1,2, \dots, N)\), где \(N = \lceil \frac{e_0}{e} \rceil\). Нами исследованы сайты четырех университетов и получены соответствующие наборы (табл.~\cref{tab:uniSitesWithPages}).
 
 \begin{table} [htbp]%
 	\centering
 	\caption{Сайты исследуемых университетов.}%
-	\label{tab:uniSites}% label всегда желательно идти после caption
+	\label{tab:uniSitesWithPages}% label всегда желательно идти после caption
 	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
 	\def\tabularxcolumn#1{m{#1}}
 	\begin{tabularx}{\textwidth}{@{}>{\raggedright}X >{\centering}m{3.5cm} >{\centering}m{2.5cm} >{\centering\arraybackslash}m{2.5cm}@{}}% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
