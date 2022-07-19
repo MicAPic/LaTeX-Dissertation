@@ -1,67 +1,166 @@
 \chapter{Сетевая коммуникация}\label{ch:ch3}
 
-\section{Принципы взаимодействия и распространения информации}\label{sec:ch3/sect1}
+\section{Принципы взаимодействия и распространения информации}\label{sec:ch3/sec1}
 
-%Так размещается таблица:
-%
-%\begin{table} [htbp]
-%    \centering
-%    \begin{threeparttable}% выравнивание подписи по границам таблицы
-%        \caption{Название таблицы}\label{tab:Ts0Sib}%
-%        \begin{tabular}{| p{3cm} || p{3cm} | p{3cm} | p{4cm}l |}
-%            \hline
-%            \hline
-%            Месяц   & \centering \(T_{min}\), К & \centering \(T_{max}\), К & \centering  \((T_{max} - T_{min})\), К & \\
-%            \hline
-%            Декабрь & \centering  253.575       & \centering  257.778       & \centering      4.203                  & \\
-%            Январь  & \centering  262.431       & \centering  263.214       & \centering      0.783                  & \\
-%            Февраль & \centering  261.184       & \centering  260.381       & \centering     \(-\)0.803              & \\
-%            \hline
-%            \hline
-%        \end{tabular}
-%    \end{threeparttable}
-%\end{table}
-%
-%\begin{table} [htbp]% Пример записи таблицы с номером, но без отображаемого наименования
-%    \centering
-%    \begin{threeparttable}% выравнивание подписи по границам таблицы
-%        \caption{}%
-%        \label{tab:test1}%
-%        \begin{SingleSpace}
-%            \begin{tabular}{| c | c | c | c |}
-%                \hline
-%                Оконная функция & \({2N}\) & \({4N}\) & \({8N}\) \\ \hline
-%                Прямоугольное   & 8.72     & 8.77     & 8.77     \\ \hline
-%                Ханна           & 7.96     & 7.93     & 7.93     \\ \hline
-%                Хэмминга        & 8.72     & 8.77     & 8.77     \\ \hline
-%                Блэкмана        & 8.72     & 8.77     & 8.77     \\ \hline
-%            \end{tabular}%
-%        \end{SingleSpace}
-%    \end{threeparttable}
-%\end{table}
-%
-%Таблица~\cref{tab:test2} "--- пример таблицы, оформленной в~классическом книжном
-%варианте или~очень близко к~нему. \mbox{ГОСТу} по~сути не~противоречит. Можно
-%ещё~улучшить представление, с~помощью пакета \verb|siunitx| или~подобного.
-%
-%\begin{table} [htbp]%
-%    \centering
-%    \caption{Наименование таблицы, очень длинное наименование таблицы, чтобы посмотреть как оно будет располагаться на~нескольких строках и~переноситься}%
-%    \label{tab:test2}% label всегда желательно идти после caption
-%    \renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
-%    \begin{SingleSpace}
-%        \begin{tabular}{@{}@{\extracolsep{20pt}}llll@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
-%            \toprule     %%% верхняя линейка
-%            Оконная функция & \({2N}\) & \({4N}\) & \({8N}\) \\
-%            \midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
-%            Прямоугольное   & 8.72     & 8.77     & 8.77     \\
-%            Ханна           & 7.96     & 7.93     & 7.93     \\
-%            Хэмминга        & 8.72     & 8.77     & 8.77     \\
-%            Блэкмана        & 8.72     & 8.77     & 8.77     \\
-%            \bottomrule %%% нижняя линейка
-%        \end{tabular}%
-%    \end{SingleSpace}
-%\end{table}
+\subsection{Discontinued Public Spheres? Reproducibility of User Structure in Twitter Discussions on Inter-ethnic Conflicts}\label{subsec:ch3/sec1/sub1}
+
+\subsubsection{1. Introduction}\label{subsubsec:ch3/sec1/sub1/subsub1}
+
+Recently, communication scholars have stated that today’s public spheres \cite{Habermas} have become increasingly dissonant \cite{Pfetsch} and disintegrated. They rarely have consensus as a goal and, to a large extent, consist of ad hoc discussions \cite{BrunsBurgess} that have no continuity and quickly dissipate. Disconnection also emerges through ‘ever-more-fiercely negative campaigns, increasing political polarization, and public debates filled with prejudices and false assumptions’ \cite[p.~59]{Pfetsch}. One dimension of this disintegration has remained virtually unexplored, which is time. In traditionally mediated public spheres \cite{Calhoun}, the main structure of information flows organized by media and institutions remained stable in years or even decades; but we hardly know whether the user and influencer structure of networked discussions remains stable or changes with time, and to what extent. How can we expect public discussions to come to definitive conclusions stably accepted or at least discussed, if the very participant structure is unstable?
+
+We argue that reproducibility of the discussion structure may be viewed as a sign of the long-term continuity of the public spheres and, thus, work as their quality metric. Long-term studies of networked discussions (\textit{e.g.} their polarization) remain rare despite the measurement’s tools accessible at the platform such as networking, tweeting and content-producing behavior of users \cite{GarimellaWeber}. ‘Most longitudinal network studies have confounded the processes of new tie formation and old tie maintenance, resulting in an incomplete understanding of the processes of network change’ \cite{Fu}. Studying Twitter data in timelines and investigating timeline narratives longitudinally are, till today, atypical approaches to data gathering and analysis \cite{BrookerVinesBarnett}; comparisons between structures of similar discussions of various times are next-to-absent.
+
+Conflictual discussions online are vivid forms of expression of the public sphere \cite{BodrunovaBlekanovSmoliarova}. Among them, Twitter discussions are the most rapidly growing and, sometimes, most quickly dissipating. Our previous findings have shown that Twitter ‘is more complicated than the imaginary cocooned talk in echo chambers, especially for issues beyond elec- tions and direct policing’ \cite[p.~130]{BodrunovaBlekanovSmoliarova}. Moreover, according to the studies of digital protest and ‘hashtag activism’, Twitter may enable longitudinal campaigning that changes structure and content of public discussions for long enough time periods \cite{BonillaRosa}. Technological affordances equally contribute to the formation of social movements and the spread of false beliefs in the ‘unedited public sphere’ \cite{BimberDeZuniga} that emerges on social media. They also simultaneously allow for keeping the talk alive and forgetting it as soon as it goes beyond the Twitter scroll.
+
+Case studies of Twitter discussions on selected conflicts paid more attention to the content of debate and the character of public communication than to who and how long participates in the discussion \cite{GroshekTandoc}. Also, comparative approaches have mostly been applied to simultaneous cases in different countries, not to similar discussions that hap- pened within one national context in varying times, with few exceptions when the scholars talk about a social/political movement with its evolving dynamics of activities (e.g. \#blacklivesmatter).
+
+This study aims at comparing two national-level discussions in German-language Twitter about ethnicity-related conflicts: the one on the 2016 New Year’s Eve sexual assaults in Cologne and that on the 2018 protests in Chemnitz that took place after the death of a Cuban-German man. We ask to what extent the structure of influencers (ordinary users, media, and institutions) has remained similar, since the issue and public polarization behind it were the same. Comparison within the national context reduces bias present in cross-national studies, as the variety of influencers cannot be explained by varying national political cultures.
+
+The structure of this paper is organized as follows. The next sections presents our research questions and methodology (Sect.~2) and the findings of our study (Sect.~3). We conclude with a short summary of our results (Sect.~4).
+
+\subsubsection{2. Research Questions and Methodology}
+
+As stated above, the study aims at comparing two national-level discussions in German- language Twitter about ethnicity-related conflicts: the one on the 2016 New Year’s Eve sexual assaults in Cologne and that on the 2018 protests in Chemnitz that took place after the death of a Cuban-German man. Our general assumption is that the structure of participation, as well as the structure of influencers, should remain similar, as the issue and public polarization behind the discussions were the same.
+
+We conducted vocabulary-based web crawling to collect the discussion content and to analyze their structure. A special web crawler has been developed to bypass the limitations of Twitter API \cite{BlekanovSergeevMartynenko}. The total number of users in the two datasets included 12,382 users for Cologne and 22,973 users for Chemnitz.
+
+As we moved from step to step in our research, we corrected the research questions and hypotheses based on the findings of the previous steps. Here, we will describe the RQs and methods used for each step, but the hypotheses are attached to the description of our results.
+
+\paragraph{RQ1. Did Twitter users who discussed the Cologne case join the Twitter discussion about the Chemnitz case?}
+
+To answer RQ1, we assessed the general reproducibility of the discussions by defining the number of all users and influencers who participated in both discussions.
+
+\paragraph{RQ2. Does the structure of politically relevant (institutionalized political, grassroots political, and media) influencers repeat from Cologne to Chemnitz?}
+
+To answer RQ2, we assessed the structure of influencers. For this, we sampled 50 top users for each of eight user metrics: number of tweets; number of interactions (likes, comments, and retweets); centralities -- indegree, outdegree, betweenness, and pagerank. Then we merged them in aggregate lists of top users and eliminated the duplicates. As many users were within the top lists by many metrics, the final top lists included 230 users for the Cologne case and 207 users for the Chemnitz case. We manually coded the users in the final lists for their offline status in the following way. We coded an account as ‘ordinary user’ if its owner mentioned neither an institutional status nor political positioning in the user self-description at the top of the Twitter blog. If any political positioning or support of political values have been mentioned in the description, the account has been coded as ‘politically active blogger/activist.’ As ‘media’ we coded the accounts that either have a clear connection to a media project outside Twitter or position themselves as Twitter-only media projects. Institutional political actors included the accounts run by state authorities of any level and their individual representatives; political parties; individual politicians. Any other possible classification based on the description in the user account was marked as ‘other’.
+
+\paragraph{RQ3. Does the salience of intersecting influencers differ in the two cases?}
+
+To answer RQ3, we have defined the list of relevant intersecting influencers and have calculated their activity ratio and user engagement ratio. The former is the number of tweets published by the account in the first case divided by the number of tweets published in the second case; the latter is the ratio of the according numbers of user comments.
+
+These ratios show whether the status of these influencers, both actively pursued and user-supported, has been stable in time.
+
+\subsubsection{3. Findings}
+
+\paragraph{3.1 Reproducibility of the General User Structure in the Discussions}
+
+\paragraph{RQ1. Did Twitter users who discussed the Cologne case join the Twitter discussion about the Chemnitz case?}
+
+\begin{itemize}
+	\item H1a. \textit{Ad hoc} publics that emerged around the Cologne and Chemnitz cases repeat to a significant share (over 30\% of the participants who discussed Cologne also discussed Chemnitz).
+	\item H1b. The list of top users changed less than the general sample of users taking part in the discussion, as influencers are the structural carcass of the issue-based debates.
+\end{itemize}
+
+To prove H1a we compared two general samples crawled for the Cologne case and for the Chemnitz case. From the whole dataset, we excluded those users who have not posted at least once and only interacted with those who tweeted by liking or sharing. (These users were crawled because they were necessary for the graph reconstruction of the discussions; we consider them irrelevant for RQ1.) The datasets for RQ1 included 12,382 users who tweeted about Cologne and 22,973 users who tweeted about Chemnitz. Only 1,735 users (circa 14\% of Cologne sample and 7,5\% of Chemnitz sample) participated in both discussions posting at least one tweet with at least one hashtag that defines the corpora of each discussion. 17\% of them published the same amount of posts (from 1 to 7 tweets in each discussion), 57\% tweeted more about Cologne and 26\% were more active in posting about Chemnitz. The total number of unique users amounts to 33,620 users; thus, the share of intersecting users is 5,2\%. If we exclude those who posted less than three tweets in both cases, the share of users participated in both discussions decreases even to 1,2\%. Therefore, H1a has to be rejected: the \textit{ad hoc} publics the emerged around the Cologne and Chemnitz events vary by 95\%.
+
+To check H1b, we selected the top users (influencers) for both cases by the aforementioned procedure, which resulted into 222 users for the Cologne case and 207 users for the Chemnitz case, 413 unique users in total. Only 16 top users -- 7\% from the Cologne top list and 7,7\% from the Chemnitz top list -- have participated in both discussions (3,9\% of the total number of unique users; for the accounts, see Table~\cref{tab:intersectingInfluencers}). This also means that the list of top users changed slightly more than the general sample, but the difference seems not to be incredibly significant. Thus, H1ba is rejected, too.
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Intersecting influencers.}%
+	\label{tab:intersectingInfluencers}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Institutional type & Accounts & Number of users \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			National media & BILD, DLFNachrichten, faznet, ndaktuell, SPIEGELONLINE, SZ, tagesschau, tazgezwitscher, welt, ZDFheute, zeitonline & 11 \\
+			Regional media & WDR and ZDFnrw & 2 \\
+			Journalists & MatthiasMeisner & 1 \\
+			Bloggers & Korallenherz & 1 \\
+			Politicians & HeikoMaas & 1 \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+\paragraph{3.2 Reproducibility of the Influencer Structure: Politicization and Political Polarization}
+
+\paragraph{RQ2. Is the structure of politically relevant (institutionalized political, grassroots political, and media) users among the influencers similar in both cases?}
+
+\begin{itemize}
+	\item H2a. The media segment of the influencer structure is the most stable (as media are the key actors in the mediated public sphere).
+	\item H2b. The political segment (both institutional and grassroots) is more salient in the Cologne case (due to the political resonance of the case) (Table~\cref{tab:influencerCharacter}).
+\end{itemize}
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Institutional character of influencers.}%
+	\label{tab:influencerCharacter}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Institutional type & Cologne & Chemnitz \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			Institutional political actors & 5,22\% & 14,98\% \\
+			Media & 23,48\% & 24,15\% \\
+			Activists and politically active bloggers & 11,26\% & 27,05\% \\
+			Ordinary & 50,00\% & 18,36\% \\
+			Other/irrelevant & 11,74\% & 14,49\% \\
+			Total N & 230 & 207 \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+H2a is fully supported: the share of media accounts in both cases remained the same. Moreover, as shown in Table~\cref{tab:intersectingInfluencers}, 13 out 16 users that were high-ranked in both discussions are editorial mass media that operate mostly on the national level in Germany.
+
+
+As for H2b, our findings demonstrate that political actors were much more visible in the discussion around events in Chemnitz that in Cologne: the share of institutionalized politicians has almost tripled. One might explain this tendency by the growth of Twitter activity of German politicians in general. SPD, die Linke, and FDP, as well as AfD, were fighting for users’ attention and gaining authority in an online discussion.
+
+The salience of the AfD representatives has doubled. Four members of the right-wing party are present among the high-ranked users driving Twitter-discussion about events in Cologne in 2016, among them Björn Höcke, one of the founders of AfD Thuringia, the speaker of the parliamentary group of the AfD and the spokesman of the Thuringia Regional Association. In the discussion about Chemnitz in 2018, 8 accounts associated with AfD are found on the list of top users. All of them are ranked high by pagerank; 4 of 8 accounts are also ranked high by indegree and 1 by retweets.
+
+Also, the rise of the grassroots politicization is clear. In our previous research on the Cologne case, we have shown that ‘many ordinary users have a clear political position that can be understood from their tweets, but they don’t define themselves as activists’ \cite[p.~141]{SmoliarovaBodrunovaBlekanov}. The Chemnitz case shows a clear difference: the share of ordinary people who explicitly declare their political position or another official status in their account descriptions has increased from 11\% to 27\%. This is another sign of politicization and political polarization during the case, as well as the sign of structural instability. Thus, H2b has not been supported.
+
+\paragraph{3.3 Reproducibility of Intersecting Users and Their Roles: Media as the Carcass of Networked Discussions}
+
+\paragraph{RQ3. Does salience of the intersecting accounts differ in the two cases?}
+
+\begin{itemize}
+	\item H3a. The activity ratios of the intersecting users remain stable (in between 0,8 and 1,2).
+	\item H3b. The user engagement ratios of the intersecting users remain stable (in between 0,8 and 1,2).
+\end{itemize}
+
+We have shown above that media influencer accounts were, en masse, the only group of influencers that stably repeated in the two discussions. Hence, we have decided to assess the 13 media accounts that were discovered in both top user lists in terms of their activity and user engagement ratios.
+
+Almost all media outlets tweeted more about Cologne than about Chemnitz (see Table~\cref{tab:mediaInfluencerRatios}). For public service TV, the difference is the most significant: \textit{@ZDFnrw} posted in January 2016 almost 12 times more tweets than in August-September 2018. Nation-wide news program \textit{@tagesschau} is the second account that was much more active in January 2016: they posted 7 times more tweets about Cologne. Interestingly, two media outlets that paid more attention to the Chemnitz case than to the Cologne events -- \textit{@welt} and \textit{@tazgezwitscher} -- represent the two opposite sides of the political spectrum (right-wing and left-wing, respectively), which, again, is a sign of political polarization. Thus, H3a is rejected.
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Activity and user engagement ratios for media influencers in the two discussions.}%
+	\label{tab:mediaInfluencerRatios}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.6}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\def\tabularxcolumn#1{m{#1}}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright}X >{\centering}m{2.5cm} >{\centering}m{2.5cm} >{\centering}m{2.5cm} >{\centering\arraybackslash}m{2.5cm}@{}}% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			& Cologne & Chemnitz & Activity ratio (Cologne to Chemnitz) & User engagement ratio (Cologne to Chemnitz) \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			ZDFnrw & 83 & 7 & 11,86 & 0,07 \\
+			Tagesschau & 123 & 18 & 6,83 & 0,2 \\ 
+			Faznet  & 66 & 19 & 3,47 & 0,77  \\
+			DLFNachrichten & 52 & 15 & 3,47 & 0,21 \\
+			BILD & 16 & 5 & 3,2 & 3,79 \\
+			SZ & 21 & 7 & 3  & 0,49 \\
+			WDR & 31 &  15 & 2,066 & 0,08 \\
+			SPIEGELONLINE & 43 & 24 & 1,79 & 0,42 \\
+			Ndaktuell & 54 & 31 & 1,74 & 0,54 \\
+			Zeitonline & 40 & 23 & 1,74 & 2\\
+			ZDFheute & 32 & 28 & 1,14 & 0,36 \\
+			Tazgezwitscher & 16 & 29 & 0,55 & 1,07 \\
+			welt & 10 & 21 & 0,48 & 1,55 \\
+			\bottomrule %%% нижняя линейка
+	\end{tabularx}%
+\end{table}
+
+Contrary to the fact that media outlets tweeted significantly more about Cologne, the users’ involvement seems to follow the opposite trend. The biggest difference between users’ engagement rate between two cases is revealed for \textit{@ZDFnrw}, despite this media account has tweeted 12 times less about Chemnitz than about Cologne. Users of \textit{@tagesschau} were 5 times more involved into the discussion of about Chemnitz than by tweets about Cologne. The same gap is observed for another public broadcaster, the national radio station \textit{@DLFNachrichten}. Thus, national/regional PSB has lost its positions in terms of user engagement, despite the growing efforts in Twitter reporting.
+
+Unlike the PSB TV, media with clear political positioning like the conservative \textit{@BILD} and \textit{@welt} and the left-wing \textit{@Tazgezwitscher}, received higher user attention in the Chemnitz case -- again, which tells of user polarization. There is no media account except for \textit{@Zeitonline} that would fit into our expected ratio divergence values. Thus, both H3a and H3b need to be rejected. This, in its turn, is a sign of unstable positioning of the only segment of influencers that continued to the second Twitter discussion.
+
+\subsubsection{4. Conclusion}
+
+Our findings suggest that the level of general reproduction of the structure of \textit{ad hoc} conflictual discussions is extremely low. Comparing the two general samples crawled for Cologne and Chemnitz we revealed that the lists of users who have posted at least once match by 5\% only. The list of top users changed even more significantly, contrary to expectations. Among the top users, the media segment has been the most stable, which supports the idea of media remaining the key actors in the mediated public sphere \cite{Calhoun}. But even this media cluster did not preserve its positioning, neither in terms of activity nor in terms of user engagement. While media accounts tweeted significantly more about Cologne, the users’ involvement seems to follow the opposite trend. Political actors were much more visible in the Twitter discussion on Chemnitz than on Cologne: the share of institutionalized politicians has almost tripled, and the number of grassroots activists has more than doubled. This shows that politicization of the discussion became more formal, while the issue itself became relevant for non-politicized people. We can conclude that media remain the carcass of the public spheres which discontinue around them.
 
 \section{Событийное формирование контента}
 
