@@ -6,13 +6,13 @@
 
 \subsection{Index data structure, functionality and microservices in thematic virtual museums}\label{subsec:ch4/sec2/sub1}
 
-\paragraph{1. Introduction.} Museum as nonprofit institution which responsible for preserving historical and cultural heritage, exhibit tangible and intangible to public is facing huge problem in digital era as mention in \cite{AnggaiBlekanovSergeev2014}. Museums institution are starting digitizing their collections and describe detail information in order to intensify their activities and present on the Internet as a part of public services. However, digital transformation is inevitable, museums institution must provide good impact, experiences and values to their visitors.
+\subsubsection{Introduction.} Museum as nonprofit institution which responsible for preserving historical and cultural heritage, exhibit tangible and intangible to public is facing huge problem in digital era as mention in \cite{AnggaiBlekanovSergeev2014}. Museums institution are starting digitizing their collections and describe detail information in order to intensify their activities and present on the Internet as a part of public services. However, digital transformation is inevitable, museums institution must provide good impact, experiences and values to their visitors.
 
 The thematic concept in virtual museum is one of the approaches we take in order to accelerate digital transformation of museums institution. We are combining virtual museum (VM) and information retrieval (IR) concepts in conducting information management, analytics, and focus on users-centric to enhance their experience by providing visitors’ information need within the virtual museums system.
 
 In this research work we are preparing, investigating and conducting experiments on data access service, index construction, applying ranking algorithms and development of microservices in thematic virtual museums for speeding up disruptive innovation in museums institution.
 
-\paragraph{2. Data crawling.}  In section 2 we will describe how this application data access crawling service get the content of web pages. This crawler service can take data from museums institution in text, Hypertext Markup Language (HTML), JavaScript Object Notation (JSON), or Extensible Markup Language (XML) form. We define specific web Uniform Resource Locator (URL) to crawl and run the service to obtain content pages. The crawler service maintains and run a job for specific website and not for general uses, because it ought to crawl based on characteristics of each page in those websites. As in our case we are getting the data from Registration Museum under Ministry of Education and Culture, Republic of Indonesia. There are two models web pages structure in order to get full museum collection pages as the following.
+\subsubsection{Data crawling}  In section 2 we will describe how this application data access crawling service get the content of web pages. This crawler service can take data from museums institution in text, Hypertext Markup Language (HTML), JavaScript Object Notation (JSON), or Extensible Markup Language (XML) form. We define specific web Uniform Resource Locator (URL) to crawl and run the service to obtain content pages. The crawler service maintains and run a job for specific website and not for general uses, because it ought to crawl based on characteristics of each page in those websites. As in our case we are getting the data from Registration Museum under Ministry of Education and Culture, Republic of Indonesia. There are two models web pages structure in order to get full museum collection pages as the following.
 
 \begin{enumerate}
 	\item List of collections. The crawler service directly accesses to the URL which contains list of museum collections. This URL address show 20 items per page and navigation page to identify how many pages still remain as previous or next page from the first to the end page. All URL retrieved from this page which identified as detail collection URL will be adding to download-queue.
@@ -24,7 +24,7 @@ The crawler services automatically download the content page until all pages hav
 f(p) = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \textit{dl }(\textit{page})
 \]
 
-\paragraph{3. Parsing data.} In this stage the service will parse data which has been obtained. There are two models we have been using in order to parsing data from crawler service, first we are directly parsing HTML format into Thermal VM (TVM) data schema, and second the parser service follow standard rule for data exchange. Parser service has developed for performing tasks in general, therefore data collections which obtained by crawler can be fully implemented on this service. We are using method as shown in Figure~\cref{fig:tvmMapping}.
+\subsubsection{Parsing data} In this stage the service will parse data which has been obtained. There are two models we have been using in order to parsing data from crawler service, first we are directly parsing HTML format into Thermal VM (TVM) data schema, and second the parser service follow standard rule for data exchange. Parser service has developed for performing tasks in general, therefore data collections which obtained by crawler can be fully implemented on this service. We are using method as shown in Figure~\cref{fig:tvmMapping}.
 
 \begin{figure}[ht]
 	\centerfloat{
@@ -35,7 +35,7 @@ f(p) = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \textit{dl }(\textit{page})
 
 The parser service in Figure~\cref{fig:tvmMapping}, show step by step to exchange data where this service can be receiving and parsing XML or JSON format in dynamic schema includes Conceptual Interchange Documentation -- Conceptual Reference Model, Lightweight Information Describing Objects (LIDO), and Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH), however, we must define dynamic or unknown schema and extracting this schema to well form. Data exchange can be starting when the well form schema is similar with TVM schema, if not then mapping the well form schema to TVM schema should be done, only then data exchange can be performed through Hypertext Transfer Protocol (HTTP) web services.
 
-\paragraph{4. Data store.} An important part of data-access service is storing and maintaining data collections which have been crawled and parsed to the standard data structure form. There are many techniques to preserve document collections, one of them is storing into databases. To store data from crawler service, we are using non-traditional database key- value MongoDB for handling structure, semi-structure and unstructured data. There are many advantages of MongoDB as mention in \cite{StanescuBrezovanBurdescu,JiaZhaoWang,WuChenJiang}, this type NoSQL document-oriented database using JSON-like format called Binary JSON (BSON), support for partition and MapReduce. MongoDB is using document store model, allow developer to create free-schema, running on multiplatform and opensource.
+\subsubsection{Data store} An important part of data-access service is storing and maintaining data collections which have been crawled and parsed to the standard data structure form. There are many techniques to preserve document collections, one of them is storing into databases. To store data from crawler service, we are using non-traditional database key- value MongoDB for handling structure, semi-structure and unstructured data. There are many advantages of MongoDB as mention in \cite{StanescuBrezovanBurdescu,JiaZhaoWang,WuChenJiang}, this type NoSQL document-oriented database using JSON-like format called Binary JSON (BSON), support for partition and MapReduce. MongoDB is using document store model, allow developer to create free-schema, running on multiplatform and opensource.
 
 In our case we have developed a system to access MongoDB database server using Mgo (mango) driver for Go programming language. The Mgo driver is providing simple application programming interface, easy to use, and fast enough for performing task such as create, read, update, delete operations (\textit{https://labix.org/mgo}). The design of TVM database schema for museum collections \cite{AnggaiBlekanovSergeev2015} as shown in table~\cref{tab:tvmDbSchema} is independent and can be customized depend on the goals of spesific index task.
 
@@ -74,7 +74,7 @@ In our case we have developed a system to access MongoDB database server using M
 	\end{adjustbox}
 \end{table}
 
-\paragraph{5. Forward index.} There are several IR techniques for document indexing system (\textit{https://www.elastic.co/blog/found-indexing-for-beginners-part3}), one of them is forward index \cite{BrinPage}, which is fast to perform task in document indexing. We are taking the museum collections data from MongoDB and managing those collections in TVM forward index. We have modified standard forward index data structure according to TVM data structure needed as shown in Figure~\cref{fig:tvmForwardIndex}.
+\subsubsection{Forward index} There are several IR techniques for document indexing system (\textit{https://www.elastic.co/blog/found-indexing-for-beginners-part3}), one of them is forward index \cite{BrinPage}, which is fast to perform task in document indexing. We are taking the museum collections data from MongoDB and managing those collections in TVM forward index. We have modified standard forward index data structure according to TVM data structure needed as shown in Figure~\cref{fig:tvmForwardIndex}.
 
 \begin{figure}[ht]
 	\centerfloat{
@@ -85,7 +85,7 @@ In our case we have developed a system to access MongoDB database server using M
 
 TVM forward index is pair document-payload using unique document identifier (DocId) for each document collections, in order to gain fast access to a document we are using hash map. Payload or embedding information in this forward index can be contains document identifier, list of terms contains in document, a record document information from database, and some necessary information. The development on flexible payload as our approach in TVM forward index give us space to embed something useful in managing and interacting with TVM inverted index.
 
-\paragraph{6. Inverted index.} TVM concept which focus on fastest retrieving information need must be designed with good data structure, therefore we have created inverted index as a base for maintaining and searching information from any type application or users queries. There are many standard inverted index models have studied in \cite{ZobelMoffat,ManningRaghavanSchutze,PanevBerberich}, based on those state of the art we are modifying and designing inverted index structure for TVM need \cite{AnggaiBlekanovSergeev2017} as shown in Figure~\cref{fig:tvmInvertedIndex}.
+\subsubsection{Inverted index} TVM concept which focus on fastest retrieving information need must be designed with good data structure, therefore we have created inverted index as a base for maintaining and searching information from any type application or users queries. There are many standard inverted index models have studied in \cite{ZobelMoffat,ManningRaghavanSchutze,PanevBerberich}, based on those state of the art we are modifying and designing inverted index structure for TVM need \cite{AnggaiBlekanovSergeev2017} as shown in Figure~\cref{fig:tvmInvertedIndex}.
 
 \begin{figure}[ht]
 	\centerfloat{
@@ -98,7 +98,7 @@ TVM inverted index maintain terms in dictionary using hash map in order to gain 
 
 TVM inverted index module is providing several ranking functions such as bag of words term-frequency -- inverse document frequency (TF-IDF) \cite{ManningRaghavanSchutze}, cosine similarity measure vector space model (VSM) \cite{SaltonBuckley}, includes data provider for conceptual modeling latent semantic indexing (LSI) [9, 13] and topic modeling latent derelict allocation (LDA) \cite{BleiNgJordan}, another ranking function can be added as needed as long as it is still matching with TVM inverted index data structure design.
 
-\paragraph{7. Microservices.} Index service in TVM are running on server side, therefore we have designed a microservices in order to communicate between applications, and serve requests from front-end to back-end server \cite{AnggaiBlekanovSergeev2015}. There are many benefits of microservice architecture as mentions in \cite{Singleton,GuoWangZeng,Bakshi}. TVM microservice in this case only support HTTP POST request with data submission to prevent security issue as shown in algorithm below:
+\subsubsection{Microservices} Index service in TVM are running on server side, therefore we have designed a microservices in order to communicate between applications, and serve requests from front-end to back-end server \cite{AnggaiBlekanovSergeev2015}. There are many benefits of microservice architecture as mentions in \cite{Singleton,GuoWangZeng,Bakshi}. TVM microservice in this case only support HTTP POST request with data submission to prevent security issue as shown in algorithm below:
 
 \begin{figure}[ht]
 	\centerfloat{
@@ -109,7 +109,7 @@ TVM inverted index module is providing several ranking functions such as bag of 
 
 Algorithm pseudocode is describing how TVM microservice listening requests from clients, processing the request and give back a response in appropriate JSON format. HTTP header authentication schema is Basic, which transmit user and password credentials when the connection has established. The client request for searching similarity document is identified by DocId where each request will trigger inverted index ranking function and return list-docIds no more than maximum top-K ranked. The list-docId will be adding to the index-cache and using it again on the similar DocId request for reducing similar calculation process.
 
-\paragraph{8. Experiment and results.} TVM system which have provided a design for microservices in this experiment will be used for handling many requests from front-end to back-end server. We have used Intel Xeon Processor 2620v4, memory DDR4 32 Gb, and hard disk Skyhawk Surveillance 2 terabyte in conducting this experiment. The data we have been using as dataset are from “Collection Museum Registration System”, Directorate Cultural Heritage Preservation and Museum, Ministry of Education and Culture, The Republic of Indonesia, which contain 29 362 collections.
+\subsubsection{Experiment and results} TVM system which have provided a design for microservices in this experiment will be used for handling many requests from front-end to back-end server. We have used Intel Xeon Processor 2620v4, memory DDR4 32 Gb, and hard disk Skyhawk Surveillance 2 terabyte in conducting this experiment. The data we have been using as dataset are from “Collection Museum Registration System”, Directorate Cultural Heritage Preservation and Museum, Ministry of Education and Culture, The Republic of Indonesia, which contain 29 362 collections.
 
 In this experiment we have prepared three methods which all outputs will be encoded, written and return to the client side in JSON format, first the service will return only list of docIds form to the client in consequently allowing them to process those list of docIds for another tasks, second the service will get the list of docIds and using them as keys to identify full detail collections information in TVM forward index payload, third the service will get the list of docIds and using them to perform a query to database mongoDB for searching the detail collections information. The query request method to indicate service performance is using document at a time (DAAT) as shown in Figure~\cref{fig:daatQuery}.
 
@@ -134,7 +134,7 @@ The second experiment, we are using query term at a time (TAAT), where each term
 
 The first method is only gives docIds list rather than give a full information, therefore there is no request needed to database or index payload, beside this docIds list can be used as caching for top-K docIds ranking in order to reduce computation time in back-end server. The cache key is docId of recent document which is using as query request, and the value is containing array set of documents identification. The second and third methods give us a significant result, where our method have provided an access to collaborate between TVM inverted index and forward index by given embedded information as payload. Our experiments shown that the methods have been proposed can reduced time to access a detail information of the collection rather than given many direct queries to database system.
 
-\paragraph{9. Conclusion}. In this work we have constructed data access service, modified forward and inverted index, and design special microservice architecture for TVM to provide relevant information for the virtual museums visitors. There are several experiments we have conducted, and shown our methodology give significant results when exchanged an information and collaborated between TVM forward and inverted index, query request, process and response through microservices give high performance output. Dynamic or flexible payload in TVM indices structure can be used for multipurpose indexing method in the development of modern information retrieval.
+\subsubsection{Conclusion} In this work we have constructed data access service, modified forward and inverted index, and design special microservice architecture for TVM to provide relevant information for the virtual museums visitors. There are several experiments we have conducted, and shown our methodology give significant results when exchanged an information and collaborated between TVM forward and inverted index, query request, process and response through microservices give high performance output. Dynamic or flexible payload in TVM indices structure can be used for multipurpose indexing method in the development of modern information retrieval.
 
 \subsection{Construction inverted index for dynamic collections visualization in thematic virtual museums system}\label{subsec:ch4/sec2/sub2}
 
@@ -280,15 +280,15 @@ In this paper showed a design and modification of the inverted index experimenta
 
 \subsection{Design Muntoi web-based framework and search engine analytics for thematic virtual museums}\label{subsec:ch4/sec2/sub3}
 
-\paragraph{Introduction.} The future development of virtual museum focused on the exhibition of the collections which contained in databases of museum institutions, based on the information from this collections, curators can design virtual exhibition, environment, game, and simulation in 3D, panoramic 360 degree and also it will help them to expand access to the collections through sophisticated platform.
+\subsubsection{Introduction.} The future development of virtual museum focused on the exhibition of the collections which contained in databases of museum institutions, based on the information from this collections, curators can design virtual exhibition, environment, game, and simulation in 3D, panoramic 360 degree and also it will help them to expand access to the collections through sophisticated platform.
 
 To realize this kind of idea, we are providing attractive, effective, and interactive user interface, which giving the user more experiences and having fun when they accessing the system. The currently platform which the most widely used and easily accessible by the user is website. Therefore it is necessary to design a framework that can serve needs of the user, low-cost and aligned with the concept of thematic virtual museums.
 
 The design is adopting the concept of Model-View-Controller (MVC) which widely used in the web-based framework where it can simplify developer to create a structured application, making application maintainable, extensible, easy to reuse code (efficient), and will be helping developer to build a program very fast. This framework will ensure consistency, separating logic and presentation layer. In addition the program also will be designed to be closely linked with the role of search engine analytics as a core program of thematic virtual museums.
 
-\paragraph{Research Objective.} The purpose of this research paper is to inform our progress on development of a web framework based on Go language to provide detail museum information, managing museum collections information, and design a concept of thematic virtual museum for attracting more visitors and design search engine analytics to become a core of the future development of virtual museums.
+\subsubsection{Research Objective.} The purpose of this research paper is to inform our progress on development of a web framework based on Go language to provide detail museum information, managing museum collections information, and design a concept of thematic virtual museum for attracting more visitors and design search engine analytics to become a core of the future development of virtual museums.
 
-\paragraph{Web Framework.} Web is the most powerful platform to handle time, distance and space limitation in physical museum institutions. Based on recent web technology, we have been designed web pages more responsive, interactive and dynamic.
+\subsubsection{Web Framework.} Web is the most powerful platform to handle time, distance and space limitation in physical museum institutions. Based on recent web technology, we have been designed web pages more responsive, interactive and dynamic.
 
 Web framework is designed to develop dynamic website which have a good structure, providing common library, URL mapping, session and security again attacker, database manipulation, template to generating textual output, light- weight, and often providing concept Model-View-Controller (MVC). It is designed to make developer easier and faster for creating a website especially when they want to create scalable, maintainable and sustainable website.
 
@@ -311,7 +311,7 @@ The controller is a specific function which responsible for scripting, organizin
 
 In general purpose \textit{MuntoiFr} is providing a script \textit{Configuration}: to define variables as initial values before the program will run on the server, \textit{Session}: to store temporary information on the server-side during a period of time which could be used across multiple pages, this feature always used for user authentication and validation, and \textit{Utils}: as a tool that contains several useful functions to perform certain in specific operations. \textit{MuntoiFr} have designed dynamically for model persistence therefore latter on it would be porting to another databases software without changing the structure of this framework.
 
-\paragraph{Design.} This system was developed using the concept of thematic virtual museums that one of its functions is connecting the museum collections information which interrelated each other. It is intended to help visitors to find something interesting and unique as they wish.
+\subsubsection{Design.} This system was developed using the concept of thematic virtual museums that one of its functions is connecting the museum collections information which interrelated each other. It is intended to help visitors to find something interesting and unique as they wish.
 
 \begin{figure}[ht]
 	\centerfloat{
@@ -386,11 +386,147 @@ The Search Engine Analytics with thematic approach will be designing to provide 
 
 Through thematic virtual museums system, some information topics/theme which have been sorted and formulated by curator can be used as exhibition. In general exhibitions in virtual museum for attracting visitor will be presented in 3D environments which can have a stronger cognitive impact, as they give learners the feeling of being in the simulated reality, thus improving the understanding and memorization of the information \cite{GheorghiuStefan}. However, not all objects in real museum can be presenting in 3D model, it is depend on the form and default information attached to the object itself.
 
-\paragraph{Conclusion and Future Work.} In this paper, we have informed our progress about development web-based framework using Go Language for thematic virtual museums and concept and design of Search Engine Analytics as a core of this system to provide closest information to the visitors.
+\subsubsection{Conclusion and Future Work.} In this paper, we have informed our progress about development web-based framework using Go Language for thematic virtual museums and concept and design of Search Engine Analytics as a core of this system to provide closest information to the visitors.
 
 In future work, we intend to continue this research and will develop Search Engine Analytics based on the approach of thematic virtual museum which can be used to process data or information inside museum institutions.
 
 \subsection{Management and information processing at virtual museum}\label{subsec:ch4/sec2/sub4}
+
+\subsubsection{Introduction.} Almost every country have their own museum and standard procedure with different characteristics based on their state policies. In Indonesia itself until now, there are approximately 300 museum institutions under Ministry of Education and Culture (MOEC), Republic of Indonesia (RI) and Private Corporation. The government state about \textit{Gerakan Nasional Cinta Museum} (GNCM) or national movement of museum lover, through Visit Museum Year (2010-2014) program. GNCM intend to strengthen three main pillars of the museum in Indonesia, namely 1) educating the nation, 2) forming personality (character) of the nation, and 3) embed the concept of national resilience and insight on archipelago \cite{MunandarPerdanaRahayu}.
+
+According to the International Council of Museum (ICOM) statutes, adopted during the 21st General Conference in Vienna, Austria, in 2007: A museum is a non-profit, permanent institution in the service of society and its development, open to the public, which acquires, conserves, researches, communicates and exhibits the tangible and intangible heritage of humanity and its environment for the purposes of education, study and enjoyment \cite{DesvaleesMairesse}.
+
+Museum architecture as the art of designing and building a space that will be used to house specific museum functions, more particularly the functions of exhibition and display, preventive and remedial active conservation, study, management, and receiving visitors. Museum buildings was often focused on safeguarding collections, even they created storage areas by creating space in the basement, or by building new structures \cite{MunandarPerdanaRahayu}. In other word, museum is the only place to store the collections and not at all of museum’s collections were displayed.
+
+There are many problems currently faced by the museums include the management and processing data collection either structured or unstructured inside the institutions. Therefore, this research was undertaken in processing and managing data in the museum institutions in order to be delivered to the public based on customized information they need.
+
+\subsubsection{Research Objective.} The purpose of this research are to identifying, investigating the real problem in physical and management at museums, how they spread information in digital era and how to design a virtual museum system in retrieving information from structure and unstructured data related to the collections information.
+
+\subsubsection{Investigation.} 
+For strengthening our research, currently we have investigated Museum of Geology, National Museum in Indonesia has a total collections more than 141.899 items, consists of seven types of collections are prehistoric, archeology, ceramics, numismtik-heraldic, history, ethnography and geography \cite{IndonesiaMuseum}, Hermitage Museum in Russia, and for balancing we also observe online resources provided by Louvre Museum in France and Virtual Museum of Canada (VMC) to enhance Canadians’ knowledge, understanding and appreciation of events, experiences, people and objects that reflect and have shaped Canada’s history and identity. VMC providing more than 500 virtual exhibits promoting the content of Canadian museums, 150 interactive resources, over 365 learning resources including lesson plans and educational activities. VMC content provided by many collaborator approximately 1,600 museums \cite{CanadaMuseum}.
+
+We have founded many problems at the museum institutions, which are classifying as the following:
+
+\paragraph{A. Physical} Museum institution in general providing physical access to museum environment and it resource as a part of public services, but in our investigation there are lack of the physical museum, they are:
+\begin{itemize}
+	\item Time limitation, visitation to the museum is limited to the visitors.
+	\item Distance limitations, visitor could not be attending to the museum because too far away from their hometown, separated by island, country or continent.
+	\item Space limitation for exhibition, therefore not all collections displayed at the exhibition room, and they put the collections on storage area.
+	\item Museum with many rooms will make visitor confuse, and sometime visitor do not want to see a specific collection because of phobia or not meet with visitor desire.
+	\item Collections information provided by museum institution usually are not detail, therefore visitors do not understand the collection he saw and did not enjoy his visit.
+	\item Communication among visitors wore not happened, at the end it happen only from guide to visitor or vice versa.
+	\item Not all people know the existence of museums and their object collections.
+\end{itemize}
+
+\paragraph{B. Management} Management in museum have been facing many problem as follows:
+\begin{itemize}
+	\item Museum institution have big object data collections, some of them still on process to classify and identify by researcher.
+	\item Data in the museums ware separated and become hard to maintain.
+	\item Object collections can be lose or broken because of natural disasters (force majeure).
+	\item Lack of museum publicity, imaging, promotion and service include informing an event will providing by the museum institution.
+	\item Community, observer and lover of museum has not been established. Even the government state about National Movement of Museum Lover, through Visit Museum Year (2010-2014).
+	\item Implementation and management of the museum is not in line with recent development of information technology.
+	\item Online information, some of the museum have websites, but they are limited and only provide information about the museum institution and not the object collections.
+	\item Information for tourism or researcher from other country still not provided by museum institution.
+	\item Route and destination for best way to visit the place still not established yet. Route and destination information are very important for tourist and local to find the best way, reducing cost and time.
+	\item Mobile technology with virtual guide still focus on highlight catalogue, news, and floor plan, but they forget to provide floor plan with direction to each room which providing collection information that meet with visitors desire.
+\end{itemize}
+
+\subsubsection{Concept and Design}
+
+In general museum institutions have many data and information of object collections, some of them have a complete documentation and the other just a half or even minor of information. The collections usually displayed at exhibition room and the other at storage area with full access or restricted. Museum visitor visiting museum, observing the collection and back to home with or without information.
+
+Museum visitors come to see and observe a variety of collections that were displayed by museum, but what they see perhaps not necessary meet with their criteria, desires and preferences of the visitors itself.
+
+Until now, museum institution for providing public services try to attract visitors with developing audio-visual, make visitors comfortable to surfing and searching information of the collections and exhibition through their website with 2D or 3D visualization as shown in Fig.~\cref{fig:virtualMuseumCanada}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{virtualMuseumCanada}
+	}
+	\caption{Website of Virtual Museum of Canada providing exhibition in cyber space.}\label{fig:virtualMuseumCanada}
+\end{figure}
+
+Information delivered through website as in Fig.~\cref{fig:virtualMuseumCanada} focus on one subject exhibited and VMC website also providing services for searching collection information, but unfortunately when visitor found a collection, the system only describing about the collection itself and not related to similar collection inside 1,600 museums managed by VMC.
+
+While VMC providing information through website, Hermitage Museum in Saint Petersburg, Russia providing application in mobile devices as a guide for the visitor in 5 languages, include floor plan, news, collection and catalogue as shown in Fig.~\cref{fig:hermitageApp}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\hfill
+		\subcaptionbox[List-of-Figures entry]{\label{fig:hermitageApp-1}}{%
+			\includegraphics[width=0.3\linewidth]{hermitageApp1}}
+		\subcaptionbox{\label{fig:hermitageApp-2}}{%
+			\includegraphics[width=0.3\linewidth]{hermitageApp2}}
+		\subcaptionbox{\label{fig:hermitageApp-3}}{%
+			\includegraphics[width=0.3\linewidth]{hermitageApp3}}
+		\hfill
+	}
+	\caption{Mobile Application provided by Tour Bureau of the Hermitage Museum, Saint Petersburg, Russia.
+	}\label{fig:hermitageApp}
+\end{figure}
+
+Museum of Geology and National Museum are providing website but just for general information and not focused on exhibition and collection. In Museum Geology we have founded many data related to the collection and they try to documenting, recreate numbering system for each object, some of collection information indeed not discovered yet (researcher still working to identify the object collections), and the other information still based on old paper report. Recently they managing all collections in exhibition room and storage area and saving the information inside internal database application as shown in Fig.~\cref{fig:dbMuseumIndonesia}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.3]{dbMuseumIndonesia}
+	}
+	\caption{Collection databases for internal management in Museum of Geology, Indonesia.}\label{fig:dbMuseumIndonesia}
+\end{figure}
+
+National Museum official website providing eye catching collections not more than 100 collections, and if visitors want to see the collections have been displaying in National Museum through website, of course they will not find all collections including those in storage area. The other featured collections they put on Google Art Project website to promote the artwork as shown in Fig.~\cref{fig:museumGoogleArt}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{museumGoogleArt}
+	}
+	\caption{National Museum program for promoting artwork through Google Art project website.}\label{fig:museumGoogleArt}
+\end{figure}
+
+The information system between Museum of Geology and Museum National are not connected include featured collections in Google Art, therefore there is no linkage information on the collections of both institutions despite the fact that there is a closely interconnected collections information in both institutions.
+
+In this situation and condition, museum institutions in Indonesia must be find alternative solution for solving the problems both in the exhibits and collections. One proposing solution in digital age is developing Virtual Museum in Indonesia as instrumental for supporting the achievement of the museum functions as a whole and using social media to campaign collections, broadcast contents based on their location, communicating with visitor, attract and influence society, exchange information and waiting for their feedback from user perspective to improve public services. According to Steve Dietz, et al, in the book The Next Generation of Virtual Museum include: integrated with social media to share experiences and knowledge \cite{Dietz}.
+
+The design of system also cover cyber exhibition program, and linked with source of collection information in each museum institutions both internal and external uses. Lia Laela in her thesis stated that cyber exhibition developed as a complement of the exhibition held in the real museum, not as a replacement. The system had tested to the several users and the results show that users get different and more interactive experiences and detailed information compared to what they get when visiting the physical museum. The cyber exhibition also add values to the collections, therefore they become more meaningful \cite{Sarah}. Virtual museum designed as a part of the future of museum that integrates with social networking in the process of collection and dissemination of information supporting the existence of good communication between the visitors and trustees of the museum in cyberspace. The future of museum provide a personalized learning environment to support learning process \cite{Anggai}.
+
+Virtual museum system will be providing easy way to conduct learning process through cyber exhibition, whatever topics related to the collections will be presented to the user as possible. Learning process at cyber exhibition will be automatically happening when the visitors accessing the virtual museum system. The system will providing right information and also showing related information for assisting visitors to explore into deep substance of the information. Yeni in her paper try to integrate discovery-learning method into virtual museum. There were increased cognitive learning outcomes after students learning through discovery-learning method. This is the early start to realize virtual museum as the concept development of future museum \cite{Nurhasanah}.
+
+Smart system in virtual museum will automatic adapting, record all user activity, perceptions and responses as part user experience before, during and after used virtual museum services. This feature is an important part to ensure and determine how the system retrieving closely information from data source to the visitor. Ratri stated that problem related to interactivity is a lack source of the visitors' learning experience. The teaching learning process conducted in museums generally covers listening, visualization, or visualization and listening area. One of the ways to handle the problems is to develop web based virtual museum because it will increase student’s motivation and could be accesses wherever and whenever as long as computers and internet connection are available \cite{Kayungyun}. The system will be designed to understand user, and meet with their expectation through data visualization in variety prospective.
+
+Each collection in museum institutions have structure and unstructured data source. This data sources increase day by day and become hard to maintain, therefore necessary to develop a system for extracting and processing data sources until become important information and useful for visitors as shown in Fig.~\cref{fig:virtualMuseumEngine}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{virtualMuseumEngine}
+	}
+	\caption{How virtual museum engine extracting structure and unstructured data source to become important and relevant information.}\label{fig:virtualMuseumEngine}
+\end{figure}
+
+In Fig.~\cref{fig:virtualMuseumEngine} show how virtual museum engine working to extracting and obtain relevant information from data sources. The activity to retrieving information usually called information retrieval (IR). IR is finding material (usually documents) of an unstructured nature (usually text) that satisfies an information need from within large collections (usually stored on computers) \cite{ManningRaghavanSchutze}.
+
+System will be designing to understand structure data in current database or semantically tagged of museum institutions where they used to store collections information, and system also support to manage unstructured data that have not define data-model or semantic. Result of extraction process are document collections which every document have unique numbering as identity (trough tokenizing process) before engine continue to the next step. For identifying language of the document we will prepare terms dictionary include stemming algorithm especially for Indonesian language (common language have been using as primary language of the resources that have been collected) to reducing term size. We will also preparing some algorithm for constructing static and dynamic index with compression in order to less disk space.
+
+The system create classification for routing, filtering and segmenting, while clustering will be useful in grouping documents, because of this feature collections information are displaying to the visitor will automatically be closely linked with other collections. User interaction to the system also need to be translated into query with optimization in order to precise result of information needed. The system will formulate source of information therefore visitors can understand the object collections by providing detailed information and relevant to the object. Thus, visitors not only enjoy the view of the object but rather get a complete understanding. System that has integrated help of the mnemonic to the user in understanding the activity within the meaning of the value contained in an object of collection in virtual museum.
+
+The benefit of applying method to retrieve information in museum for researchers are helping and assisting them by providing relevant information to the object of research in uncovering the meaning either before or after a visit to the stored object of collection in museum. Recent technology providing easy access to the source of information, therefore visitors can use a variety of media to access information residing in a virtual museum system as shown in Fig.~\cref{fig:visitorsAccess}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{visitorsAccess}
+	}
+	\caption{Visitor accessing source of information through variety of media which meet their characteristics, behaviours and desires.}\label{fig:visitorsAccess}
+\end{figure}
+
+In Fig.~\cref{fig:visitorsAccess} virtual museum as a complex system delivering an information to the user to answer necessary services for internal and external uses. In our investigation, virtual museum should know, determining, providing information based on visitors characteristics, behaviours and desires. Retrieving information for each collection and combining with user characteristics is need big resources, therefore we want to combine some algorithms in determining which one the best algorithm to solve the problem. This engine of virtual museum also could be uses as complement of teaching and learning onsite or through the distance where are visitor really know what they need to learn based on the materials and sources of collection information.
+
+Task to provide information access will be handling by engine as a core system inside virtual museum. This engine have two tasks, first task is processing old to recently data sources in museum institutions as shown in Fig.~\cref{fig:virtualMuseumEngine}, and the second is handling users direct request to the information of collection itself, processing and delivering information need based on user characteristics, and acting as a real-time guidance as shown in Fig.~\cref{fig:virtualMuseumCanada}. The virtual museum system not only processing data sources to become important information, but also attracting visitors to the interesting places and give the right information of collections. In this case we assume that right information is not enough, therefore system need to process once more time the information to become closest information for the visitors.
+
+\subsubsection{Conclusion and Future Work}
+
+In this paper, we have investigated Museum of Geology, National Museum in Indonesia, Hermitage Museum in Russia, and for balancing we also observe online resources provided by Louvre Museum in France and Virtual Museum of Canada. Our result is a design of virtual museum engine which can obtain relevant information based on visitor characteristics, behaviours and desires through variety of media.
+
+We intend to continue this work and develop a method for complements: the next generation of museum, cyber or virtual museum in the world. We also planning to improve this research to become a smart system which can be used in various areas for analyzing, processing, retrieving and delivering information.
 
 \subsection{Modification biterm topic model input feature for detecting topic in thematic virtual museums}\label{subsec:ch4/sec2/sub5}
 
