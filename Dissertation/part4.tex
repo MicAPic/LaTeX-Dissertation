@@ -280,6 +280,116 @@ In this paper showed a design and modification of the inverted index experimenta
 
 \subsection{Design Muntoi web-based framework and search engine analytics for thematic virtual museums}\label{subsec:ch4/sec2/sub3}
 
+\paragraph{Introduction.} The future development of virtual museum focused on the exhibition of the collections which contained in databases of museum institutions, based on the information from this collections, curators can design virtual exhibition, environment, game, and simulation in 3D, panoramic 360 degree and also it will help them to expand access to the collections through sophisticated platform.
+
+To realize this kind of idea, we are providing attractive, effective, and interactive user interface, which giving the user more experiences and having fun when they accessing the system. The currently platform which the most widely used and easily accessible by the user is website. Therefore it is necessary to design a framework that can serve needs of the user, low-cost and aligned with the concept of thematic virtual museums.
+
+The design is adopting the concept of Model-View-Controller (MVC) which widely used in the web-based framework where it can simplify developer to create a structured application, making application maintainable, extensible, easy to reuse code (efficient), and will be helping developer to build a program very fast. This framework will ensure consistency, separating logic and presentation layer. In addition the program also will be designed to be closely linked with the role of search engine analytics as a core program of thematic virtual museums.
+
+\paragraph{Research Objective.} The purpose of this research paper is to inform our progress on development of a web framework based on Go language to provide detail museum information, managing museum collections information, and design a concept of thematic virtual museum for attracting more visitors and design search engine analytics to become a core of the future development of virtual museums.
+
+\paragraph{Web Framework.} Web is the most powerful platform to handle time, distance and space limitation in physical museum institutions. Based on recent web technology, we have been designed web pages more responsive, interactive and dynamic.
+
+Web framework is designed to develop dynamic website which have a good structure, providing common library, URL mapping, session and security again attacker, database manipulation, template to generating textual output, light- weight, and often providing concept Model-View-Controller (MVC). It is designed to make developer easier and faster for creating a website especially when they want to create scalable, maintainable and sustainable website.
+
+Thematic virtual museums system has been developing based on Go Language web programming because we are pay for attention to the performance. A language which suitable for modern computing infrastructure, light on the page, good on networking and multiprocessing. Go aims to combine the safety and performance of a statically typed compiled language with the expressiveness and convenience of a dynamically typed interpreted language. It also aims to be suitable for modern systems programming \cite{Pike}.
+
+The application has been using non-relational databases MongoDB for managing and maintaining collections information. This web framework, we call it \textit{Muntoi Framework (MuntoiFr}). The structure of \textit{MuntoiFr} as shown in Fig~\cref{fig:muntoiWebFramework}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{muntoiWebFramework}
+	}
+	\caption{Structure of Muntoi Web Framework based on Model-View-Controller concept.}\label{fig:muntoiWebFramework}
+\end{figure}
+
+Server of virtual museum by default running on port 8080 which defined by developer inside main program \textit{(the source-code inside a file: Muntoi.go)}, this program will be handling http connections from client trough \textit{ListenAndServe} function that has provided by Go Language in the http package. We have created a routing for managing each request on the server by accessing web page, the routing table must be registered first by developer, it is intend to validate http request, matching uniform resource locator (URL), to ensure that requested-pages already defined on the server-side, and making request more safe and secure.
+
+The controller is a specific function which responsible for scripting, organizing program code, logic, and then wrap the result to presentation layer. It is allow the program connecting and interacting to \textit{Model} that provide mapping persistence data layer. In controller we are parsing files as templates (HTML, CSS, JavaScript, etc.) to be rendered in View layer as output response, which visitors can interact to the system.
+
+\textit{Model} is a mapping for data especially to handle information in our databases. In \textit{MuntoiFr} we are using MongoDB as main databases. MongoDB represents JSON documents in binary-encoded format called Binary JSON (BSON) behind the scenes. BSON extends the JSON model to provide additional data types and to be efficient for encoding and decoding within different languages, BSON implementation is lightweight, fast, highly traversable, and supports embedding objects and arrays within other objects and arrays \cite{JSONBSON}.
+
+In general purpose \textit{MuntoiFr} is providing a script \textit{Configuration}: to define variables as initial values before the program will run on the server, \textit{Session}: to store temporary information on the server-side during a period of time which could be used across multiple pages, this feature always used for user authentication and validation, and \textit{Utils}: as a tool that contains several useful functions to perform certain in specific operations. \textit{MuntoiFr} have designed dynamically for model persistence therefore latter on it would be porting to another databases software without changing the structure of this framework.
+
+\paragraph{Design.} This system was developed using the concept of thematic virtual museums that one of its functions is connecting the museum collections information which interrelated each other. It is intended to help visitors to find something interesting and unique as they wish.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1]{designAdminPage}
+	}
+	\caption{Design administration page on the virtual museum web-based framework.}\label{fig:designAdminPage}
+\end{figure}
+
+Visitors are expected can appreciate the meaning and value of the collection that have been displayed with the help of this thematic virtual museum. The program could motivating and make visitors more comfortable and focus in learning, especially for students and researchers because the system providing information that related to their criteria and desires. This is as complement for reaching the future of museum to provide a personalized learning environment to support learning process \cite{Anggai}.
+
+In order to manage museum institutions and collections information, we have created user authentication privileges as super-admin and admin for each museum institutions. User management page for assign access to the specific museum institution as shown in Fig.~\cref{fig:userAdminPage}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1]{userAdminPage}
+	}
+	\caption{User administration to assign privileges for specific institution on the virtual museum web-based framework.}\label{fig:userAdminPage}
+\end{figure}
+
+\textit{Super admin} rule can create, edit and remove list of museum institutions, collections and users. The museum administrator which have assigned can add museum collections, full with specific information on the form \textit{Register a Collection} such as name, collector, places found, date and period.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1]{museumForm}
+	}
+	\caption{Registration of the museum collections form.}\label{fig:museumForm}
+\end{figure}
+
+On the form \textit{Additional Information} contains: dimensions, weight, material, condition, total collection, date recorded which automatic filled at the present and description field for the information which still not covered yet in the previous fields. It also could be added another fields or specific form to enrich information which aligned with structure in database of MongoDB.
+
+The thematic virtual museums programs focused or depend on information of each collections which are given or provided by several museum institutions.
+
+As long as they know something about the category of objects and thus about the structure of the display, then a few glances may suffice to check off a few points, to stimulate thought, to supplement knowledge and more important, it provides information that has not been filtered out through these traditional methods \cite{Schweibenz}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1]{additionalInfoForm}
+	}
+	\caption{Additional information form.}\label{fig:additionalInfoForm}
+\end{figure}
+
+Collections which contained in the system are automatically processed into a full information, inter-related each other and could be disseminating to all over the world through variety of media. This method will help for reducing cost of publication at museum institutions.
+
+Nowadays sustainability become trending topic in Indonesian museums, which transforming or changing form traditional to modern. One of the focus discussion is the content. Content is very determining the existence of virtual museum, without good packaging content then the visitors will not be interesting to visit into the system. Complex information divided into small parts or synthesised. We cannot loose time in standing in front of an object, for example, for a long period. Museums need to communicate and to attract more visitors. The idea of a museum, whose goal is just the preservation or study of its collection, is no longer feasible \cite{Pescarin}.
+
+In this system, we are providing comment from the visitor perspective to enrich base information, because recent technology allowing non museum professionals are now being invited to create their own input into museum collections and exhibitions. This method is known as user-generated content (UGC) \cite{HellinHobbs}.
+
+In the future development process, thematic virtual museum will be built on two sides they are from curator and visitor side. Curator will be able to provide or display a visualization of interactive contents and exhibitions with the help of analytics software that will be integrated in this framework.
+
+As our work in development of Virtual Museum in Indonesia as instrumental for supporting the achievement of the museum functions as a whole and using social media to campaign collections, broadcast contents based on their location, communicating with visitor, attract and influence society, exchange information and waiting for their feedback from user perspective to improve public services \cite{AnggaiBlekanovSergeev2014}, we are designing search engine analytics for thematic virtual museum as show in Fig.~\cref{fig:searchEngineAnalytics}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{searchEngineAnalytics}
+	}
+	\caption{Search Engine Analytics as a core program based on the concept of Thematic Virtual Museums.}\label{fig:searchEngineAnalytics}
+\end{figure}
+
+Thematic virtual museum will be providing Data Access Layer (DAL) or Application Programming Interface (API) for integrating and accessing data sources in museum institutions. This engine working to extracting and obtain relevant information from data sources, designing to understand structure data in current database or semantically tagged of museum institutions where they used to store collections information, and system also support to manage unstructured data that have not define data-model or semantic \cite{AnggaiBlekanovSergeev2014}. We are using indexing modules in order to process data or information, and some of them will be stored into the general VM-Databases as a base of information. DAL also will be serving an access on \textit{FrontEnd} in which User Interface can leading early query to Search Engine Analytics.
+
+Parser manager will be used to parsing all data resources from museum institutions and return an output into structured form. In this early stages, data or information can be classified before this information will be delivering to VM-Databases or indexing module. Parser manager have to know protocol or standard for data integration for grabbing sources information inside museum institutions.
+
+Search Engine Analytics task is responsible to find themes of the museum exhibition, and a unique collection to be displayed, based on the information inside the museum institutions which intersect with visitor characteristics, behaviours and desires. The concept of this analytics also designed to find possibility to build thematic exhibitions from permanent collections, following a narrative approach to enhance visitor experience and knowledge \cite{Pescarin}.
+
+Analytics Engine will be designed to processing and simplify the information before delivering it to the specific visitor. This engine also will help for campaign collection, not only display most necessary information but also provide better interrelation between the museum collections at the different institutions. We believe that in the museum institutions especially in Indonesia have many similarities information of the each object collections which if we treated properly using the analytic engine as a tool, it will be leading curator and researcher to a new history that has not been revealed yet.
+
+Smart system in the application of thematic virtual museum will automatic adapting, recording all user activity, perceptions and responses as part user experience before, during and after they used the virtual museum services. This feature is an important part to ensure and determine how the system can formulate in order to retrieving closely information from data source,and generating best-result to the visitors. It is leading to develop a system for extracting and processing data sources until become important information and useful for visitors \cite{AnggaiBlekanovSergeev2014}.
+
+Our approach will focus on displaying closest information to the visitor trough real map navigation inside the museum institutions, timeline of the collections itself and another one as Tilman et al. approach is the content itself to build a path. Both approaches have in common, that the user can stroll digitally to encounter unexpected information and users can stroll in the exhibit rooms freely because the information units can be combined in any constellation possible \cite{DeuschelHeussHumm}.
+
+The Search Engine Analytics with thematic approach will be designing to provide and construct the relevant information in order to displaying content in 3D model to become more interactive. The interactive 3D model enables the user to interact with the object, turning it around and exploring its details. This is also not possible in the physical museum. Rizvic stete that the story was the main distinguishing factor and its existence motivated users to visit more exhibits in virtual museum therefore the environments will be implemented as pre-rendered images with hotspots, instead of real time 3D environments \cite{Rizvic}.
+
+Through thematic virtual museums system, some information topics/theme which have been sorted and formulated by curator can be used as exhibition. In general exhibitions in virtual museum for attracting visitor will be presented in 3D environments which can have a stronger cognitive impact, as they give learners the feeling of being in the simulated reality, thus improving the understanding and memorization of the information \cite{GheorghiuStefan}. However, not all objects in real museum can be presenting in 3D model, it is depend on the form and default information attached to the object itself.
+
+\paragraph{Conclusion and Future Work.} In this paper, we have informed our progress about development web-based framework using Go Language for thematic virtual museums and concept and design of Search Engine Analytics as a core of this system to provide closest information to the visitors.
+
+In future work, we intend to continue this research and will develop Search Engine Analytics based on the approach of thematic virtual museum which can be used to process data or information inside museum institutions.
+
 \subsection{Management and information processing at virtual museum}\label{subsec:ch4/sec2/sub4}
 
 \subsection{Modification biterm topic model input feature for detecting topic in thematic virtual museums}\label{subsec:ch4/sec2/sub5}
