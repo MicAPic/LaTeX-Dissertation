@@ -44,7 +44,7 @@ In our case we have developed a system to access MongoDB database server using M
 	\caption{TVM database schema for document collections.}%
 	\label{tab:tvmDbSchema}% label всегда желательно идти после caption
 	\renewcommand{\arraystretch}{1.6}%% Увеличение расстояния между рядами, для улучшения восприятия.
-		\begin{adjustbox}{width=0.9\textwidth}
+		\begin{adjustbox}{width=0.8\textwidth}
 		\small
 			\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C@{}}% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
 			\toprule     %%% верхняя линейка
@@ -129,13 +129,160 @@ The second experiment, we are using query term at a time (TAAT), where each term
 	\centerfloat{
 		\includegraphics[scale=1]{taatQuery}
 	}
-	\caption{TAAT query requests from front-end to back-end server}\label{fig:taatQuery}
+	\caption{TAAT query requests from front-end to back-end server.}\label{fig:taatQuery}
 \end{figure}
 
 The first method is only gives docIds list rather than give a full information, therefore there is no request needed to database or index payload, beside this docIds list can be used as caching for top-K docIds ranking in order to reduce computation time in back-end server. The cache key is docId of recent document which is using as query request, and the value is containing array set of documents identification. The second and third methods give us a significant result, where our method have provided an access to collaborate between TVM inverted index and forward index by given embedded information as payload. Our experiments shown that the methods have been proposed can reduced time to access a detail information of the collection rather than given many direct queries to database system.
 
 \paragraph{9. Conclusion}. In this work we have constructed data access service, modified forward and inverted index, and design special microservice architecture for TVM to provide relevant information for the virtual museums visitors. There are several experiments we have conducted, and shown our methodology give significant results when exchanged an information and collaborated between TVM forward and inverted index, query request, process and response through microservices give high performance output. Dynamic or flexible payload in TVM indices structure can be used for multipurpose indexing method in the development of modern information retrieval.
 
+\subsection{Construction inverted index for dynamic collections visualization in thematic virtual museums system}\label{subsec:ch4/sec2/sub2}
+
+\subsubsection{Introduction}
+
+hematic virtual museum system main goal is providing more relevant information based on user characteristic, behavior and desire. Thematic exhibition as main unique feature is very considering on users’ whole activities. Thematic concept can increase user experience, deep knowledge, discovery new related content, explore unexplored, and most important thing is not disturb users by providing irrelevant information.
+
+Barry and Maria define the creation of new knowledge, transformative and self-directed experiences, engagement with the full diversity of visitors, and transparency as the source of a viewpoint of the exhibition as museum specific evaluation criteria. Museum exhibition is not a book on the wall rather than leading visitors to new attitudes, values and ideas even in very different cultural backgrounds or religious beliefs \cite{LordPiacente}.
+
+Interpretation of tangible and intangible cultural and natural heritage can be spread in various recent devices of information and communication technology to the end-users. The system initiative to serve users by providing accurate museum collections information which can be delivered through desktop, web or mobile application in real time. The system can help curator or museum administrator for research, clarify, grouping, visualizing and design thematic event exhibition in some cases.
+
+John H Falk writes that most museum visitors mentioned that visitor go to museums in their free time in order to have fun and enjoy themselves or to see new interesting things in a relaxing and aesthetically pleasing setting \cite{Falk}.
+
+The system with interactive information in the thematic exhibition which has been processing and delivering to the user will be leading to the better understanding by traveling in similar fields i.e. art, archeology, artefact and culture value. Bridging entities relationship by weighting and combining it in vector space also a part of this research.
+
+In order to accomplish those tasks, this research has been performed and constructed thematic virtual museums inverted index to gain fastest retrieval document collections.
+
+\subsection{Indexing System}
+
+Inverted index usually known as inverted file is a data structure to store document-term pair which widely used in information retrieval field. Christopher D. Manning define Information retrieval (IR) in academic field study as a technique to find material (usually documents) of an unstructured nature (usually text) that satisfies an information need from within large collections (usually stored on computers) \cite{ManningRaghavanSchutze}. Inverted index often used to process many data form, i.e. structure, semi- structure and unstructured.
+
+Previously front-end interface has been created and it can manage, grant and revoke data access from and to the system using data access layer. There are 105 museums with total 24.608 collections from Ministry of Education and Culture, The Republic of Indonesia. Each collection in museum institutions have structure and unstructured data source. This data sources increase day by day depend on museum administrator/curator which managing every museum institution. Those data become hard to maintain just by using the recent technology of database system, therefore it is necessary to develop a system for extracting and processing data sources until become important information and useful for visitors \cite{AnggaiBlekanovSergeev2015}.
+
+The actual concern for managing big collections in museum institutions are gaining fast searching relevant information document collections in thematic virtual museums system, therefore this work has constructed an inverted index which aligned with thematic virtual museums information need \cite{AnggaiBlekanovSergeev2014}.
+
+\paragraph{A. Forward Index}
+Forward index task usually using document-term, the structure is very helpful for retrieving a set of information as a payload in order to get fast performance related to virtual museum item collections. The context or information as payload in this index automatically will be processing the documents after data access layer crawler service has finished the job schedule.
+
+\paragraph{B. Inverted Index}
+An inverted index is a data structure that maps a word, or atomic search item, to the set of documents, or set of indexed units, that contain that word -- its postings. Operational IR also concerns on block update speed, access speed, index size, dynamics and scalability as mentioned in \cite{CuttingPedersen}. The index data structure contains a pair of term-document or inverted list for each term stores a list of the documents \(d\) \cite{MoffatZobel}.
+
+\subsubsection{Thematic Virtual Museum Index}
+
+The system is using special architecture and multi system indexing in virtual museum inverted index. This index can manage collections in many forms of data structured, semi structured or unstructured which have processed by a data access layer engine.
+
+There are several tasks to perform inverted index in this virtual museum system such as tokenizing, removing stop word, stemming and process to index structure.
+
+Museum index assigns unique Id for each document in the collections as document identifier (docId). Construction of dictionary term makes this system fast to search every cooccurrence document in the specific term as a key. In order to gain the best performance this index used the Hash table to store terms to perform \(O(1)\) lookup time according to \cite{CuttingPedersen}.
+
+\paragraph{A. Embedding, Loading, and Storing}
+Embedding some information as payload in inverted index data structure is one of the main concern related to the specific area in virtual museum, this information will be stored together with inverted-list. There are several techniques for compressing inverted lists \cite{ManningRaghavanSchutze,MoffatZobel}. The thematic virtual museum inverted index store data in file format which contain key-term and sorted \(\textit{docId}\) by using compressing technology Varint encoding \cite{LemireBoytsov} for reducing file size on the disk. This system using Solid-State Drive (SSD) for fast read/write file compared to Hard Disk.
+
+\paragraph{B. TF-IDF Weighting}
+Thematic virtual museum inverted index using Term Frequency (TF) and Inverse Document Frequency (IDF) \cite{ManningRaghavanSchutze} as base scoring method to determine important information in museum collections. The output of this statistical calculation will be sorted as ranking from highest to lowest.
+
+\paragraph{C. Vector Space Model (VSM)}
+Similarity measure is better than traditional TF-IDF, the cosine measure which each document is assigned a numeric score indicating similarity with the query, and then the documents that score the highest are displayed as answers \cite{MoffatZobel}. Salton and McGill define cosine vector similarity formula between query and document as shown \cite{SaltonBuckley}.
+\[
+\textit{cosine}(q, d) = \frac{\sum_{k=1}^{t} w_{qk} \cdot w_{dk}}{\sqrt{\sum_{k=1}^{t} w_{qk} \cdot \sum_{k=1}^{t} w_{dk}}}
+\]
+
+The thematic virtual museum inverted index library implements this cosine similarity method as a part of modules as a complement for the fast searching document by comparing the similarity of users’ query.
+
+\paragraph{D. Index Adaptive Module}
+The system engine design which has been developed contain several independent program modules to perform the tasks, this index can be integrated or serve another complex adaptive ranking retrieval system without modifying virtual museum inverted index core.
+
+Modification of standard inverted index structure and adding some functions allowing this system to process information need more complex by combining fastest term-document pair for building another retrieval structure.
+
+\subsubsection{Experiment and Results}
+In order for testing this virtual museum inverted index, the engine has crawled museum information from “Collection Museum Registration System”, Directorate Cultural Heritage Preservation and Museum, Ministry of Education and Culture, The Republic of Indonesia, which contain 24.608 items.
+
+\begin{table} [htbp]%
+	\centering
+	\caption{TVM database schema for document collections.}%
+	\label{tab:documentCollections}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.6}%% Увеличение расстояния между рядами, для улучшения восприятия.
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C@{}}% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			No & Type & Item \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			1 &  Numismatic / Heraldic &  2746 \\ 
+			2 & Ethnography & 10107 \\
+			3 & Ceramics &  4108 \\ 
+			4 & Fine Art / Handicraft & 1516 \\ 
+			5 & Philology & 2902 \\
+			6 & History & 1394 \\
+			7 & Archeology & 1153\\ 
+			8 & Technology / Modern  & 682 \\
+			 \multicolumn{2}{c}{\makecell{Total}} & 24608 \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+\end{table}
+
+Those document collections which have been obtained then stored in MongoDB database. The next step, the information is processed and assign unique \(\textit{docId}\) documents into inverted index, the result as shown in Fig.~\cref{fig:timeProcessingInvertedIndex}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1]{timeProcessingInvertedIndex}
+	}
+	\caption{Time processing document collections into inverted index.}\label{fig:timeProcessingInvertedIndex}
+\end{figure}
+
+Processing documents and input into virtual museum inverted index for 24.608 collections require processing time approximately 2.29 seconds by using Intel Xeon Processor 2620v4, memory DDR4 32Gb, and Kingston Savage SSD 256Gb. This index intends to be used for serving all user’s activities in front end server. Further, this inverted index has tested by using query document to document as this research main goal to approximate thematic collections related to user’s activity and document collections.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1]{timeProcessingDocumentQuery}
+	}
+	\caption{Elapsed time processing document to document query.}\label{fig:timeProcessingDocumentQuery}
+\end{figure}
+
+The result in Fig.~\cref{fig:timeProcessingDocumentQuery}, show that given a query “a document to a document” require time less than one microsecond per query, this is aligned with the main goal to design virtual museum inverted index data structure to serve more fast and relevant.
+
+\subsubsection{Visulization}
+\paragraph{A. Collections in Map}
+Information visualization is one of concern in thematic exhibition in order to deliver and serve high quality experience to the visitors.
+Design map plan and leveling will help visitors to classify information which has previously received from information traveling visualization. Let visitor move to the area inside the map which could be formed to the internal or external exhibition with there are no predefine items have assigned. Providing more space as a proportion to give object transformation is considerable as part of esthetics. The room design maybe contains object on the floor, wall or in some neared-location or can be reached by users as shown in Fig.~\cref{fig:designExplorationRoom}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1]{designExplorationRoom}
+	}
+	\caption{Design Exploration Room for Collection Exhibition.}\label{fig:designExplorationRoom}
+\end{figure}
+
+Give the floor planning with good navigation will make users easier to use this system. In virtual it can be providing area by grouping the object, even this particular area didn’t exist on the real museum institution.
+
+\paragraph{B. Dynamic Collection Visualization}
+When the users visiting a virtual museum, the system should determine what is the information trying to convey? what the motivated topics which make them enjoy and satisfied? In this situation, thematic virtual museum trying to create the system to maintain interactive information. The collections will appear after automatic user query have been processed. The exhibition which has been displayed should be drawn users’ attention and make more attractive by triggering with relevant collections visualization.
+
+The degree of similarity will be leading user from room to room or an area to area of exhibition as shown in Fig.~\cref{fig:dynamicCollectionsArea}. It can be pre-labeling data as a temporary or a permanent exhibition for each object in spread area. The system will be responsible for redisplaying contents by marking user traversed area.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1]{dynamicCollectionsArea}
+	}
+	\caption{Dynamic Collections Area.}\label{fig:dynamicCollectionsArea}
+\end{figure}
+
+Creating specific functional area design for scheduled thematic event exhibition is recommended to perform flexible objects which have determined include newly arrived collection in some museums. Along the process, user respond and time spent in the room or area where collections appeared must be recorded as a feedback parameter. User also can be projecting some group of collections base on a manual query to the system with or without their base information.
+
+The dynamic collection will collect visitor visit experiences in order to be processed near real time or next time when visitors will come back again on this system. Trying to understand the visitors to far and more complex by defining some variables is very useful in background inverted index process. Quantitative measures such as demographics provide too little information about visitors in relation to museums to be a useful variable for describing and understanding the museum visitor experience \cite{Falk}.
+
+\paragraph{C. User Interaction}
+User interaction always recorded by the system on the fly and this information in near real-time will be automatically processed in the background. The result of those process will generate more accurate information related to visitor characteristics, behavior and desire. Defining embedded information into inverted index is helpful for delivering more accurate exhibitions in the specific fields.
+
+When users are walking around the space, the system provides a feature to control some object which has an ability to be controlled, this approach is mean to increase user sensitivity and reaction to gain new knowledge or discovery. Design direct or indirect appearance of the objects can be projected over a period of time. Understanding user needs and wants is critical for exhibition space to be not only attractive and effective for display but also accessible \cite{LordPiacente}.
+
+Working to design ideal interface to the end-user is very crucial things, affected visitor will return another time if visitors satisfied using the application or will be leaving because some of poor user interface design, those all approximation for design user interface visualization.
+
+\subsubsection{Conclusion and Future Work}
+In this paper showed a design and modification of the inverted index experimental result for thematic virtual museums system and a sample of exhibition visualization to get more precision by embedding method. This research will continue to implement this index from contextual to concept by using latent semantic indexing (LSI) projection in future work and improving user interface for more attractive.
+
+\subsection{Design Muntoi web-based framework and search engine analytics for thematic virtual museums}\label{subsec:ch4/sec2/sub3}
+
+\subsection{Management and information processing at virtual museum}\label{subsec:ch4/sec2/sub4}
+
+\subsection{Modification biterm topic model input feature for detecting topic in thematic virtual museums}\label{subsec:ch4/sec2/sub5}
 
 \section{Оптимальное конструирование сборщика (цепочка роботов)}\label{sec:ch4/sect3}
 
