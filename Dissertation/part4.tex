@@ -530,6 +530,169 @@ We intend to continue this work and develop a method for complements: the next g
 
 \subsection{Modification biterm topic model input feature for detecting topic in thematic virtual museums}\label{subsec:ch4/sec2/sub5}
 
+\paragraph{Introduction.} Recent year topic model is becoming a popular method to identify and organise hidden topic in document collections. The topic model can discover and determine latent topic from a large number of unstructured texts in a corpus automatically using bag of words techniques. In the virtual museum, a curator or museum administrator are analysing and organising numerous online exhibitions of museum object collections to communicate their existence, contextual, value, and many reasons behind the objects. However, they are relying on label information and metadata from the structured database for providing online or thematic exhibitions, and some of the museum institutions do not have thematic exhibitions \cite{Anggai,Foo,Champion,Palombini}.
+
+In development latent information and discovering a topic from a document corpus, there are several techniques have been proposed such as latent semantic indexing (LSI) \cite{DeerwesterDumaisFurnas}, which offering dimensionality reduction using singular value decomposition and extended calculation from traditional vector space model (VSM). LSI has solved problems about a word or phrase that means exactly or nearly the same as another word or phrase in the same language (synonym) and the coexistence of many possible meanings for a word or phrase (polysemy). LSI also produces a representation of the underlying “latent” semantic structure of the information. Retrieving information in LSI overcomes some of the problems of keyword matching by retrieval based on the higher level semantic structure rather than just the surface level word choice \cite{Foltz}.
+
+In 1998, Hofmann introduced unsupervised learning technique called probabilistic latent semantic indexing (PLSI) that had a solid statistical foundation. Since it based on the likelihood principle, defines a proper generative model of the data, identifying and distinguishing between different contexts of word usage without recourse to a dictionary or thesaurus \cite{Hofmann1999,Hofmann2001} it assumes that in the document contain topics mixtures. In 2003, David Blei et al., proposed latent Dirichlet allocation (LDA) \cite{BleiNgJordan}, which used the generative probabilistic model of a corpus and represented a mixture of topics in normal document texts. However, due to poor conventional topic models such as PLSI and LDA, Yan et al., proposed generative biterm topic model (BTM) \cite{YanGuoLan,ChengYanLan} to overcome short texts in a document, and this method outperform LDA even on normal texts.
+
+In this research work, we conduct experiments to exploit BTM feature parameter by modifying input feature of third step BTM generative process in order to improve topic quality and discover themes from virtual museum document collections automatically.
+
+\paragraph{Biterm Topic Model.} The BTM basic concept was generating biterm or word-pair from the whole corpus, where the word-pair co-occurrence pattern was an unordering from the fixed sliding window. The generated co-occurrence word from document sliding window and built a set of word-pair of the whole corpus made BTM enhanced topic learning and solved the problem of the sparse word at the document level. The data generation process under BTM had the result the corpus consists of a mixture of topics, and each biterm drew from a specific topic \cite{YanGuoLan,ChengYanLan}. The graphical BTM plate representation as shown in Fig.~\cref{fig:graphicalBTM} \cite{YanGuoLan}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{graphicalBTM}
+	}
+	\caption{Graphical BTM plate representation.}\label{fig:graphicalBTM}
+\end{figure}
+
+In generating biterm from a document corpus, BTM directly removes stop word and then generate biterm based on the initialised fixed-size sliding window. This probability method drew of couple words or biterm to a specific topic. The steps of BTM generative process introduced in \cite{YanGuoLan,ChengYanLan} can be written as the following:
+\begin{itemize}
+	\item for each topic \(z\):
+	\begin{enumerate}
+		\item draw a topic-specific word distribution \(\Phi_z \sim \textit{Dir}(\beta)\);
+	\end{enumerate}
+	\item draw a topic proportion vector \(\theta \sim \textit{Dir}(\alpha)\) for the whole collection;
+	\item  for each biterm \(b\) in set \(B\):
+	\begin{enumerate}
+		\item draw a topic assignment \(z \sim \textit{Multi}(\theta)\),
+		\item draw two words: \(w_i, w_j \ sim \textit{Multi}(\Phi_z)\).
+	\end{enumerate}
+\end{itemize}
+
+In BTM the initial number topic \(z\) contained the sum of topic-specific word distribution from the whole collection. It is indicating that for each biterm in set \(B\) is assign random topic as the initial state. The detail extraction word-pairs from corpus as the following equation \cite{XuLiuWu}:
+\begin{equation}
+	\label{eqn:17}
+	\textit{GenBiterm}(\textit{words}) = \sum_{i=1}^{N-1} \sum_{j = 1}^{N}\textit{biterm}(w_i, w_j).
+\end{equation}
+
+In the process of extraction as in equation~\cref{eqn:17} is necessary to determine the size of sliding window, and the word-pairs is given a unique identifier to prevent duplicate with assumption generated word-pairs \(\textit{biterm}(w_i,w_j)\) is equal to \(\textit{biterm}(w_j,w_i)\). The output from this process is set \(\textit{biterm } B\), which directly model the word co-occurrences in the whole corpus to make full use of the global information \cite{WangZhangLiu}.
+
+In the development of BTM, Yen et al., were using collapsed Gibbs Sampling \cite{Griffiths} to conjugate out priors, where have contained three latent variables \(z\), \(\Phi \), and \(\theta \). The latent variables can be integrated out using \(\alpha\) and \(\beta\). They were calculating \(P(z \vert z_{\neg b}, B, \alpha, \beta)\) for each \(z_{\neg b}\), where \(z_{\neg b}\) denotes the topic assignments for all biterms except \(b, B\) is the global biterm set. The joint probability of all the data was using conditional probability as the such equation \cite{YanGuoLan,HeXuLi}:
+\begin{equation}
+	\label{eqn:18}
+	P(z \mid z_{\neg b}, B, \alpha, \beta) \varpropto (n_z + \alpha) \frac{(n_{w_i \vert z} + \beta)(n_{w_j \vert z} + \beta)}{(\sum_{w} n_{w_i \vert z} + M\beta)^2}
+\end{equation}
+where \(n_z\) is the number of times of the biterm \(b\) assigned to the topic \(z\), and \(n_{w \vert z}\) is the number of times of the word \(w\) assigned to the topic \(z\). In \cite{YanGuoLan,ChengYanLan} have determined that when the biterm has assigned to a topic, both of \(w_i\) and \(w_j\) actually assigned to the same topic.
+
+For each biterm in set \(B\) iteration always calculate and update the biterm information by assigning to a specific topic using equation~\cref{eqn:18}. After period times of iteration has been performed, it will be easily estimated topic-word distribution \(\Phi\) and global-topic distribution \(\theta\) using the equations \cite{YanGuoLan}
+\begin{equation}
+	\label{eqn:19}
+	\Phi_{w \vert z} = \frac{n_{w \vert z}  + \beta}{\sum_{w} n_{w \vert z} + M\beta}
+\end{equation}
+\begin{equation}
+	\label{eqn:20}
+	\theta_{z} = \frac{n_{z}  + \alpha}{\lvert B \rvert + K\alpha}.
+\end{equation}
+
+The output of topic-word distribution in equation~\cref{eqn:19} and global-topic distribution in equation~\cref{eqn:20} can be stored in a file or database in the table form, where the rows are all unique words in the entire documents collection or single row for global-topic; the columns are all topics of the collection.
+
+BTM can infer a topic in a document by using the equation
+\begin{equation}
+	\label{eqn:21}
+	P(z \vert d) = \sum_{b}P(z \vert d)P(b \vert d),
+\end{equation} here the \(P(z \vert d)\) can be calculated by using Bayes formula as follows:
+
+\begin{equation}
+	\label{eqn:22}
+	P(z \vert b) = \sum P(z \vert d) P(b \vert d) \frac{P(z) P(w_i \vert z) P(w_j \vert z)}{\sum_{z} P(z) P(w_i \vert z) P(w_j \vert z)}.
+\end{equation}
+
+In formula~\cref{eqn:22} \(P(z)\) is global topic proportion \(\theta_z\); \(P(w \vert z)\) is topic-word distribution \(\Phi_{i \vert z}\). To obtain probability \(P (b \vert d)\) as in equation~\cref{eqn:21}, the distribution of biterm in the document can be estimated by the following equation:
+\begin{equation}
+	\label{eqn:23}
+	P (b \vert d) = \frac{n_d(b)}{\sum_{b} n_d(b)},
+\end{equation} where \(n_d\) is the frequency of generated biterm \(b\) in document \(d\).
+
+In order to evaluate topic quality, Mimno et al. \cite{MimnoWallachTalley}, proposed topic coherence measure that corresponds well with human coherence judgments and makes it possible to identify specific semantic problems in topic models without human evaluations or external reference corpora as follows:
+\begin{equation}
+	\label{eqn:24}
+	C(t; V^{(t)}) = \sum_{m = 2}^{M} \sum_{l = 2}^{m - 1} \log{\frac{D(v_m^{(t)} v_l^{(t)}) + 1}{D(v_l^{(z)})}}
+\end{equation}
+
+In formula~\cref{eqn:24} \(D(v)\) is word document frequency type \(v\), \(D(v,v')\) is co-word document frequency type \(v\) and \(v'\). \(V^{(t)} = (v_1^{(t)} \dots v_M^{(t)})\) is the list top-\(M\) most probable word in each topic \(t\). Smoothing count value is one, in order to avoid zero number in logarithm calculation. This coherence measure is sometimes called UMass metric which is more intrinsic in nature, it attempts to confirm that the models learned data known to be in the corpus \cite{StevensKegelmeyerAndrzejewski}.
+
+\paragraph{Proposed BTM input feature.} The fundamental idea of BTM is that if two words co-occur more frequently, they are more likely to belong to the same topic \cite{ChengYanLan} with the assumption that generated word-pair of documents will be drawn independent from the topic. Starting from that assumption, we incorporate TVM indices function to calculate TF-IDF weighting score to adjust a feature for each biterm in set \(B\).
+
+As our concern on providing a list of document collections which thematically similar with given the word or document query, we pay attention on the third step of BTM generative process. This issue also has been revised in d-BTM \cite{XiaTangHussain} proposed by Xia et al., where they have focused on biterm discrimination \(w_i - w_j\). However, in our method, we prepare a biterm set \(B\), then assign biterm feature based on word-pairs \(w_i\) and \(w_j\). The weighting pair of \(w_i\) and \(w_j\) are using numerical statistic TF-IDF method \cite{ManningRaghavanSchutze,ZhangYoshidaTang} for measuring how important the word in the document, where term frequency is logarithm \((L)\), document frequency is inverse document frequency of term \((T)\) and normalisation is pivot unique \((U)\). The Logarithm-Term-Pivoted Unique \((LTU)\) combination of TF-IDF as follows:
+\begin{equation}
+	\label{eqn:25}
+	\text{TF} = 1 + \log{(tf_{t, d})},
+\end{equation}
+\begin{equation}
+	\label{eqn:26}
+	\text{IDF} = \log{(1 + N / df_b)},
+\end{equation}
+\begin{equation}
+	\label{eqn:27}
+	\text{Norm} = 1 / N_t,
+\end{equation}
+\begin{equation}
+	\label{eqn:28}
+	\text{TD-IDF} = \text{TF}.\text{IDF}.\text{Norm},
+\end{equation}
+here \(tf_{t,d}\) is a number of times a term appeared in global generated document sliding window, \(N\) is the total number biterm in set \(B\), \(df_b\) is a number of times biterm co- occurrence in global generated document sliding window, \(N_t\) is the number of unique terms in set \(B\). By taking advantage feature of the term and biterm co-occurrence from document sliding window, we adopt TF-IDF model calculation to formulate weighting score that will be used as a BTM input feature.
+
+\paragraph{Experiments and results.} The experiment carried out to evaluate input parameter feature in BTM that have been proposed using TF-IDF variance as in equations~\cref{eqn:25,eqn:26,eqn:27,eqn:28} and comparing the output with Standard BTM feature; we also perform topic labelling document cluster using our proposed feature parameter of BTM. In this experiment, we have used Intel Xeon Processor E5-2620 v4 (Broadwell) 2.1 GHz, memory DDR4 32 Gb, and hard disk Skyhawk Surveillance 2 Terabyte. The documents have used in this experiment based on thematic virtual museums (TVM) corpus that contained 29.362 collections \cite{AnggaiBlekanovSergeev2018}, that reduced to 23.485 in minimum two terms contained in a document.
+
+In order to compare Standard BTM with our proposed input feature, we were performing difference \(K\)-topics number, inferring all words which were containing in \(K\)-topics, and applying standard intrinsic UMass method for measuring topic coherence. We count average coherence score of Top-\(N\) words for each \(K\)-topics \cite{YanGuoLan}, the higher score is indicating better performance. In all cases, we defined \(a = 50/K\), \(b = 0.01\), and Top-\(N = 10\). The calculation result based on UMass coherence measure as shown in Table~\cref{tab:umassCalculationResults}.
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Calculation result based on UMass coherence measure.}%
+	\label{tab:umassCalculationResults}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C >{\zz}C >{\zz}C >{\zz}C  >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Iteration & Method & \(K = 10\) & \(K = 20\) & \(K = 50\) & \(K = 70\) & \(K = 100\)\\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			100 & Feature BTM  & -33.77 & -38.74 & -53.42 & -52.96 & -53.57 \\
+			& Standard BTM & -61.37 & -58.46 & -59.85 & -59.26 & -58.08 \\
+			200 & Feature BTM & -35.56 &  -39.06 & -52.18 & -52.62 & -53.84 \\
+			& Standard BTM & -61.93 & -59.56 & -52.18 & -58.56 & -58.53 \\
+			300 & Feature BTM & -36.64 & -39.72 & -52.10 & -52.40 & -53.92 \\
+			& Standard BTM & -60.66 & -57.70 & -59.87 & -58.34 & -59.35  \\
+			400 & Feature BTM & -35.82 & -39.90 & -51.87 & -52.34 & -54.04 \\
+			&  Standard BTM & -60.95 & -56.67 & -59.72 & -58.37 & -58.94  \\
+			500 & Feature BTM & -35.97 & -40.09 & -51.71 & -52.06 & -54.17  \\
+			& Standard BTM & -60.02 & -57.07 & -60.25 & -52.06 & -58.83 \\
+			1000 & Feature BTM & -35.68 & -40.15 & -51.95 & -52.06 & -54.74 \\
+			& Standard BTM &-60.97 & -58.25 & -60.22 & -60.22 & -60.22 \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+Table~\cref{tab:umassCalculationResults} shows the approximately average scores for each \(K\)-dimensional topic and number iterations of Standard BTM and Feature BTM, where the calculation of coherence score have performed each ten times iteration in order to get a more precise average score. One can be noticed that our proposed method gives significant improvement of topic quality with a \(t\)-test on \(p\)-value less than 0.001. The detail graphic visualisation of Table calculation result based on UMass coherence measure as shown in Fig.~\cref{fig:umassCalculationResults}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.6]{umassCalculationResults}
+	}
+	\legend{Iterations: \(a\) -- 100, \(b\) -- 200, \(c\) -- 300, \(d\) -- 400, \(e\) -- 500, \(f\) -- 1000.}
+	\caption{Calculation result based on UMass coherence measure.}\label{fig:umassCalculationResults}
+\end{figure}
+
+In Fig.~\cref{fig:umassCalculationResults}, the average coherence score presented for each \(K\)-dimensional topics in the single graph can be more clearly investigated, where the average gap coherence score between Standard BTM and our proposed method were small when the K-dimensional increased. This explained by the fact that at \(K\) number from 10 to 50, the method well identifies and underestimates the weight of biterms frequently used, which in the case of Standard BTM with such \(K\) fall into almost all topics.
+
+In viewing topic model as a method for dimensional reduction, we performed experiments to cluster the documents based on the TVM corpus and assign to a specific cluster label. The process of assigned a topic cluster to a document as follows. The first step, for each topic \(j (j \in K)\) infer \(N\) documents and for each document \(N_i\) the total probability of the all words occurrence of this document in each topic (or the overall relevance of the document to the topic) was calculated -- \(P_{ij}\). Second, we choose the highest probability score for each document max \(f\) \((P_{ij})\). Finally, each cluster \(j\) assigned only to those 
+
+In this experiment, we define number of topic \(K = 100\) with 1000 iterations for per- forming dimensional reduction by clustering TVM corpus based on a modification of BTM input feature, the cluster results based on UMass coherence measure as shown in Fig.~\cref{fig:umassClusterResults}.
+documents that have the highest relevance value.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.6]{umassClusterResults}
+	}
+	\caption{Cluster results based on UMass coherence measure.}\label{fig:umassClusterResults}
+\end{figure}
+
+Time for calculating input parameter weighting score was exemplarily 0.002 seconds, the total time for each update iteration was exemplarily 27.26 minutes, and the average was exemplarily 0.027 minutes, calculating and normalising \(\Phi\) and \(\theta\) was exemplarily 9.25 seconds, while total time for inferring document collections and assigning topic label was exemplarily 17.29 seconds. Based on these calculation, we can estimate the total time needed for calculating proposed input feature of BTM is approximately 27.75 minutes. As shown in Fig.~\cref{fig:umassClusterResults}, minimum cluster size of the TVM corpus after the Standard BTM applied was 34, maximum class size was 11.275 documents, while our proposed BTM input feature, the minimum cluster size was 39 with maximal class size was 2.421 documents. We found that our proposed method gives better number document proportion of clusters than the Standard BTM. By performing topic cluster, we have reduced query time operation for retrieving relevant information in the whole documents to local documents in a cluster which related to a given query document.
+
+\paragraph{Conclusion.} In this paper we have proposed to exploit BTM input feature parameter based on the modification of the third step of the generative process. Experimental results shown the advantage of efficiency by the modified Feature BTM model before the Standard BTM model. The thematic clustering technology of documents necessary for creation of thematic virtual museums has described. The authors performed a performance evaluation, that shown a slight loss of speed (less than 30 seconds), more effective used the Feature BTM for clustering the virtual museum collection than the Standard BTM model.
+
 \section{Оптимальное конструирование сборщика (цепочка роботов)}\label{sec:ch4/sect3}
 
 \section{Реализация программного комплекса}\label{sec:ch4/sect4}
