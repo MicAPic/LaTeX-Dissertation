@@ -119,6 +119,255 @@ Even with the cases of such different sizes, H3 is supported: thanks to the nega
 
 \section{Тематическое моделирование контента}\label{sec:ch5/sect2}
 
+\subsection{Topic modeling of conflict ad hoc discussions in social networks}\label{subsec:ch5/sec2/sub1}
+
+\subsubsection{Introduction}
+
+As a result of different media platforms achieving a steady user growth in a recent years more and more people begin to use different social networks as the main source of news on economical, political and social events. In particular, ad hoc discussions emerged which can be defined as a debate about a specific problem. In most cases such discussions appear in the case of controversial events and involve large number of participants.
+
+Presence of such user activity raises the problem of analyzing large volumes of this type of data which has become one of the most important problems in many data analysis tasks, including topic modeling. Topic modeling algorithm in this case is an algorithm that, given the number of topics and the list of user messages can output two distributions: topics over documents and of words over topics. Such algorithm can help in the understanding of different points of view and highlight the main arguments. This can be useful in many ways one of which is the case in which the number of documents is big and we want to know their general content without reading them all. Another use case is data prepossessing, reducing the dimensions of data to use in other analysis tasks such semantic analysis. However directly applying traditional topic models like LDA and PLSA to short texts can be problematic primarily due to the sparsity of data given the specificity of short texts. In this paper we are studying the usage of different models on a large scale data which can effectively infer hidden topics in big discussions taking these features into account.
+
+\subsubsection{Prior Work}
+
+Early studies of the problem of topic modeling on short texts mainly concerned the use of external knowledge to improve the representation of text data. For example, Phan and others \cite{HoriguchiPhanNguyen} used the modeling of those short texts based on the traditional topic model, the effectiveness of which was tested on a large-scale data set for the purpose of short texts classification. In these works, it is assumed that the use of data derived from long texts could help improving the model for short texts. However, these methods are effective only when the auxiliary data are closely related to the original data. In the case of texts, obtained from social networks this task is impossible due to most of user messages being self-contained. Another assumption is based on the use of different aggregation methods. In the case of data, obtained from the Twitter, user messages can be aggregated by authors, publication time and hashtags. The \cite{WrayLexingRishabh} shows that the best performing method is based on hashtag based aggregation, however it can’t be applied then the texts themselves are collected using a series of hashtags (which is one of better ways for collecting data on big events). Author based aggregation can also be unreliable since the majority of users will have very few messages on any given topic. In this paper we are focusing on models, relying on statistical information about the data.
+
+\subsubsection{Topic Models}
+
+\paragraph{LDA.} Latent Dirichlet Allocation is a three-level hierarchical Bayesian model in which each element of the collection is modeled as a finite distribution over the set of topics. Each topic, in turn, is modeled as an infinite mixture by the set of topic probabilities \cite{MichaelJohnDavidAndrew}.
+
+Lda assumes the following generative process:
+\begin{itemize}
+	\item Choose \(\theta_i \sim \textit{Dir}(\alpha)\)
+	\item Choose \(\phi_i \sim \textit{Dir}(\beta)\)
+	\item For every word position \(i, j\):
+	\begin{itemize}
+		\item Choose a topic \(z_{i, j} \sim \textit{Multinomial}(\theta_i)\)
+		\item Choose a word \(w_{i, j} \sim \textit{Multinomial}({\phi_z}_{i,j})\)
+	\end{itemize}
+\end{itemize}
+The model parameters \(\alpha\) and \(\beta\) are typically chosen sparse for better performance on short texts. In this paper, LDA is used as a baseline model, the effectiveness of which for standard texts has been proven both theoretically and in many experimental results.
+
+\paragraph{BTM.} Biterm Topic Model performs topic modeling task by modeling a set of biterms (unordered word pair cooccurring in a short context). The main idea is that if two words co-occur more frequently, they are more likely to belong to a same topic \cite{YanyanJiafengXueqi}.
+
+Btm assumes the following generative process:
+\begin{itemize}
+	\item Draw \(\theta_i \sim \textit{Dir}(\alpha)\)
+	\item For each topic \(k\):
+	\begin{itemize}
+		\item draw \(\phi_k \sim \textit{Multinomial}(\beta)\)
+	\end{itemize}
+	\item For each biterm \(b_i\):
+	\begin{itemize}
+		\item draw \(z_i \sim \textit{Multinomial}(\theta)\)
+		\item draw \(w_{i,1},w_{i,2} \sim \textit{Multinomial}({\phi_z}_i)\)
+	\end{itemize}
+\end{itemize}
+
+As BTM does not model documents explicitly, we must provide a way to infer the topics in a document, i.e., evaluating the topic posterior. Using the chain rule the following equation was obtained:
+\begin{equation}
+	\label{eqn:29}
+	P(z \mid b) = \sum P(z \mid b_i) P(b_i \mid d)
+\end{equation}
+
+Where \(P (z \mid b_i)\) can be obtained using via Bayes’ formula based on the parameters learned in BTM and \(P(b_i \mid d)\) can be calculated using empirical distribution of words in a document.
+
+\paragraph{WNTM.} Word Network Topic Model’s idea is based on the following observations. When the texts are short, the word-document space is very sparse, but the word-word space still contains a large number of non-zero elements. Since the topic distribution for each doc- ument can not be recognized accurately in short or unbalanced texts, instead WNTM uses the topic distribution for each word \cite{KeYuanJichang}. Therefore, WNTM studies the distribution by topics for words, rather than those for documents. Studying the topics of the word, rather than those of the document make WNTM less sensitive to the length of the document. In addition, a network of words can be built with any type of text, which makes the WNTM model simple and universal in real applications, unlike other models, such as the mixture of unigrams \cite{ThrunMitchellNigam} and BTM.
+
+The generative process of the model is in many respects similar to that of the LDA, but due to the use of a different distribution it has its own features:
+\begin{itemize}
+	\item For every latent word group \(z\) choose \(\phi \sim Dir(\beta)\)
+	\item Choose \(\vartheta_i \sim \textit{Dir}(\alpha)\) distribution of a latent word group for adjacent word list \(L_i\) for word \(w_i\)
+	\item For every word \(w_j \in L_i\):
+	\begin{itemize}
+		\item Choose a latent word group \(z_j \sim \vartheta_i\) 
+		\item Choose an adjacent word \(w_j \sim {\phi_z}_j\)
+	\end{itemize}
+\end{itemize}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{wntmGeneration}
+	}
+	\caption{Generation of word network for WNTM model \cite{KeYuanJichang}.}\label{fig:wntmGeneration}
+\end{figure}
+
+Similarly to BTM this model can’t be directly applied to get topic distributions over documents. To get the topics in the document, we assume that the proportions of the words generated by the document is equal to the proportions of the document topics, that is:
+\begin{equation}
+	\label{eqn:30}
+	P(z \mid d) = \sum P(z \mid w_i) P(w_i \mid d)
+\end{equation}
+Where \(P(z \mid w_i\)) equal \(\vartheta_{i,z}\), obtained in the generative process of WNTM and \(P(w_i \mid d)\) obtained as an empirical distribution of words in documents.
+
+\subsubsection{Experiment}
+
+The experiment was conducted to evaluate the quality of these three models, on three sets of ad hoc discussions. The following coherence measures were used to test the effectiveness of each model:
+
+\begin{itemize}
+	\item UMass \cite{MimnoWallachTalley} measures how often a common word of each topic is in average a good predictor for a less common word.
+	\item NPMI \cite{StevesonAletras} is a normalized version of pointwise mutual information.
+\end{itemize}
+
+\paragraph{Data sets.} In this work models were tested on data, collected on three ad hoc discussions from Twitter social network: Riots in Biryulevo (Russia), October 2013 \cite{BodrunovaLitvinenkoBlekanov}, Ferguson unrest (USA), August 2014 \cite{SmoliarovaBlekanovBodrunova} Charlie Hebdo shooting (France), January 2015 \cite{SmoliarovaBlekanovLitvinenko}. The data was crawled based on hashtags in user messages.
+
+\textit{Byrulevo. Riots in Biryulevo}
+\begin{itemize}
+	\item Total number of user messages: 10215
+	\item Total number of users participated in the discussion: 11429
+	\item Surveyed time period: 1.10.2013 - 31.10.2013
+	\item Number of users who published tweets in the period under consideration: 3574
+\end{itemize}
+
+\textit{Ferguson. Ferguson unrest}
+\begin{itemize}
+	\item Total number of user messages: 193812
+	\item Total number of users participated in the discussion: 169677
+	\item Surveyed time period: 22.08.2014 - 31.08.2014
+	\item Number of users who published tweets in the period under consideration: 70018
+\end{itemize}
+
+Charlie Hebdo. Charlie Hebdo shooting
+\begin{itemize}
+	\item Total number of user messages: 505069
+	\item Total number of users participated in the discussion: 952615
+	\item Surveyed time period: 07.01.2015 - 10.01.2015
+	\item Number of users who published tweets in the period under consideration: 238491
+\end{itemize}
+
+
+\begin{table}[ht]%
+	\centering
+	\caption{Topics for Byrulevo data set.}%
+	\label{tab:byrulevoTopics}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Topic 1 & Topic 2 & Topic 3 & Topic 4 \\
+			\hline
+			\multicolumn{4}{c}{\makecell{LDA}} \\
+			migrant & warehouse & broadcast & riot  \\
+			Zeynalov & work & live & Manezhka \\
+			police & man & moscow & moscow \\
+			murder & boutique & photo & migrant \\
+			Sherbakov & moscow & find & block \\
+			\hline
+			\multicolumn{4}{c}{\makecell{WNTM}} \\
+			Moscow & news & Moscow & police \\
+			event & Sherbakov & OMON & authorities \\
+			Russia & migrant & Zeynalov & killer \\
+			riot & murder & arrest & russian \\
+			mayhem & killer & Sherbakov & meetings \\
+			\hline
+			\multicolumn{4}{c}{\makecell{BTM}} \\
+			citizen & OMON & Sherbakov &  russian \\
+			police & warehouse & Zeynalov & government \\
+			local & police & killer & riot \\
+			riot & arrest & arrest & migrant \\
+			Moscow & killer & moscow & news \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Topics for Charlie Hebdo data set.}%
+	\label{tab:charlieTopics}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Topic 1 & Topic 2 & Topic 3 & Topic 4 \\
+			\hline
+			\multicolumn{4}{c}{\makecell{LDA}} \\
+			policia & die & police & islam \\
+			Paris & satire & shooting & religion \\
+			terroristas & cartoonist & attack & youngest  \\
+			sospechosos & frankreich & suspects & local \\
+			ataque & attentater & update & extrimists \\
+			\hline
+			\multicolumn{4}{c}{\makecell{WNTM}} \\
+			attack & suspects & cartoonists & media\\
+			french & police & support & cartoons  \\
+			today & two & editor & toxic \\
+			terror & attack & respond & image \\
+			killed & hostage & journalism & caricatures \\
+			\hline
+			\multicolumn{4}{c}{\makecell{BTM}} \\
+			police & french & victims & muslims\\
+			suspects & shooting & solidarity & islam \\
+			hostage & gunman & attack & must \\
+			killed & dead & France & say\\
+			breaking & killed & jesuischarlie & religion \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Topics for Ferguson data set.}%
+	\label{tab:fergusonTopics}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Topic 1 & Topic 2 & Topic 3 & Topic 4 \\
+			\hline
+			\multicolumn{4}{c}{\makecell{LDA}} \\
+			police & MikeBrown & militarization & Miami  \\
+			life & black & police & overtown \\
+			surrender & brown & law & America \\
+			must & racism & reason & vote  \\
+			dissa & justice & end & jail \\
+			\hline
+			\multicolumn{4}{c}{\makecell{WNTM}} \\
+			MikeBrown & CNN & must & movement  \\
+			amp & cops & surrender & speak \\
+			police & Times & police & join  \\
+			black & black & dissa & support \\
+			people & shooting & see & now\\
+			\hline
+			\multicolumn{4}{c}{\makecell{BTM}} \\
+			must & join & community & pd\\
+			police & movement & Miami & look \\
+			surrender & now & support & closer  \\
+			dise & speak & lot & MikebBrown  \\
+			click & die & overtown & msnbc \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\paragraph{Results.} Coherence measures were calculated and plotted to estimate the models’ effectiveness on different number of topics. The results (Figures~\cref{fig:charlieCoherence,fig:byrulevoCoherence,fig:fergusonCoherence}) allow us to talk about the approximate number of topics that is optimal for this task, but due to imperfection of quality indicators it requires manual clarification.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{charlieCoherence}
+	}
+	\caption{Coherence scores on Charlie Hebdo data set.}\label{fig:charlieCoherence}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{byrulevoCoherence}
+	}
+	\caption{Coherence scores on Byrulevo data set.}\label{fig:byrulevoCoherence}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{fergusonCoherence}
+	}
+	\caption{Coherence scores on Ferguson data set.}\label{fig:fergusonCoherence}
+\end{figure}
+
+For each data set and topic model a few most coherent topics (topics focused on specific words which have the higher probability to occur in a specific topics) were chosen and can be seen in Tables~\cref{tab:byrulevoTopics,tab:charlieTopics,tab:fergusonTopics}.
+
+As a result of the analysis of the given conflict ad hoc discussions, Biterm Topic Model came out to be the best performing and most stable method based on all coherence measures, baseline Lda model not specialized for working with short text has shown to not be suitable without the additional preprocessing of data mainly due to the data sparsity. However topics identified using this model can still be used to analyze key moments of discussions, participants’ arguments, and as a basis for other data analysis tasks.
+
+Future work involves continuing the work on peer review, the first part of which was done for the Byrulevo data set by students and researchers from the journalism department of SPBU university. It has shown that the best results were obtained by the WNTM model. Comparing results of the models to the manual evaluation will allow us to measure not only the effectiveness of each model but also to compare coherence measures and find which one correlates better with human perception. The different prepocessing methods can also be used to improve the final result, tf-idf can be used instead of regular bag words approach to omit less frequent words more effectively.
+
 \section{Методы анализа тональности контента}\label{sec:ch5/sect3}
 
 \section{Методы суммаризации}\label{sec:ch5/sect4}
