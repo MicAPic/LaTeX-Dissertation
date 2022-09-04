@@ -355,7 +355,7 @@ Our results are described below with regard to the hypotheses stated above.
 		\subcaptionbox[List-of-Figures entry]{\label{fig:yifanHuGraphs-1}}{%
 			\includegraphics[width=0.419\linewidth]{yifanHuGraphs1}}
 		\subcaptionbox{\label{fig:yifanHuGraphs-2}}{%
-			\includegraphics[width=0.4\linewidth]{yifanHuGraphs2}}
+			\includegraphics[width=0.38\linewidth]{yifanHuGraphs2}}
 		\hfill
 	}
 	\caption{The YifanHu graphs (fragments) for language distribution in \cref{fig:yifanHuGraphs-1} \#jesuischarlie and \cref{fig:yifanHuGraphs-2} \#jenesuispascharlie. Red: French; blue: English; lilac: French/English; green: other European. (Color figure online)}\label{fig:yifanHuGraphs-12}
@@ -632,6 +632,156 @@ As a result of the analysis of the given conflict ad hoc discussions, Biterm Top
 
 Future work involves continuing the work on peer review, the first part of which was done for the Byrulevo data set by students and researchers from the journalism department of SPBU university. It has shown that the best results were obtained by the WNTM model. Comparing results of the models to the manual evaluation will allow us to measure not only the effectiveness of each model but also to compare coherence measures and find which one correlates better with human perception. The different prepocessing methods can also be used to improve the final result, tf-idf can be used instead of regular bag words approach to omit less frequent words more effectively.
 
+\subsection{The ideal topic: interdependence of topic interpretability and other quality features in topic modelling for short texts}\label{subsec:ch5/sec2/sub3}
+
+\subsubsection{1. Introduction}
+
+The studies of large text corpora via automated detection of topicality are a growing area of social research. Topic modelling is a probabilistic tool for discovering non-evident topics in a collection of texts. After the potential of topic modelling for Twitter has been proven \cite{RamageDumaisLiebling}, it has become a separate and growing area within topic detection research. Several works have shown that topic modelling of Twitter data is suitable for both detection of hidden discussion topics and data pre-processing aimed at reducing the topical dimensionality of the studied corpora \cite{BlekanovTarasovMaksimov,KoltsovaKoltcov}, as well as for a range of comparative tasks. In both capacities, it has already been applied to practical tasks like drug use analysis \cite{JonnagaddalaJueDai} or assessment of popular behavior during natural disasters \cite{LigutomOrioRamacho,MacedaLlovidoPalaoag}.
+
+But, despite the promise, topic modelling is highly problematic when applied to short texts \cite{MazaruraDeWaalKanifer}, especially of the oral-written nature \cite{Lutovinova} often met online, of which Twitter is exemplary. Short texts, including Twitter posts (tweets), are today a popular form of public speech online, but their nature creates substantial obstacles to modelling topicality in Twitter corpora of virtually any size.
+
+Topic modelling algorithms for the English language on Twitter have been explored widely, even if not extensively. Several models beyond LDA with Gibbs sampling, such as vector models or pLSA, as well as extensions for LDA, have been proposed. In most cases, classic unsupervised LDA performed worse than extended LDA or other models like biterm topic modelling (BTM). But, in some cases, LDA is used unquestioned, with results interpretable enough; this is why we will compare LDA which is in wide use with two other models described below.
+
+Till today, comparative works on Twitter topic models for various languages beyond English remain very rare, mostly focusing on German and Spanish. Comparative studies of topic modelling for the francophone segment of Twitter are truly scarce, and, for the Russian-language Twitter, except for the earlier pilot works by our working group \cite{RamageDumaisLiebling,BlekanovTarasovMaksimov,SmoliarovaBodrunovaYakunin}, are almost non-extant. For a rare comparative work on five languages including French and Russian. This work, similar to ours in its goals, tests three models of topic detection, including the authors’ own development, and tests them by human coders and objective measures. The paper reports the comparative results on topic coherence and the so-called ‘utility’ of topic clusters (not topics!) without explaining how utility relates to human interpretability (whether this actually is interpretability or not). The authors also claim that their own model performs better than both LDA and BTM, but they do not reveal its full details for that would allow for comparison of the algorithms. Moreover, the results are not presented in full but, e.g. for all the languages beyond English, only on LDA and the authors’ model. Due to these reasons, we will look to French and Russian to once again compare the quality of topic detection.
+
+Another gap in the current research on Twitter topics detection is that, except for e-health and natural disasters, issue- or event-oriented discussions are practically not studied. The methodological papers, including \cite{Sridhar}, do a lot to avoid limitations to overall Twitter topicality and work with large data that contain all possible topics. But, within a case-oriented discussion, detection of topics must be seriously complicated by the fact that the inner sub-topics share very similar lexicons.
+
+To partly cover these gaps, we have taken under scrutiny three conflictual cases in three different countries, as they have provoked the respective Twitter discussion of a large scale but at the same time were focused enough for our experiment. In our earlier research, we have applied unsupervised LDA, as well as WNTM and BTM, to these three cases (see below), with BTM showing the best results by automated quality assessment metrics, namely Umass and NPMI \cite{BlekanovTarasovMaksimov}. But here we need to re-discuss our conclusions and juxtapose them to other, more subjective quality metrics such as topic saliency and human interpretation. Also, we try to see whether topic saliency and topic interpretability are linked to each other; to our best knowledge, this idea has not yet been explored by the academic community.
+
+The remainder of the paper is organized as follows. In Sect. 2, we discuss the topic modelling algorithms that we use and the results we have received by applying the automated quality metrics and human coding, with the conclusion to reject both baselines. In Sect. 3, we present our ideas on the two other measures of topic detection quality, namely topic saliency and topic robustness. Section 4 serves for describing the cases and formulating the hypotheses. Section 5 provides the description of methods. In Sect. 6, we present the results and discuss them. To conclude, we formulate our idea of the ‘ideal topic’.
+
+\subsubsection{2. Human and Automated Evaluation of Quality: Rejection of Both Baselines}
+
+\paragraph{2.1 Automated Quality Assessment}
+
+For automated quality assessment, we have used the coherence metrics that have gained popularity in the recent academic research, namely Umass and normalized PMI (NPMI). As we have shown in our earlier pre-tests, by both metrics, we have seen BTM to be performing better than the two other algorithms \cite{BlekanovTarasovMaksimov}.
+
+But, after preliminary evaluation by human coders, we have seen that there are problems in topic interpretation that are not captured by the topic coherence metrics. Thus, the problems that we have discovered may be summarized as follows: 1) seemingly low number of interpretable topics; 2) a relatively big number of topics too similar to each other; 3) one-retweet-based topics gathered around one popular tweet rather than around a real topic in the discussion; 4) chained topics that unite several micro-themes but are non-clear to the human coders.
+
+\paragraph{2.2 Human Coding and Its Artifacts}
+
+Interpretability is understood here as an ability of a human coder to say why the topic descriptors (the most relevant words that describe the topic) stay together in a given topic. This is a traditional and ultimate metric of topic quality, as human interpretability is the ultimate goal of the whole modelling procedure. But this metric is non-feasible if the number of topics in multiple runs of the algorithms is overwhelming.
+
+Interpretability is really hard to measure in an objective way. Moreover, below we show that human coding is critically dependent on three types of knowledge: that on the case, that on method, and that on the dataset. The difference in preparation to coding critically alters the coding results.
+
+In Table~\cref{tab:coderTrainingArtifacts}, we show the coding results for three pairs of coders: unexperienced coders who have no detailed knowledge on the case, unexperienced coders who have received detailed instructions on the case and a lot of background knowledge, and members of our working group who have knowledge on the case, the dataset, and the algorithms.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Human coding of the Russian dataset, 100 topics: the artifacts of coder training.}%
+	\label{tab:coderTrainingArtifacts}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			 & \multicolumn{2}{c}{\makecell{Unexperienced}} & \multicolumn{2}{c}{\makecell{Trained}} & \multicolumn{2}{c}{\makecell{Experienced}}\\
+			\cline{2-7}
+			& Coder 1 & Coder 2 & Coder 1 & Coder 2 & Coder 1 & Coder 2\\
+			\hline
+			LDA & 33\% & 11\% & 65\% & 94\% & 53\% & 63\% \\
+			WNTM & 12\% & 11\% & 75\% & 92\% & 76\% & 73\%\\
+			BTM & 22\% & 8\% & 88\% & 86\% & 76\% & 83\%\\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+As we see from Table~\cref{tab:coderTrainingArtifacts}, the coding result is, indeed, highly skewed by the coder background knowledge. Also, experienced coders from the working group show the tendency to give out a more balanced coding output, as they are more strict on the method performance and do not imply the inner grammar relations to the topics, filtering interpretability by the knowledge on the internal discourses in the dataset.
+
+Thus, we see both automated dataset-level and human-based topic-level metrics to be unreliable in terms of finding ‘real topics’. This is why we suggest two other metrics and test their interconnectedness with human interpretability, to be able in future to substitute human coding by measuring these metrics.
+
+\subsubsection{3. Topic-Level Quality Assessment: In Search of Independence Form Human Eye}
+
+Thus, we have decided to introduce topic-level metrics of quality of topic modelling and test whether human interpretability will be related to them; we do it in an attempt to find topic-level metrics to substitute human coding without the necessity to assess the quality of the algorithm. At the same time, we still consider the well-known \textit{tf-idf} metric relevant for topic quality detection and will test our metrics against it in future.
+
+\paragraph{3.1 Topic Saliency}
+
+The idea of topic saliency lies in the fact that, for various time slots within a discussion, different sub-themes may emerge as the leading ones. Saliency is calculated in the following way. Each document in the dataset is assigned a topic distribution; then, based on the time of publication, the topic distributions in the tweets are summarized, and, for each topic, the saliency is calculated as the sum of the tweets belonging (with a certain probability) to the particular topic. Since the intensity of the discussion may vary in time, the overall topic saliency for all topics may vary (from 0 to 1, in our case). We have used a 24-h step and measured the topic saliency for each day in aggregate. This strategy constitutes one of the limitations for our study, as the French dataset encompasses four days only, due to its overwhelming volume (see below); in future, for the 4-day French dataset, we plan to change the step and conduct an hourly analysis.
+
+To our best knowledge, topic saliency has not yet been discussed in the literature as a possible quality metric for topic modelling. But, by commonsense logic, topic saliency should be related to topic interpretability: the more salient a topic is, the bigger it is within the dataset and must be easier to interpret. And, if so, topic saliency may in future be seen a quality metric -- a proxy for understanding topics by human coders.
+
+\paragraph{3.2 Topic Robustness}
+
+Topic robustness shows whether the topic is composed of a relatively large number of relevant texts/words. We will look at the relevance levels of topic descriptors (top words). The relevance is, basically, the extent to which a particular word belongs to a given topic, depending on how many times it is met in the topic-relevant tweets; the relevance is measured 0 to 1. There is no clear agreement in today’s research what relevance is to be considered high; this metric is dataset-dependent and thus needs to be assessed for each topic depending on the highest levels for a given run of topic modelling. Usual values for word relevance range from 0.01 to 0.1 for short-text small datasets to 0.001 to 0.05 for longer-text larger datasets.
+
+Topic robustness, thus, combines two internal parameters: the word relevance to a topic and the number of relevant words in a topic. Robust topics are those who have many highly relevant words; it means they attract a lot of similar texts. We will provide the exact measurements for topic robustness in Sect. 5. But topics with lower robustness must not be viewed as ‘bad’: robustness highly depends on the nature of the discussion.
+We will check the relationships between these metrics, to see how one can describe an ideal topic: a robust, understandable, salient one -- and assess which datasets (bigger/smaller, monolingual/multilingual) provide for a bigger quantity of ideal topics.
+
+\paragraph{4. The Cases Under Scrutiny and the Research Hypotheses}
+
+Here, we describe the cases we work with, which will help formulate the hypotheses. For this research, we work with the datasets from Twitter on the three cases:
+
+\begin{itemize}
+	\item Anti-immigrant riots in the Moscow district of Biryulevo, Russia, 2013: number of users who published tweets -- 3574, total number of user messages -- 10215;
+	\item The Ferguson unrest, USA, 2014: number of users who published tweets -- 70018, total number of messages -- 193812;
+	\item The Charlie Hebdo shooting, France, 2015: number of users who published tweets -- 238491, total number of messages -- 505069.
+\end{itemize}
+
+The datasets are highly uneven in volume, and thus we had conducted pre-tests of the number of topics that would provide the most interpretable results and, at the same time, remain comparable. We ran the topic modelling for all the three cases with the BTM algorithm for the following number of topics set arbitrarily: for Biryulevo, 10, 50, and 100; for Ferguson, 50, 100, and 200; for Charlie Hebdo, 100, 200, and 400 topics. We have pre-tested their interpretability for small numbers of topics for each run (10 to 20), and we have seen that, for 100 topics, the results may be comparable. This is why we will further on use the 100-topic runs for comparing the quality assessment results.
+
+Having in mind the aforementioned metrics for quality assessment and the number of topics in each run, we have set the following hypotheses:
+\begin{itemize}
+	\item H1. Human-based interpretability will correspond to the volume of the dataset: the bigger the dataset, the more interpretable the topics are.
+	\item H2. Human-based interpretability will be higher for monolingual discussions (Russia, the USA) than for multilingual discussions (France).
+	\item H3. More interpretable topics will have higher saliency in all the datasets. 
+	\item H4. More interpretable topics will show higher robustness in all the datasets. 
+	\item H5. More robust topics will have higher saliency in all the datasets.
+\end{itemize}
+
+We note that H1 and H2 are mutually exclusive.
+
+\subsubsection{5. The Research Methods}
+
+Here, we will in short describe the methods we use to test the hypotheses. As tour data collection has been well-described in our previous works, we will only provide the description for the methods directly used in this paper.
+
+For H1 and H2, we have worked with native speakers as human coders. Unlike in other research, we do not test the inter-rater reliability for the coders and then let them code separate segments of the task. Instead, two coders were asked to code the topic descriptors independently, and then, their inter-coder reliability was checked. We used this to see how divergent the opinions of the coders could be and whether the number of interpretable topics corresponds to earlier studies of longer texts, e.g. Russian blogs \cite{KoltsovaKoltcov}. Thus, six coders were instructed to code the topics as interpretable or non-interpretable based on the abovestated assumption of comprehensibility of why the topic descriptors stay together in a particular topic. Then, the number of interpretable topics for each coder and the meta-coding results were calculated. Each topic was assigned an interpretability index of 0 (non-interpretable for both coders), 1 (interpretable for one coder), or 2 (interpretable for both coders).
+
+In case of France, multi-lingual coders had to work (those who could recognize English, French, Spanish, Italian, German, and, with additional help, Russian). Finding such coders constitutes a separate problem in assessing the quality of multilingual global- scale discussions. We consider the procedures of assignment of meaning comparable for Russia, the USA, and France, as interpreting the topic descriptors requires simple word recognition procedures and basic knowledge of language(s), which makes recognition of a top word the unit of interpretation, disregarding the language belonging of a word.
+
+For H3, topic saliency was automatically calculated based on the modelling results, and the saliency thresholds were defined based on the overall saliency picture for a given case. But, as the saliency measurements have shown, topics could be considered salient if they reached circa 30\% of the overall saliency of topics in a given day. Then each topic was assigned a saliency index of 0 (the topic has never reached over 30\% of the overall saliency for a particular time slot), 1 (the topic has at least once reached over 50\% of saliency for a particular time slot), or 2 (the topic stably reached over 50\% of saliency in at least 30\% of the overall time span for the case). Then, Spearman’s rho was used to see the dependencies between topic interpretability and topic saliency.
+
+For H4 and H5, we have calculated the topic robustness for each topic. First, we have calculated the word relevance and have established 0.02 as the high relevance threshold. Then, we have introduced the robustness score: if a topic has no top words with the relevance reaching 0.02, it is non-robust (0); if there are up to 5 words of the relevance of 0.02 or higher, the topic is acceptably robust (1); if there are more than 5 words with the relevance of 0.02 or higher, the topic is fully robust (2).
+
+\subsubsection{6. Results and Discussion}
+
+\textit{H1.} We have presupposed that the datasets with a bigger amount of tweets will provide for better topic extraction, if the number of topics is the same. But H1 has to be rejected, as we have found that the number of highly interpretable topics was almost the same for all the datasets: 45 of 99, for Russia; 40 of 96, for the USA; and 41 of 100, for France (topics on non-Russian and non-English were eliminated from the first two cases). Thus, we do not observe any growth of interpretability for bigger tweet collections.
+
+\textit{H2.} The same goes for H2: we do not observe higher interpretability for monolingual cases, given that the coders understand the languages of the multilingual discussion.
+
+Rejection of H1 and H2 is telling, as it provides input for understanding the nature of topic interpretability on Twitter using BTM. Only circa 40--45\% of the topics get surely interpreted, which needs to be addressed in the future research. In the French case, most non-interpretable topics were composed by tweets in different languages, first and foremost French, English, and Spanish. The algorithm that puts the tweets in different languages into one topic is still to be analysed, to prevent the mixing of languages in future. Another problem discovered both in the ‘international’ topics and in the francophone one is the over-abundance of pronouns, service words and particles as top words. In the biterm-based approaches, eliminating them from the pre-processed dataset would significantly change the clustering results; but maybe a decision here is simple -- they should not be allowed to the lists of topic descriptors, thus leaving more space to the meaningful top words.
+
+\textit{H3--H5.} For the results for H3 to H5, see Table~\cref{tab:topicQualityMetrics}.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Human coding of the Russian dataset, 100 topics: the artifacts of coder training.}%
+	\label{tab:topicQualityMetrics}% label всегда желательно идти после caption
+		\begin{adjustbox}{width=1\textwidth}
+				\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& \multicolumn{3}{c}{\makecell{Russia}} & \multicolumn{3}{c}{\makecell{The USA}} & \multicolumn{3}{c}{\makecell{France}}\\
+			\cline{2-10}
+			& Interpr. & Saliency & Rob. & Interpr. & Saliency & Rob. & Interpr. & Saliency & Rob. \\
+			\hline
+			Interpretability & -- & \(-0,080\) & 0,064 & -- & 0,226* & 0,192 & -- & 0,337*** & 0,396*** \\
+			Saliency & \(-0,080\) & -- & 0,261** & 0,226* & -- & \(-0,086\) & 0,337*** & -- & 0,345*** \\
+			Robustness & 0,064 & 0,261** & -- & 0,192 & \(-0,086\) & -- & 0,396*** & 0,345*** & -- \\
+			\hline
+			\multicolumn{10}{c}{\makecell{Note. * -- \(p \le 0,05\); ** -- \(p \le 0,01\); *** -- \(p \le 0,001\).}}\\
+			\bottomrule
+		\end{tabular}%
+			\end{adjustbox}
+\end{table}
+
+Table~\cref{tab:topicQualityMetrics} does not provide for any systematic picture of the interdependence of the three topic quality metrics. Our hypotheses were formulated the way that they demanded a clear picture, which is not always the case in practice. In the way they are formulated, they have to be rejected; but important conclusions can be drawn.
+
+Thus, more interpretable topics are more salient in the US and French cases. This might have to do with the dataset volume. And the French case, despite its multilingualism, shows that the three aspects of the topic detection quality may be interdependent.
+
+The correlations for the French case are stronger than for the monolingual cases, and this definitely demands future research on how multilingual discussions are constructed in terms of topicality and why the multilingual discussions perform better than monolingual ones, which is quite counter-intuitive.
+
+To conclude, we underline the following. Putting our results against previous research, we need to state that interpretability for Twitter is significantly lower than for longer-text datasets (cf. \cite{KoltsovaKoltcov}). Also, looking at topic/dataset characteristics like robustness and saliency may provide for better understanding of the nature of an ideal topic. In all 300 topics we have assessed, only 7 were all robust, salient, and well-interpretable.
+
 \subsection{Topics in the Russian Twitter and relations between their interpretability and sentiment}\label{subsec:ch5/sec2/sub4}
 
 \subsubsection{1. Introduction}
@@ -739,7 +889,7 @@ H1. We have pre-tested \(\lambda\) for our data, to be able to choose its proper
 			\toprule
 			\makecell[c]{Model} & \multicolumn{2}{c}{\makecell{\(\lambda = 1\)}} & \multicolumn{2}{c}{\makecell{\(\lambda = 0.5\)}} \\
 			\cline{2-5}
-			 & Coder1 & Coder2 & Coder1 & Coder2 \\
+			 & Coder 1 & Coder 2 & Coder 1 & Coder 2 \\
 			 \hline
 			 LDA & 53\% & 63\% & 40\% & 33\% \\
 			 WNTM & 76\% & 73\% & 70\% & 67\%\\
