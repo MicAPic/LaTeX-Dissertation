@@ -355,7 +355,7 @@ Our results are described below with regard to the hypotheses stated above.
 		\subcaptionbox[List-of-Figures entry]{\label{fig:yifanHuGraphs-1}}{%
 			\includegraphics[width=0.419\linewidth]{yifanHuGraphs1}}
 		\subcaptionbox{\label{fig:yifanHuGraphs-2}}{%
-			\includegraphics[width=0.38\linewidth]{yifanHuGraphs2}}
+			\includegraphics[width=0.382\linewidth]{yifanHuGraphs2}}
 		\hfill
 	}
 	\caption{The YifanHu graphs (fragments) for language distribution in \cref{fig:yifanHuGraphs-1} \#jesuischarlie and \cref{fig:yifanHuGraphs-2} \#jenesuispascharlie. Red: French; blue: English; lilac: French/English; green: other European. (Color figure online)}\label{fig:yifanHuGraphs-12}
@@ -380,6 +380,227 @@ Thus, H1a is proven; H1b is proven too but not due to ‘civilizational clashes�
 Here, H2a should be rejected for \#jesuischarlie and partly supported for the second hashtag. Both in the graph and in the edge percentage calculations, it is only users with mixed sentiment who form a group (38.33\% against 56.05\% for the inter-group connections) in \#jesuischarlie. But for \#jenesuispascharlie, both mixed and negative user groups seem to have a potential for grouping (19.5\% and 15\% against 62.1\% for inter-group connections). Thus, H2b is supported: the cases do differ.
 
 Even with the cases of such different sizes, H3 is supported: thanks to the negative nebula in \#jenesuispascharlie, we can state that echo chambers are able to form on at least two levels of the trans-border conflictual discussions of global (or, more precisely, macro-regional) reach. This adds to our understanding of the nature of public discussions in social media, even if lowers hopes for all-encompassing public spheres.
+
+\subsection{Power laws in \textit{Ad Hoc} conflictual discussions on twitter. Digital Transformation and Global Society}\label{subsec:ch5/sec1/sub5}
+
+\subsubsection{1. Introduction}
+
+Public discussions online, and, of these, the ones on social networking sites, have become a growing area of scholarly attention, as they have been perceived as a manifestation of the public sphere, a crucial condition for efficient democratic deliberation \cite{Habermas}. Thus, understanding how networked discussions form and evolve is necessary for elaboration of proper criteria for their efficiency evaluation.
+
+One of the issues recently raised by social science and communication scholars is that of comparability of the online discussions formed by the so-called issue publics \cite{Dahlgren}\cite[p.~422]{Habermas}. Such discussions form quickly (or even burst out) around events or burning issues. Due to their \textit{ad hoc} nature \cite{BrunsBurgess}, they may dissolve just as quickly, involve various actors, and are affective \cite{Papacharissi} and, thus, are shaped by emotions rather than by rational argumentation. The question remains whether we have grounds for comparing such discussions, as the differences in discussion substance may lead to critical differences in the discussion structure and connectivity, which would make, e.g., cross-cultural and cross-language comparisons of same-topic discussions impossible. Also, conclusions made for one discussion in terms of actor roles, dynamics, other constitutive parameters would not allow for predicting them for other discussions if the network structures are not assessed and recognized as similar.
+
+This question has not yet been properly addressed in the social network analysis literature, as structural similarities of networked discussions, despite all the attention given to them, remain understudied in comparative perspective, especially in the view of the public sphere theory. The latter has elaborated its own vision of how to assess the efficacy of public discussions. Linking the two research areas for elaborating the SNA parameters for such assessment of the discussion networks would address one of the existing gaps in social network studies. For example, a number of more recent works have juxtaposed calculated and \textit{ad hoc} publics \cite{BrunsBurgess2015,LynnRosatiNair} in search of networking patterns of both types of discussions, but these studies were single-case, and we still lack the knowledge whether structural patterns vary across cases, cultures, and types of vocabularies used for data collection.
+
+Another input for social network analysis from the public sphere theory would be addressing the difference between users who are key for the discussion outburst and random discussion participants. Traditional view would imply various manifestations of power distance between the two user groups, and one needs to know whether online discussions show stable patterns of differences between key and random users.
+
+We address these research gaps by collecting data and analyzing web graph structures for five discussion outbursts about inter-ethnic (inter-national and inter-race) conflicts in the USA, Germany, France, and Russia of the 2010 s, reviewing altogether six discussion cases, as we split one into neutral and affective parts. We collect data from Twitter based on single hashtags and keyword conglomerates and show that there are repeatable structural patterns of the discussions across these cases.
+
+The remainder of the paper is organized as follows. Section 2 discusses today’s literature on various aspects of discussion structure for comparative tasks. In Sect. 3, we describe the cases and formulate the hypotheses for their comparison. Section 4 shows and discusses the discovered results. In conclusion, we discuss applicability of our findings for further studies of online conflictual discussions.
+
+\subsubsection{2. Comparing Discussion Structure on Social Networks: A Literature Review}
+
+Ad hoc \textit{discussions: a plea for grounds for comparison}. Public discussions on social networking sites have drawn scholarly attention to their various aspects, including the connection between the deliberative power of ‘ordinary citizens’ and the platform and network features that might either empower or disempower user groups in their opinion expression, shape the discussion outcomes, and impact the respective decision-making, as well as inspire political mobilization via the ‘logic of connective action’ \cite{BennettSegerberg}. Thus, the discussions in online networks have been thoroughly studied in their substantial aspects. But one of the key issues in this research area is the principal possibility of comparisons between discussions on similar topics happening in various parts of the world and in varying times.
+
+So far, comparative studies of cross-country social network discussions have been rare \cite{BodrunovaLitvinenkoBlekanov2017}; one of the reasons for that is the scholarly argument of low (or, rather, unknown) comparability of the discussions that are formed by the issue publics. This type of the discussion raises, arguably, the biggest amount of doubt ‘whether Habermas is on Twitter’ \cite{BrunsHighfeld2016}, as, from case to case, current research demonstrates varying results on echo chamber formation \cite{BastosMerceaBaronchelli,ColleoniRozzaArvidsson,Sunstein2001,YardiBoyd}, cross-group discussion potential \cite{Barbera,BarberaJostNagler}, and the roles of influencers detected by various means \cite{BastosRaimundoTravitzki,BodrunovaLitvinenkoBlekanov2017,DuboisGaffney}.
+
+The reason for low comparability, as scholars argue, lies in the very nature of the discussions, as they are all \textit{ad hoc} -- that is, case-specific and random in formation. Such discussions have the outburst nature, may have varying patterns of dissolution, involve case-specific actors, and based on affect \cite{Papacharissi} -- that is, are shaped by emotions rather than by rational argumentation, which may add to the non-comparability of the discussions. Thus, the major research question is -- are \textit{ad hoc} discussions comparable in topical and sociological terms also comparable in the discussion structures? Or, in other words, are there structural features characteristic of such discussions, that would, ideally, distinguish them from other discussion types on social networks and on the Web on the whole? And what could be the markers for such \textit{ad hoc} discussion outbursts?
+
+Today, in Twitter studies, there is scarce but growing evidence that \textit{ad hoc} discussions differ in their nature from other discussion types. Thus, several papers underline the differences between calculated and \textit{ad hoc} publics \cite{BrunsBurgess2015,LynnRosatiNair}, but no network parameters were used to prove the differences between these discussion types. Also, these studies were based on single cases, and we still lack the knowledge whether structural patterns for \textit{ad hoc} discussions vary or repeat across cases, cultures, and types of vocabularies used for data collection. This creates a focus for our enquiry.
+
+\paragraph{Degree centralities as a proxy for discussion comparability and a potential discussion quality metric.} Degree centralities (in-degree, out-degree, and degree accumulating both of these) have been long ago recognized as the key structural metrics of user relations and random graph assessment \cite{AlbertBarabasi,BoccalettiLatoraMoreno,MisloveMarconGummadi}; degree distributions are recognized as a key variable describing users’ interest toward each other \cite{EdigerJiangRiedy}. At the same time, from the normative viewpoint relevant in social sciences, degree centralities are an important metric of user in-network influence \cite{BodrunovaLitvinenkoBlekanov2016}, as well as the metric important in deliberative terms: the more users are reached by the same user (or reach a given user, which is the same for non-directed graphs but not for directed graphs), the more probable is the chance for cross-opinion discussion. More importantly, it can also characterize general user involvement into the discussion in comparison with other discussions; in terms of user involvement, degree centralities are, arguably, the most telling. A range of more topic-specific research papers have also argued that degree-based metrics are useful for network-based studies of social conflict and dangerous networks. Of those, one work \cite{KarthinkaGeethaBose} has shown the importance of relational measures (as the authors noted, ‘who is related to whom’) in detecting the key attackers in the terrorist network.
+
+There are, of course, several criticisms about degree distributions, as they gener- alize the network structure without taking into account the role of influencers (for the reviews on detecting and comparing influencer structures, see \cite{BodrunovaBlekanovMaksimov,BodrunovaLitvinenkoBlekanov2017,BodrunovaLitvinenkoBlekanov2016}), or ‘hub users’. Their roles, in various works, are assessed in different, if not directly opposite, ways. Thus, one stream of works insists on their disproportionately big role in information distribution (see \cite{BastosRaimundoTravitzki,DuboisGaffney}, and many others), while another line shows that such hubs may be inefficient due to their overload and incapability of transmitting information due to that \cite{HarriganAchananuparpLim}. But our goal is to test whether the discussions on the whole may be distinguished from Twitter on the whole.
+
+As major research works in the area note \cite{BarabasiAlbert,BroderKumarMaghoul,HubermanAdamic}, due to preferential connectivity in real-world networks, a certain power law (just as its absence) in degree distribution may become the characteristic that describes specific network structures. Thus, networks expressing power-law-like degree distributions are known as scale-free \cite{AlbertBarabasi,EdigerJiangRiedy}, and ‘scale-free tweet mention graphs would imply that a few Twitter users and ‘mentioners’ are responsible for a disproportionately high fraction of a community’s discourse’ \cite[p.~587]{EdigerJiangRiedy}. Thus, degree distribution may serve as a proxy for, e.g., core vs. periphery assessment in terms of aggregate influencer power: it can tell whether the network is dominated by a small number of users \cite{YeWu}. Thus, for Twitter, it would allow for: (1) differentiating one network type from another; (2) proving that the discussions are similar in their core vs. periphery relations, which suits our research goals. Moreover, our previous studies \cite{BlekanovSergeevMaksimov2017} have shown that power law exponents, indeed, vary for different types of web structures; e.g. for university websites, the average exponent is 1.8 instead of the expected 2.1.
+
+Early works on World Wide Web topology mentioned above, as well as other research papers (see, e.g., \cite{FaloustosFaloustosFaloustos}), all stated that power law distributions are characteristic for the Web on the whole. But another, later line of research papers has argued that the Web, by just evolving in time, has blurred the initial power-law-like degree distribution \cite{ChenChangGovindan,MeuselVignaLehmberg}. Smaller-scale research, though, tells that degree distributions are still valid for smaller real-world samples.
+
+Today, more and more criticism is raised about the explanatory potential and the very existence of scale-free networks -- that is, of the power law in degree distributions -- in large human-based datasets \cite{BroidoClauset}. We, thus, want to test whether the certain power laws show up in ad hoc discussions, as distinguished from Twitter on the whole, cultivated long-term discussions, and random talk.
+
+\paragraph{Power laws on Twitter: lack of comparative studies on the nature of the discussions.} So far, degree distributions have been studied for either the whole Twittersphere or its geographical segments; and, in these studies, the evidence on whether all the discussions on Twitter manifest power-law degree distributions is mixed.
+
+Thus, cumulative degree distributions \cite{Newman} for Twitter on the whole studied a decade ago \cite{JavaSongFinin} showed that the slopes cin and cout [were] both approximately \(-2.4\). The authors have interpreted these figures as similar to those for the Web of those times (\(-2.1\) for in-degree, cf. \cite{DonatoLauraLeonardi}) and blogosphere (\(-2,38\), as based on Blogpulse conference dataset of 2003). With the latter claim, one could agree, but with the former one we would not, as our research shows that differences of 0.3 in exponent values may be characteristic of graph origin and/or discussion type \cite{BlekanovSergeevMaksimov2017}. Another study \cite{WengLimJiang} based on the data dated mostly from April 2008 to April 2009 and featuring the most followed Twitter users from Singapore has also demonstrated power-law-like degree distributions of the user networks. A Twitter-large study \cite{WelchSchonfeldHe} has shown a very different exponent value of \(-1.6\). But authors \cite{KwakLeePark} have crawled the whole Twittersphere and have not discovered any power law in link distribution on the global level, as other authors underline \cite{HansenArvidssonNielsen}.
+
+Several studies have focused on country-based segments of Twitter. Thus, one study \cite{MyersSharmaGupta} has dealt with the Twitter follow graphs. The researchers have shown that in-degree and degree on Twitter are best fit by power law, while out-degree is best fit by log-normal distribution. Besides analyzing the entire Twitter, it also did country- based segment studies for Brazil, Japan, and the United States; very little variance was found between the countries in terms of in-degree, out-degree, and degree distribution \cite[p.~494]{MyersSharmaGupta}. Another study has dealt with the follow graphs of 10 country-bound Twitter segments around the world \cite{PobleteGarciaMendoza}. It has also demonstrated power-law in-degree and out-degree distributions, with power law coefficient ranging 5.91 to 9.51 and 8.12 to 13.62, respectively. But one also needs to note that user influencer status is linked much more to the number and activity levels of active followers (who retweet and/or mention a given user) than to the number of followers \cite{ChaHaddadiBenevenuto}; thus, one needs to look at the actual discussion graphs rather than at the graphs of following (much less linked to the real-world issue-based discussions) to more precisely determine the influential users, as well as to define the discussion type.
+
+Even a fewer number of works have examined the degree distributions in hash- tagged discussions. We can name one work \cite{ZhouBandariKong} on Iranian elections; the discussion there also showed power law distributions, with in-degree being \(-2.85\) and out-degree being \(-2.42\), while the retweet-based network had in-degree of \(-1.94\). Another group of authors \cite{ConoverRatkiewiczFrancisco} have also observed that retweet- and mention-based networks virtually did not differ in their scale-free topology.
+
+From the review above, one can conclude that scholarly evidence for power laws in degree distributions is greater than that of the opposite. But, despite their potential, degree distributions have not been tested for \textit{ad hoc} discussion outbursts in comparative perspective.
+
+Our idea is to look how degree distributions work if we step-by-step eliminate the users with low degree index, starting from isolate users \((D = 0\)), and look at the cumulative degree distributions for each case.
+
+\subsubsection{3. The Research Methodology}
+
+\paragraph{The research questions.} Most of the available research proves that power laws are characteristic for Twitter ‘calm’ discussions, be it the whole Twitter or its parts, either hashtag-based or limited by region. But the exponent values of degree distribution vary highly, not allowing for any particular expectation. Thus, we ask: Will degree distribution of all the \textit{ad hoc} discussion be fit by a power law? Will the exponent values be similar, thus indicating that the discussions are similar? Will the exponent values differ from \(\lvert2.1\rvert\)? Will the exponent values be similar enough across world regions, hashtag- only / keyword conglomerates, and neutral / affective hashtags?
+
+The research hypotheses that emerge of these research questions look as follows:
+
+\begin{itemize}
+	\item H1. All the discussions under scrutiny will be characterized by power law in degree distribution.
+	
+	\item H2. All the discussions will diverge from the \(\lvert2.1\rvert\) exponent value to the same direction and on comparable percentage. This includes hashtag vs. keyword conglomerates (H3).
+	
+	\item H4. Neutral and affective (expressing emotions of either sympathy and compassion or negation and hatred) hashtags will be comparable in their power law exponents.
+\end{itemize}
+
+\paragraph{The cases under scrutiny and their substantial comparability.} The cases of our attention all have the same set of features that is to ensure that the cases are comparable in sociological terms. Thus, all the cases have a violent trigger (a killing or rape/harassment) of inter-ethnic nature; the discussions are outburst -- that is, the number of users involved has one sharp peak and then slows down gradually; media report the communities to split into the minority, pro-minority majority, and anti-minority majority groups; there is peaceful protest or mass commemoration of the victims in the aftermath of the conflict; there is direct involvement of authorities of several levels into conflict resolution; and all the conflicts provoke a discussion on Twitter that gets to national (sometimes also to global) Twitter trending topics.
+
+We are looking at the following cases (in chronological order):
+\begin{itemize}
+	\item A killing of a Russian Muscovite by an Uzbek immigrant and the subsequent anti- immigrant clashes in the Moscow district of Biryuliovo, Russia (2013);
+	\item A killing of an African American teenager by a white police officer and the sub- sequent city riots in Ferguson, the USA (2014);
+	\item The attack to the editorial office of Charlie Hebdo and the subsequent peaceful demonstrations in Paris, France (2015);
+	\item The mass harassment of German females by male re-settlers from Middle East and North Africa in the New Year Eve in Cologne, Germany (2015--2016), and the subsequent protest meetings by PEGIDA and the ‘Alternative for Germany’ party;
+	\item A bus attack at one of the Christmas markets in Berlin (2016).
+\end{itemize}
+
+In each case, the discussion data were collected and the respective web graph reconstructed; in the case of \textit{Charlie Hebdo}, two graphs (one for a neutral hashtag and one for a compassion hashtag) were reconstructed.
+
+\paragraph{Data collection.} To collect the discussion bulk, we have created a specialized web crawler with adjustable modules \cite{BlekanovSergeevMartynenko}. It was done especially to overcome the well-known Twitter API limitations, like the ones on the number of requests to server and on the number of tweets available for download. It also bypasses the popularity algorithm and allows for human-like backfolding.
+
+For bigger-scale discussions (Ferguson and Charlie Hebdo), one hashtag per graph was used. For smaller-scale discussions, snowballing reading of 1.000+ random tweets containing the primary hashtag/keyword was performed, thus bringing on keyword collections.
+
+\begin{table} [htbp]%
+	\centering
+	\caption{The datasets collected.}%
+	\label{tab:collectedDatasets}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			The case & The number of nodes & The number of edges \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			Biryuliovo, 2013 & 11429 & 20106 \\
+			Ferguson, 2014 & 169677 & 334050 \\
+			\textit{Charlie Hebdo}, 2015 (neutral) & 952615 & 1782863 \\
+			\textit{Charlie Hebdo}, 2015 (affective) & 719503 & 981131 \\
+			Cologne, 2015--2016 & 40117 & 98508 \\
+			Berlin, 2016 & 194937 & 298562 \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+The initial datasets collected are represented in Table~\cref{tab:collectedDatasets}. Altogether, tweets by over 2 mln users were included into the research. Edges between the users were formed if any type of substantial interaction emerged between them (we counted retweets, mentions, and comments as such).
+
+\paragraph{Web graph reconstruction and analytics.} We have reconstructed the graphs for each case. The graphs were non-directed, as we were interested in the aforementioned deliberative aspects of the discussions. We have used the OpenOrd algorithm for the graph reconstruction. This methods is based on calculating the maximum distance (in \%) between the two nodes and on a particular number of iterations (in all our cases, the algorithm converged the proposed 800 iterations to 750). This algorithm was chosen, as it brings to the discussion core (that is, to the center of the graph) the influential users defined by a wide set of variables, including absolute-figure ones (the number of tweets, likes, retweets, mentions, and comments) and centrality metrics (including degree, betweenness, parerank, and eigenvector centralities).
+
+Then, the degree distribution exponents were calculated for each case, using eleven steps of isolate user elimination (for users with \(D = 0\) to 10 in the initial graph).
+
+The results and answers to our hypotheses are presented below.
+
+\subsubsection{4. The Research Methodology}
+
+As stated above, we have calculated degree distribution exponents for each case. In order to clearly highlight the differences with the expected exponent value of \(\lvert2.1\rvert\) based on previous Web studies, we have also calculated the exponents for the eliminated users. The exponent values for both active users and eliminated users, as well as their absolute deviations from \(\lvert2.1\rvert\), are presented in Table 2. The degree distribution graphs are presented in Figs.~\cref{fig:biryuliovoDegreeDistribution},~\cref{fig:fergusonDegreeDistribution},~\cref{fig:charlieNDegreeDistribution},~\cref{fig:charlieADegreeDistribution},~\cref{fig:cologneDegreeDistribution} and~\cref{fig:berlinDegreeDistribution} for the respective cases, as ordered in Table~\cref{tab:caseExponentValues}.
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Exponent values for the cases and their divergence from the expects exponent value.}%
+	\label{tab:caseExponentValues}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			The case & Exponent value, active users &  Absolute deviation, active users & Exponent value, eliminated users & Absolute deviation, eliminated users \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			Biryuliovo, 2013 &  \(\lvert1.56\rvert \) & 0.54 & \(\lvert2.04\rvert\) & 0.06 \\
+			Ferguson, 2014 & \(\lvert1.39\rvert\) & 0.71 & \(\lvert2.16\rvert\) &\( -0.06\)      \\
+			\textit{Charlie Hebdo}, 2015 (neutral) & \(\lvert 1.59 \rvert\) & 0.51 & \(\lvert2.01\rvert\) & 0.09 \\
+			\textit{Charlie Hebdo}, 2015 (affective) & \(\lvert1.80\rvert\) & 0.3 & \(\lvert2.45\rvert\) & \(-0.35\) \\
+			Cologne, 2015--2016 & \(\lvert1.28\rvert\) & 0.82 & \(\lvert1.91\rvert\) & 0.19 \\
+			Berlin, 2016 & \(\lvert1.63\rvert\) & 0.47 & \(\lvert2.34\rvert\) &  \(-0.24\) \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\hfill
+		\subcaptionbox[List-of-Figures entry]{\label{fig:biryuliovoDegreeDistribution-1}}{%
+			\includegraphics[width=0.5\linewidth]{biryuliovoDegreeDistribution1}}
+		\subcaptionbox{\label{fig:biryuliovoDegreeDistribution-2}}{%
+			\includegraphics[width=0.56\linewidth]{biryuliovoDegreeDistribution2}}
+		\hfill
+	}
+	\caption{Degree distributions for the Biryuliovo case: (а) active users; (б) eliminated users. \textit{Source:} authors.}\label{fig:biryuliovoDegreeDistribution}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\hfill
+		\subcaptionbox[List-of-Figures entry]{\label{fig:fergusonDegreeDistribution-1}}{%
+			\includegraphics[width=0.509\linewidth]{fergusonDegreeDistribution1}}
+		\subcaptionbox{\label{fig:fergusonDegreeDistribution-2}}{%
+			\includegraphics[width=0.55\linewidth]{fergusonDegreeDistribution2}}
+		\hfill
+	}
+	\caption{Degree distributions for the Ferguson case: (а) active users; (б) eliminated users. \textit{Source:} authors.}\label{fig:fergusonDegreeDistribution}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\hfill
+		\subcaptionbox[List-of-Figures entry]{\label{fig:charlieNDegreeDistribution-1}}{%
+			\includegraphics[width=0.56\linewidth]{charlieNDegreeDistribution1}}
+		\subcaptionbox{\label{fig:charlieNDegreeDistribution-2}}{%
+			\includegraphics[width=0.5\linewidth]{charlieNDegreeDistribution2}}
+		\hfill
+	}
+	\caption{Degree distributions for the \textit{Charlie Hebdo} neutral case: (а) active users; (б) eliminated users. \textit{Source:} authors.}\label{fig:charlieNDegreeDistribution}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\hfill
+		\subcaptionbox[List-of-Figures entry]{\label{fig:charlieADegreeDistribution-1}}{%
+			\includegraphics[width=0.5\linewidth]{charlieADegreeDistribution1}}
+		\subcaptionbox{\label{fig:charlieADegreeDistribution-2}}{%
+			\includegraphics[width=0.55\linewidth]{charlieADegreeDistribution2}}
+		\hfill
+	}
+	\caption{Degree distributions for the \textit{Charlie Hebdo} emotional case: (а) active users; (б) eliminated users. \textit{Source:} authors.}\label{fig:charlieADegreeDistribution}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\hfill
+		\subcaptionbox[List-of-Figures entry]{\label{fig:cologneDegreeDistribution-1}}{%
+			\includegraphics[width=0.51\linewidth]{cologneDegreeDistribution1}}
+		\subcaptionbox{\label{fig:cologneDegreeDistribution-2}}{%
+			\includegraphics[width=0.55\linewidth]{cologneDegreeDistribution2}}
+		\hfill
+	}
+	\caption{Degree distributions for the Cologne case: (а) active users; (б) eliminated users. \textit{Source:} authors.}\label{fig:cologneDegreeDistribution}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\hfill
+		\subcaptionbox[List-of-Figures entry]{\label{fig:berlinDegreeDistribution-1}}{%
+			\includegraphics[width=0.51\linewidth]{berlinDegreeDistribution1}}
+		\subcaptionbox{\label{fig:berlinDegreeDistribution-2}}{%
+			\includegraphics[width=0.55\linewidth]{berlinDegreeDistribution2}}
+		\hfill
+	}
+	\caption{Degree distributions for the Berlin case: (а) active users; (б) eliminated users. \textit{Source:} authors.}\label{fig:berlinDegreeDistribution}
+\end{figure}
+
+\textit{H1.} All the cased that we have studied do, indeed, demonstrate power laws in degree distribution, and this is true for both active users (see Figs.~\cref{fig:biryuliovoDegreeDistribution-1},~\cref{fig:fergusonDegreeDistribution-1},~\cref{fig:charlieNDegreeDistribution-1},~\cref{fig:charlieADegreeDistribution-1},~\cref{fig:cologneDegreeDistribution-1} and~\cref{fig:berlinDegreeDistribution-1}) and eliminated users (see Figs.~\cref{fig:biryuliovoDegreeDistribution-2},~\cref{fig:fergusonDegreeDistribution-2},~\cref{fig:charlieNDegreeDistribution-2},~\cref{fig:charlieADegreeDistribution-2},~\cref{fig:cologneDegreeDistribution-2} and~\cref{fig:berlinDegreeDistribution-2}). Thus, power law is indicative for \textit{ad hoc} discussion outbursts across cultures and cases; H1 is supported.
+
+\textit{H2.} All the cases do, indeed, diverge from the \(\lvert2.1\rvert\) expected exponent value to the same direction (see Table~\cref{tab:caseExponentValues}, column 2, exponent values for active users): the received exponent values are all equal or below 1.8, which indicates the lower power distance between the users. At the same time, the exponent values for eliminated users fluctuate around \(\lvert2.1\rvert\) to \(\lvert2.4\rvert\), the figures indicative for the Web degree distributions in various studies mentioned above. Thus, power laws with exponent values definitely below those discovered for the World Wide Web are indicative for \textit{ad hoc} discussions, which makes them, at least in terms of core vs. periphery relations, similar and comparable. The second part of the hypothesis is, though, not clearly supported: deviation from \(\lvert2.1\rvert\) substantially varies in percentage (from almost 40\% for the Cologne case to 14.3\% for \#jesuischarlie), and thus we cannot indicate any figure more precise than the fluctuation between \(\lvert1.28\rvert\) and \(\lvert1.80\rvert\) for ad hoc discussions; due to this, H2 is only partly proven. But we also need to state that, for three of six discussions, the exponent values were between \(\lvert1.56\rvert\) and \(\lvert1.63\rvert\), which corresponds to earlier results in \cite{WelchSchonfeldHe}.
+
+\textit{H3.} For three of the six discussions (the Ferguson case and both Charlie Hebdo cases) the data were collected based on single hashtags (\#ferguson, \#charliehebdo, and \#jesuischarlie, respectively), while other cases were collected by keyword conglomerates ranging from 6 keywords (for the Biryuliovo case) to over a dozen keywords (for both German cases). As we see from Table~\cref{tab:caseExponentValues} and Figs.~\cref{fig:biryuliovoDegreeDistribution-1},~\cref{fig:fergusonDegreeDistribution-1},~\cref{fig:charlieNDegreeDistribution-1},~\cref{fig:charlieADegreeDistribution-1},~\cref{fig:cologneDegreeDistribution-1} and~\cref{fig:berlinDegreeDistribution-1}, there is no difference between single-hashtag and keyword-conglomerate data collection. H3 is supported, but this, paradoxically, might add not only to the evidence that \textit{ad hoc} discussions have similar patterns of degree distribution but also to the evidence that Twitter as a platform fosters the power law degree distributions in any type of discussion. To answer this, more research is needed.
+
+\textit{H4.} As seen from Table~\cref{tab:caseExponentValues} and  Figs.~\cref{fig:biryuliovoDegreeDistribution-1},~\cref{fig:fergusonDegreeDistribution-1},~\cref{fig:charlieNDegreeDistribution-1},~\cref{fig:charlieADegreeDistribution-1},~\cref{fig:cologneDegreeDistribution-1} and~\cref{fig:berlinDegreeDistribution-1}, both neutral and affective hashtags are subjected to power law for both active and eliminated users, and exponent values deviate from \(\lvert2.1\rvert\) to the same direction. H4 is supported. We just need to mention that the compassion hashtag \#jesuischarlie has shown the highest exponent values, thus demonstrating bigger gaps between the influential and ‘peripheral’ users, and this might create room for further comparative investigations.
+
+\paragraph{Discussion.} In search for proof of comparability of \textit{ad hoc} online discussions, we have applied our idea of evaluating degree distributions to six datasets of five comparable Twitter discussions on inter-ethnic conflicts in four countries that happened in the 2010 s. What we have discovered is the following.
+
+First, we have shown that all the discussions we have observed are subjected to power law in degree distributions. Second, we have shown that exponent values for degree distributions in the discussion graphs diverge from the figures indicated for the Web on the whole in previous research. Moreover, they diverge in the same direction and to varying but, to a certain degree, also comparable percentage. Taken together, these findings indicate that, at least in terms of influence, interest, and/or power distribution in such discussions, they are comparable across countries and years, as well as across vocabulary types and neural/affective hashtags. Thus, exponent values may serve as indicators for the type of an online discussion. We have also shown that the peripheral part of the \textit{ad hoc} discussions was always closer to \(\lvert2.1\rvert\) to \(\lvert2.4\rvert\) exponent values discovered earlier for the Web and some social networks, which may be a sign that the \textit{ad hoc} discussions do differ from the ‘average’ network structure of the Web.
+
+But we have also discovered that the exponent values for the discussions were fluctuating around \(\lvert1.6\rvert\) indicated earlier for Twitter on the whole; also, variance in value divergence from the expected figures was too big to state that a particular array of meanings may be indicative for ad hoc discussions and could become their structural marker. This needs further investigation, which might imply experimental design.
+
+Last but not least, we have seen that \textit{ad hoc} discussions, if judged by the exponent values, show the patterns of lower power distance between core and periphery. This may be due exactly to their spontaneous nature, as institutional actors who shape and frame the offline discussions compete with ordinary users, crisis witnesses, and grassroots leaders. This may broaden our views upon discussion outbursts on social media.
 
 \section{Тематическое моделирование контента}\label{sec:ch5/sect2}
 
