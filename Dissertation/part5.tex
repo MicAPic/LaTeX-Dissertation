@@ -1171,6 +1171,164 @@ We, at least partly, support what was earlier reported on the number of interpre
 
 Our research will continue in the areas designated above, including stretching our method to three other languages, experimenting with term relevance, and exploring the nature of impact of negativity upon topic interpretation.
 
+\subsection{Detecting pivotal points in social conflicts via topic modeling of twitter content}\label{subsec:ch5/sec2/sub5}
+
+\subsubsection{1. Theoretical Framework}
+
+Twitter is believed to be actively used in protest activities for mobilization \cite{TheocharisLoweVanDeth,CarenGaby}. Researchers tried to study as many factors as possible to understand why the street protests start in one case and do not start others; why their dynamic may be different (see review in \cite{KoltsovaSelivanova}). Majority of researchers agree upon the fact that social media platforms, including Twitter, are actively used during social unrests or street actions as a main source of information \cite{AnduizaGallegoCantijoch,TufekciWilson}. Social media help activists organize street actions and mobilize potential supporters \cite{EarlKimport,FlesherFominaya}. But within all the corpus of the existing studies, our knowledge on the relations between street mobilization during social conflicts and digital technologies remains contradictory, as studies of causal relation between mobilization results and \textit{ad hoc} discussions on Twitter did not reach agreement \cite{Mercea}.
+
+For instance, authors \cite{BastosMerceaCharperntier} have studied the role of Twitter and Facebook in mobilization of protest movements and have shown the causality between communication in social networks and protest activities. Their results are based on the Granger causality tests for three cases (the Indignados in Spain, the Occupy, and the Vinegar protests in Brazil) and prove that protest-related social media activity on Twitter and Facebook enables forecasting protest-related onsite activity. But the opposite results have been proven by another group of authors \cite{TheocharisLoweVanDeth}. They have shown a low level of interrelation between offline political activity and Twitter discussions for the same events.
+
+We aim at suggesting a qualitative way to look at the linkages between discussion topicality and intensity, on one hand, and people’s street actions, on the other hand, for the cases where causality tests are either impossible to perform due to scarcity of data or provide mixed results. For this, we first show that the Granger causality test does not provide evidence for the online-offline linkages and then employ topic modeling, time series reconstructions of online and offline activities, and qualitative assessment of topics to formalize the pattern of online-offline linkages in time.
+
+The paper is organized as follows. In Sect. 2, we describe the case under scrutiny and data collection. Section 3 shows the result of the Granger causality test as the premise for further research. Section 4 describes our method of topic modeling and the results of topic assessment against the timing of major political events within the case. Section 5 discusses and generalizes the results.
+
+\subsubsection{2. Case Description}
+
+New Year’s Eve sexual assaults in Germany were chosen for the case study due to several reasons. The event was reported massively on Twitter but did not reach the key quality news media in Germany. This fact triggered a significant discussion about accountability of German quality news media. Although local newspapers published the news already on January 1, national media have not paid attention to the event until January 5. Press service of Cologne police has published the official statement on the 2nd of January and this one-day delay has also provoked accusations of concealment against the elites. The absence of coverage of the event on the public service broadcasting and in quality newspapers was explained by the editorial houses first in terms of lack of human resources during the last days of the Christmas holidays; involvement of the rest of journalists into coverage of Munich terrorist attack; banality of criminal activities on the New Year’s Eve. The major German news agency DPA evaluated the importance of the event as very low and this decision could also influence the level of attention given by weekend editors to the event. While quality news media were blamed in a significant failure in detecting an important social problem, it remains understudied whether the causality between online and onsite protest activity can be detected in this case.
+
+The data from Twitter was gathered during the period from 1.01.2016 to 31.01.2016 via a set of hashtags. The sample includes more than 99000 users (the core consists of 12000 users) and more than 64000 tweets. The specially developed web-crawler was used to download the data. We have described our data collection method extensively in our previous works \cite{BodrunovaBlekanovMaksimov,BodrunovaLitvinenkoBlekanov}, and here we will not stop on this.
+
+\subsubsection{3. Granger Test}
+
+The data about political activities in Germany during January 2016 was collected from the media reports and publications \cite{KoopmansRucht}. The level of the protest mobilization was estimated accordingly to the number of participants of a political activity (see Table~\cref{tab:actionsAndStatementsGermany}): not only anti-migrant activists were calculated, instead the feminist human rights movement activists and counter-PEGIDA unions were also included into the estimation, as suggested by \cite{BastosMerceaCharperntier} and \cite{Castells}. In case of contradictory data from mass media, the average between the data in media publications was calculated \cite{BastosMerceaCharperntier}.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Street actions and official statements of German authorities during January 2016.}%
+	\label{tab:actionsAndStatementsGermany}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=0.9\textwidth}
+		\small
+		\begin{tabular}{ l  l }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Date & Political activity (estimated number of partaking people -- in brackets) \\
+			\hline
+			02.01.2016 & \makecell[l]{Press service of Cologne police has published the official statement mentioning\\ sexual assaults} \\
+			04.01.2016 & \makecell[l]{Demonstrations of PEGIDA supporters in Dresden (400) and Leipzig (370)\\ No clashes with police, nobody has been arrested\\ The Head of Cologne’s police Wolfgang Albers, North Rhine-Westphalia’s\\ Interior Minister Ralf Jäger name the suspects as North African refugees} \\
+			05.01.2016 & \makecell[l]{Demonstration of women in Cologne (400) \\ No clashes with police, nobody has been arrested \\ The mayor of Cologne Genriette Recker promises to provide more resources for\\ the police in the future but states that she still doesn’t have evidences about\\ refugees involved into the assaults} \\
+			06.01.2016 & \makecell[l]{A public statement made by the press secretary of Angela Merkel about the\\ negotiations between the chancellor and the mayor of Cologne Genriette\\ Recker. Merkel expressed her ‘outrage’ with the violence and demanded a\\ ‘harsh response from the state’} \\
+			07.01.2016 & \makecell[l]{Major quality newspapers -- \textit{FAZ}, \textit{Sueddeutsche Zeitung}, \textit{Tagesspiegel}, \textit{Die}\\ \textit{Welt} -- publish official responses about the reasons of silence of their outlets in \\first days of January} \\
+			08.01.2016 & \makecell[l]{North Rhine-Westphalia’s Interior Minister Ralf Jäger dismissed the Head of\\ Cologne’s police Wolfgang Albers} \\
+			09.01.2016 & \makecell[l]{Protests in Cologne: demonstration of women (1000), PEGIDA supporters\\ (1700), counter-protest demonstration ‘Cologne against the right-wing’ (1300)\\ Clashes with police; seizures of participants} \\
+			11.01.2016 & \makecell[l]{Demonstrations in Leipzig: Anti-LEGIDA -- 2500, LEGIDA supporters -- 3000\\ Nobody was arrested\\North Rhine-Westphalia’s Interior Minister Ralf Jäger presents a report to an\\ extraordinary committee of the Internal Affairs Committee of North Rhine-\\Westphalia’s state parliament and confirms that majority of suspects are people\\ with migrant background \\ Right extremists attack group of refugees. Minister of Justice Heiko Maas\\ condemned the attack}\\
+			12.01.2016 & \makecell[l]{Demonstration in Cologne: PEGIDA supporters (2000)\\ No clashes with police, nobody was arrested}\\
+			13.01.2016 & \makecell[l]{Demonstration in Erfurt: PEGIDA supporters (2200)\\ No clashes with police, nobody was arrested} \\
+			14.01.2016 & \makecell[l]{Minister President of North Rhine-Westphalia Hannelore Kraft presents the\\ package of actions to be taken for improving security and integration} \\
+			18.01.2016 & \makecell[l]{Demonstrations in Dresden: PEGIDA supporters (4000), NOPEGIDA (500)\\ No clashes with police, nobody was arrested} \\
+			20.01.2016 & \makecell[l]{Demonstrations in Dresden: PEGIDA supporters (700), NOPEGIDA (900)\\ No clashes with police, nobody was arrested} \\
+			23.01.2016 & \makecell[l]{Demonstration in Stolberg PEGIDA supporters (1600)\\No clashes with police, nobody has been arrested} \\
+			25.01.2016 & \makecell[l]{Demonstration of PEGIDA supporters in Dresden and in Cologne (4000) \\ No clashes with police, nobody was arrested} \\
+			\bottomrule
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+\paragraph{3.1 Casual Relations Between Online and Offline Activities in the Case Study} 
+To test whether Twitter discussion on the New Year’s Eve’s sexual assaults in Germany is causally related with political activities in Germany during January 2016, we applied the Granger causality test to measure if the time lags of level of the protest mobilization (number of participants in the days of street actions in the dataset) relates to the distribution of the level of Twitter activity (number of tweets for each day of the studied period) over time. The data about daily users’ activity in Twitter and street protests is visualized as the time series graph (Fig.~\cref{fig:onlineDiscussionTimeSeries}).
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{onlineDiscussionTimeSeries}
+	}
+	\caption{Time series for online discussion and offline events.}\label{fig:onlineDiscussionTimeSeries}
+\end{figure}
+
+Granger causality test can statistically determine when one variable precedes and predictively explains another variable \cite{GroshekCloughGroshek} in case when the influence of one 1-dimensional time series parameters \((xt)\) on another time series parameters \((yt)\). The Granger causality analysis are carried out by evaluating of two types of regression:
+\[ 
+yt = \alpha0 + \alpha1yt - 1 + \ldots + \alpha p yt - p + \beta1xt - 1 + \ldots + \beta1xt - p + \epsilon t
+\] and
+\[ 
+xt = \alpha0 + \alpha1xt - 1 + \ldots + \alpha p xt - p + \beta1yt - 1 + \ldots + \beta1yt - p + \upsilon t
+\]
+to prove the null hypothesis \(\beta1 = \ldots = \beta p = 0\).
+
+The regressions were carried out in a special program for statistical calculation EViews (Quantitative Micro Software, Version 10). The time lag is set at 2, the level of significance, \(\alpha\), is set at 5\%, We compared two time series -- data with number of participants and data about number of tweets. The null hypothesis about the absence of influence of online activities on the offline activities has been confirmed (Probability = 0,4696), as well as null hypothesis about absence of the opposite causal relation (Probability = 0,8315).
+
+Hence, the idea of causal relationship between street demonstrations and Twitter communication about the event is rejected. Political activities in German cities triggered by New Year’s Eve’s sexual assaults in January 2016 and discussion about them on Twitter demonstrated an asynchronous character and do not depend on each other in the time dynamic.
+
+\subsubsection{4. Detecting Pivotal Points via Topic Modeling}
+
+\paragraph{4.1 The Method}
+On the second step of our work with the case, we have tried an alternative methodology to detect patterns of interaction between online and offline activities. Our idea was to trace the change of topicality during the immediate aftermath of the conflict and to see whether the patterns repeat across several cases. In this paper, we look at just one case but we already see a particular pattern in interaction of topicality and protest activity.
+
+To define the pattern, topic modeling was performed on the tweets to model the topic distribution for each day from the period of the study. The algorithm Biterm Topic Model has been chosen due to time restrictions and computational capabilities. BTM has been developed for short texts: this is an efficient algorithm that allows getting coherence topics for short text collections \cite{YanyanJiafengXueqi}.
+
+The BTM algorithm assigns the topics to each document; then, the grouping of the messages and the corresponding topic distribution is performed, whereas the time of publication is used as a criterion for the grouping procedure. After several pre-tests with the number of topics from 20 to 200, 50 topics were chosen to perform the modeling procedure. The list of the topics with distribution coefficients \(p(z)\) for each day of the period has been visualized in a form of a heat map (see Fig.~\cref{fig:topicDistributionJan2016}).
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{topicDistributionJan2016}
+	}
+	\caption{Distribution of topics during January 2016 (axis \(x\)) according to their coefficients \(p(z)\) (axis \(y\)).}\label{fig:topicDistributionJan2016}
+\end{figure}
+
+To analyze the semantic structure of the discussion, we formed the list of the most salient topics. If the weight of a topic (p) on a particular date exceeded 0,047 (more than 50\% in the daily topic distribution), it indicated that the actuality of this topic has increased sharply. 26 topics that were at particular points more salient than 0,047 are unevenly distributed in the course of January 2016, with most salient topics visible in the first three days of the conflict (five topics on January 1 and 2, six at January 3). In the discussion below, the topics are listed 1 to 50 (instead of 0 to 49 on the heat map).
+
+\subsubsection{5. Results}
+
+As visualized on Fig.~\cref{fig:mostSalientTopicsNYE}, four topics were salient on more than five days during the period of study. Their semantic structure is listed in the Table~\cref{tab:salientTopicsSemanticStructure}. Every topic includes nominations of place, actors, and hashtags employed by the users to frame the issue.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{mostSalientTopicsNYE}
+	}
+	\caption{The most salient topics in the Twitter discussion about New Year’s Eve’s sexual assaults (axis \(y =\) weight of a topic).}\label{fig:mostSalientTopicsNYE}
+\end{figure}
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Semantic structure of the regularly salient topics.}%
+	\label{tab:salientTopicsSemanticStructure}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Topic N & Top words & Dates of saliency \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			2 &  Ausnahmslos, gewalt, koelnhbf, rassismus, sexualisierte, frauen, sexismus, immer, sexuelle, aufschrei & January 1, 2, 4, 7, 22 \\
+			33 &Koelnhbf, ausnahmslos, koeln, muslime, rapefugees, versuch, neue & January 1, 2, 4, 7, 18, 22, 23\\
+			30 & Koelnhbf, koeln, polizei, medien, silvesternacht, amp, mueller & January 11 to 17 \\
+			38 & Koelnhbf, ausnahmslos, merkel, amp, pegida, schon, mal, abmerkeln, brief & January 19, 20, 21, 23, 25, 27 \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+Juxtaposition of the most salient topics clearly shows that there are four periods on the time-series graph when different topics dominated with a varying degree of sal- iency: January 1 to 7; January 8 to 15; January 16 to 23; January 24 to 31 (see Fig.~\cref{fig:topicDistributionPeriods}).
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{topicDistributionPeriods}
+	}
+	\caption{Periods in topic distribution.}\label{fig:topicDistributionPeriods}
+\end{figure}
+
+In the first period (January 1 to 7, 2016), nominations among the top words define direct participants (topics N2 and N33): women (‘frauen’) against Muslims and ‘rapefugees’. Hashtags \#ausnahmslos and \#aufshrei indicate a feminist voice in the Twitter discussion: the hashtag \#aufschrei was introduced first in 2013 by feminism activist Anne Wizorek. This period was the most ‘buzzy’, according to the number of salient topics.
+
+In the second period (January 8 to 15, 2016), topic N30 is the most salient. It demonstrates the public debate on the role of police and German media during the conflict: both actors were heavily criticized on Twitter. The second most salient topic during one day was the topic N20 that discusses more extensively political authorities who participated in the debate: Minister President of North Rhine-Westphalia Hannelore Kraft, North Rhine-Westphalia’s Interior Minister Ralf Jäger, and North Rhine-Westphalia’s parliamentarian from FDP Christian Lindner.
+
+The third period (January 16 to 21, 2016), as the heat map shows, is a ‘gap’ period between topic N30 that is becoming less salient from its maximum on January 11, and topic N38 that increases in salience tremendously since 24\(^{th}\) of January. According to our time series analysis (see Table~\cref{tab:actionsAndStatementsGermany}), both PEGIDA and NOPEGIDA demonstrations have taken place but the number of tweets reduced significantly from more than 2500 on January 14 to less than 500 on January 23.
+
+Topic N38 dominates the discussion in the last period (January 22 to 31, 2016). It reflects the activity of the PEGIDA movement and its supporters who use the hashtags \#abmerkeln and \#merkelmussweg -- both urge Angel Merkel to leave her Chancellor post.
+
+We tried to trace manually whether the topics relate to the events. Concerning street actions, PEGIDA movement was mentioned only in 3 topics of 50 in our model (N21, N28, N38). Topic N21 goes beyond the saliency threshold only once, on January 2, while the first street action of PEGIDA supporters happened on January 4. Topic N28 passes the salience threshold only once, on January 31, after a wave of street actions. Topic N38 has been most salient before the street protests on January 18 as well as on the days when street actions took place (January 9, 20, 23, and 25). It reaches the highest level of salience (weight of a topic (p) exceeds 0,08) on January 24 and 25 in comparison to \(p = 0,048\) on January 23. In both cases, on January 18 and 25, the biggest number of participants took part in PEGIDA street actions (4000, as estimated by German media reports).
+
+On January 14, Minister President of North Rhine-Westphalia Hannelore Kraft presented the package of actions to be taken for improving security and integration. Salient topics do not mention Kraft and do not relate directly neither to N11 (most salient, \(p = 0,089\), mentions the Head of Cologne’s police Albers fired on January 4 and North Rhine-Westphalia’s Interior Minister Ralf Jäger) nor to N25 (mentions political parties CDU/CSU, AFD, SPD and FDP), nor to N30 (mentions feminist hashtags \#aufschrei and \#ausnahmlos as well as popular hashtag related to the mayor Reker \#einearmlaenge). On the next day, the only topic N30 exceeded the level of \(p > 0,047\). In this case, we do not observe any connection between a political act of authorities and Twitter debate.
+
+\subsubsection{6. Conclusions}
+
+Scholars have tested a wide range of factors influencing political mobilization and, in particular, mass participation in a street action. Internet penetration, online user behavior and participation in online discussions were studied among other parameters. We argue that online behavior cannot be seen is a sole, dominant predictor for spillovers of protest to the street, as scholars that focused on interrelation between online and offline political activities have revealed controversial evidences on the causal relations between them.
+
+In this paper, we presented the pilot study of relations between online and offline political activities triggered by New Year’s Eve’s sexual assaults in Germany 2016. The Granger causality test conducted in a way suggested by authors \cite{BastosMerceaCharperntier}, has failed, partly because the case study is characterized with the lack of parameters and data to compare the level of commitment among Internet users and street actions participants. In such cases, alternative ways to assess the relations between online and offline activities might be needed.
+
+To prove the inter-relation between online discussion and offline political activities, new criteria and parameters are needed to be operationalized. To reveal these parameters for further research, we analyzed the data with the help of topic modelling that has visualized how the topics develop through the online debate.
+
+Based on the results of the topic modeling, we juxtaposed the development of the most salient topics and the timing of the offline political activities in January 2016. Four periods were revealed, including the ‘gap’ period where topic saliency was the lowest. While in two first periods authorities and their (dis)activities were the main focus of the discussion, the fourth period is dominated by the topic that reflects far-right discourse (N38).
+
+Several topics have gone beyond the saliency threshold (weight of a topic \((p)\) exceeding 0,047) before, on, and after the days of street actions; the most visible topics have also reached the highest level of saliency (weight of a topic \((p)\) exceeding 0,08) before the offline events. These intersections should be studied in a more nuanced way, \textit{i.a.} hour by hour. Hence, topic modeling has provided evidence that visibility of political activists precedes the street actions they organize. Moreover, the rapid change of the level of saliency that we observed for the topic N38 took place before the day the biggest number of participants took part in PEGIDA street actions in two cities simultaneously on January 25. If the peak of the topic in an online discussion precedes the mass participation in an offline street action, one might argue that the platform participated actively in forming of protest consensus. Rapid appearance of a peak within a topic, just like we observed for topic N38, might be a predictor for the forthcoming successful mobilization.
+
+We assume that the Granger causality test might provide more accurate results in cases like New Year’s Eve’s sexual assaults in Germany 2016 if the level of street activity is examined against the level of salience of the dominant topics. Significant changes in the level of salience (rapid appearance of a peak with the topic distribution, as observed for topic N38) might be a predictor for the forthcoming successful mobilization. For more conclusions, we will in future compare several case studies of the same nature, to see whether the patterns that we have discovered for Cologne repeats for other countries and cases within Germany.
+
 \section{Методы анализа тональности контента}\label{sec:ch5/sect3}
 
 \section{Методы суммаризации}\label{sec:ch5/sect4}
