@@ -1331,6 +1331,134 @@ We assume that the Granger causality test might provide more accurate results in
 
 \section{Методы анализа тональности контента}\label{sec:ch5/sect3}
 
+\subsection{Sentiment analysis for ad hoc discussions using multilingual knowledge-based approach}\label{subsec:ch5/sec3/sub1}
+
+\subsubsection{1. Introduction}
+
+Recently, the number of active users of social networks has increased many times, for example according to the website statista.com: Twitter has 313 million active users per month, 100 million users per day and 500 million tweets are published daily; Facebook has 1.79 billion active users per month, 1.18 billion per day. Such activity also influences people’s reaction to various social, political and economic events in the world. As a result, this means that such events are covered and distributed in social networks several times faster than in other media. Various discussions that arise as a result of any major events have an unpredictable structure of development and a number of specific properties, such as the peculiarity of user interaction among themselves, their relationship to the event, etc. Such discussions are called ad hoc discussions. For example, on Twitter and other social networks on major world events, there are long and branched discussions, the collection and analysis of which is a non-trivial task.
+
+A separate task in the analysis of social networks is to determine the sentiment of the posts of users that were published in the context of any discussion, in particular, in the ad hoc discussion. Sentiment analysis \cite{Liu} is a class of methods that combines algorithms of computer linguistics, semantic and lexical analysis, as well as machine learning. One of the serious problems of analyzing the tonality of texts is the separation of a useful part of the text, that is, one that contains really useful information, and noise -- information that either does not affect the positivity or negativity of the statement, or complicates the precise definition. Another problem that the authors are also trying to solve is the analysis of short texts. So, for example, social network Twitter seriously differs from many other platforms with its limitations on the length of the post, which in 2018 is only 280 characters. This suggests that the messages in in most cases can contain only some essential information, or be spam and noise, detection and screening of which is another task. In addition, another distinctive feature of Twitter is the opportunity to conduct large and branched discussions on certain topics: whether it’s politics, economics, sports, etc., which can be easily monitored using hashtags.
+
+In this paper, taking into account the specifics of short messages on Twitter, the authors set the task to develop a knowledge-based method for sentiment analysis of user messages in two major ad hoc discussions (Ferguson unrest (USA) and Biryuliovo bashings (Russia)). One of the problems that we are trying to solve is the lack of a decent russian lexicon. In fact, there is not one complete and accessible. There have been attempts to create such lexicons, but their effectiveness has not been verified to date. So we create a dictionary of russian affective words and compare its effectiveness with english lexicons.
+
+\subsubsection{2. Current Research in Sentiment Analysis}
+
+Researchers have studied almost all the main aspects of the problem. In their paper \cite{SchullerKnaup}, B. Schuller and T. Knaup propose an approach based on N-Grams and support vector machines \cite{ScholkopfCristianini}, which is very popular among researchers nowadays. In addition, the authors propose an approach that does not require pre-tagged data, and operates on the basis of knowledge-based resources, as well as linguistic analysis. They describe the use of online dictionaries containing both information about words and phrases, and the connections between them. Also, the article considers the possibility of using information about parts of speech of words to improve the accuracy of the analysis results. Also, K. Yessenov \cite{MisailovicYessenov} presented an analysis of the tone of comments to the reviews on films. The authors empirically studied the effectiveness of machine learning algorithms in the classification of text messages to their semantic value. The researchers used comments on the articles on the pop- ular Digg.com resource and investigated them for positivity and negativity. In \cite{RavindranSuchdevKotkar} the authors consider the possibility of combining knowledge-based methods and machine learning algorithms for analyzing users’ messages on the Twitter social network, which differ in their length. In the context of their study, they create a feature vector that contains such information as the number of positive and negative words, emoji and hashtags, and then classify data using machine learning algorithms (in particular, the support vector machine \cite{ScholkopfCristianini}). In addition, the issues of data preprocessing, use of metadata of each tweet and ways of its representation for further classification are considered.
+
+Previous works also described methods for detecting influencers and ordinary users of ad hoc discussions. Often, users with fewer views and likes are more influential than others. This is shown in the articles \cite{BodrunovaLitvinenkoBlekanov2016,BodrunovaLitvinenkoBlekanov2017}, in which users and their connections were presented in the form of graphs and evaluated by various measures of centralities, such as pagerank and betweenness, as well as an expert analysis of the sentiment of users.
+
+There are not many works devoted to the analysis of tonality in Russian. In \cite{BelyatskayaZagibalovCaroll} authors describe comparable corpora of book reviews in English and Russian and present experiments with a sentiment classification system. In \cite{ChetviorkinLoukachevitch} researchers consider a new approach for domain-specific sentiment lexicon extraction in Russian. They propose a set of statistical features and algorithm combination that can discriminate sentiment words in a specific domain. The extraction model is trained in the movie domain and then utilized to other domains.
+
+\subsubsection{3. Proposed Sentiment Analysis Method}
+
+The knowledge-based method developed by the authors includes the following steps:
+\begin{enumerate}
+	\item Construction of affective dictionaries.
+	\item Data preprocessing.
+	\item Classification.
+\end{enumerate}
+
+\paragraph{3.1 Construction of affective dictionaries} 
+To analyze the sentiment of users’ messages in the study of major ad hoc discussions in the social network Twitter authors used a knowledge-based approach based on the construction and application of tagged dictionaries of positive and negative words. These dictionaries were constructed for English, French, Italian, Russian and Spanish languages according to the following principle. The most complete tagged list of English positive and negative words from open sources was selected. In our case, a dictionary that was constructed during the work of the University of Illinois at Chicago staff was used and is being expanded since then \cite{EnglishOpinionWords}. This dictionary contains approximately 6785 words. Initially there were 2005 positive words and 4780 negative words. Further, the procedure of extending the resulting dictionary was applied by adding synonyms from the WordNet database to it as follows. The authors developed a software component that matches each word from the already existing dictionary with a list of synonyms. As a result of the procedure, the dictionary consisted of 5787 and 11660 positive and negative words, respectively. This component checked the extended dictionary for repetitions, and, in case of occurrence of any identical words, deleted them. Using the machine translation procedure, new dictionaries were constructed in the appropriate natural languages. Since the results of the machine translation the repetitions could be formed again, the resulting dictionaries passed the procedure of removing duplicates. As a result of the performed actions, the dictionaries of Russian positive and negative words now consist of 3832 and 3890 words, respectively.
+
+\paragraph{3.2 Preprocessing}
+In order to improve the results and improve the accuracy of solving the classification problem, it is first necessary to bring the tweets to a normal view. This process is called normalization and, in addition to bringing all the symbols to the lowercase, includes following three steps.
+
+\textit{3.2.1 Stop-words removal.} First of all, when processing the case, it is necessary to delete all noise words or stop-words. Stop-words are words that are often found in the language and carry almost no semantic meaning. For example, in English, such words can be prepositions (in, on, at, etc.), conjunction (and, but, for, etc.) and other function parts of speech. In addition, numbers, dates and times are also words that are removed from the tweet. In the context of processing tweets, we also remove all the mentions, that are, links to other Twitter users that start with the \@ symbol, as well as all possible links to third-party resources and sites that are not carrying any practically useful information and basically are noise. Since we do not have a tool capable of evaluating the significance of punctuation marks, we also expose them.
+
+\textit{3.2.2 Tokenization.} The next step is to tokenize the text. This means we have to separate the text into significant units (tokens) for further processing. In the case of tweets, the most optimal size of token is one word. Therefore, after the separation, the tweets will be represented by a list of words that remained after the process of stop-words removal.
+
+\textit{3.2.3 Stemming.} The third and final step is stemming \cite{SavoyDolamic}. Stemming is the process of extracting the basis of a word, which in this case may not coincide with the root of the word. In tasks of text classification, stemming is necessary first of all in order to reduce the dimensionality of the problem and increase the productivity of the classifier. There are many stemming algorithms for different languages. The most common is the stemmer of Martin Porter, developed originally only for the English language. But later the main idea of the algorithm was used to create the project "Snowball" and stemmers for different languages. Snowball is a small programming language designed for writing stemming algorithms. In the context of this study, we also subjected the dictionaries constructed in the previous paragraph to the stemming, since in the process of classifying it is necessary to define the polarity of a word, which is fully expressed in its basis.
+
+\paragraph{3.3 Classification}
+Our classification algorithm is fed to the input received after a preprocessed list of words that could affect the classification. Each word of this list is checked for the presence in dictionaries of positive and negative words constructed in the previous section. Ultimately, the number of positive and negative words in the list is counted. If the number of positive tokens exceeds zero and the number of negative tokens is zero, then the corresponding tweet is considered as positive, if the number of negative tokens exceeds zero, and the number of positive tokens is zero, then tweet is negative. In all other cases: if these numbers are equal or in some tweet there are both positive and negative tokens, then the tweet is marked as neutral. This approach shows different results on different test cases. This is our first approach.
+
+We also offer a more obvious version of this classifier. In this version, the algorithm is also fed with a list of words obtained after preprocessing, and the number of occurrences of positive and negative words is also considered. However, those tweets whose word lists contain more positive than negative elements are considered positive, tweets that contain more negative than positive words are getting negative tag. Finally, tweet is marked as neutral if numbers of positive and negative words are equal. In this approach, you can see that in most cases tweets will be classified as positive or negative and only a small part of them will be neutral. Because of the fact that in this paper we consider the ad hoc discussion, we propose some adjustment of this algorithm: depending on the topic and features of the current discussions, it is possible to introduce a measure that would allow more precise definition of neutrality of some tweet. In other words, the number of tweets that would be labeled as neutral in the original version of the algorithm would be greater. The proposed metric \(m\) is introduced as follows:
+\begin{equation}
+	\label{eqn:31}
+	m = \frac{p - n}{N}
+\end{equation}
+where \(p\) is number of positive words in tweet, \(n\) -- of negative words and \(N\) is total number of words in tweet. After the introduction of this metric, you can add to the algorithm some coefficient (let’s say \(c\)), which would be the threshold value for neutral tweets. In other words, if the number of positive and negative words differs slightly, then the tweet is considered neutral. This approach allows you to customize the work of the algorithm, depending on the characteristics of a certain ad hoc debate.
+
+\subsubsection{4. Experiment}
+An experiment was conducted to assess the quality of the developed method in three modifications. There were two qualitative measures used: accuracy score and f1 score \cite{Powers}. As a test data there were chosen two real large ad hoc discussions \cite{SmoliarovaBlekanovBodrunova} in Russian and English.
+
+\paragraph{4.1 Test cases description and tagging}
+In this paper authors have the opportunity to analyze the data of ad hoc discussions in the social network Twitter of two well-known events: Ferguson unrest (USA) in August 2014 and Biryuliovo bashings (Russia) in October 2013. For each of the events above, there was compiled a list of popular hashtags that describe it:
+\begin{enumerate}
+	\item Biryuliovo: \#бирюлево, \#мигранты, \#овощебаза, \#зейналов.
+	\item Ferguson: \#ferguson.
+\end{enumerate}
+As a result of the collecting and processing the set of hashtags, we got the following data:
+\begin{enumerate}
+	\item Biryuliovo: Number of users who have published their tweets in the period since 1st of October 2013 till Thirty-first of October 2013 is 3574. Number of published posts is 10215.
+	\item Ferguson: Number of users who have published their tweets in the period since twenty-second of August 2014 till Thirty- first of August 2014 is 70018. Number of published posts is 193812.
+\end{enumerate}
+On the Figures~\cref{fig:fergusonPublicationActivity} and~\cref{fig:biryulievoPublicationActivity}, one can observe the publication activity of users of discussions about Ferguson and Biryulyovo, respectively. It can be seen that the ad hoc discussions have a different structure: only one "splash" of activity is visible in the discussion of Biryulyovo and the discussion of the situation in Ferguson that has not ceased throughout the week.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{fergusonPublicationActivity}
+	}
+	\caption{Periods in topic distribution.}\label{fig:fergusonPublicationActivity}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{biryulievoPublicationActivity}
+	}
+	\caption{Periods in topic distribution.}\label{fig:biryulievoPublicationActivity}
+\end{figure}
+
+To calculate the qualitaty measures, the authors performed the tagging of the above-described data sets as follows:
+
+\begin{enumerate}
+	\item For each ad hoc discussion, lists of top-100 users were compiled according to the number of published messages, as far as betweenness centrality and as far as pagerank centrality \cite{BodrunovaLitvinenkoBlekanov}.
+	\item Aggregation of three top-100 lists and deletion of duplicate users. As a result, 213 users were obtained in the Biryuliovo case and 200 in the Ferguson case.
+	\item By the aggregated list of users in the Biryuliovo case there were selected all user messages, the total number of which was 3885. In the Ferguson case there were collected just fifteen random messages by each user in order to keep size of the collection slightly equal to the size of Biryuliovo collection.
+\end{enumerate}
+
+\paragraph{4.2 Results}
+In the course of carrying out the work described above, the problem of the analysis of the ad hoc discussions in the social network Twitter was considered. The authors presented a multi-lingual approach, which is based on the construction and use of affective dictionaries for Russian language and compare it efficiency to expanded existing English lexicon. To assess the quality of the three modifications of this approach, measures accuracy score and f1 score were used on manually annotated data. These results are presented in the Table~\cref{tab:fergusonAccuracyF1}. Results for Biryuliovo case are represented in the Table~\cref{tab:biryliovoAccuracyF1}. These tables show that our best approach gives 0.7 f1 score which is the average result in English \cite{KingHopkins,RavichandranRao}. The results for the Russian dictionaries are slightly lower than the average English. We assume that this is due to the imperfection of machine translation and the difference in the structure of Russian and English.
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Accuracy and F1 score for Ferguson.}%
+	\label{tab:fergusonAccuracyF1}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			& First version & Second version & With \(m\) metricy \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			accuracy score  & 0.65 & 0.49 & 0.62\\
+			f1 score & 0.70 & 0.52 & 0.66 \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Accuracy and F1 score for Biryliovo.}%
+	\label{tab:biryliovoAccuracyF1}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}C >{\zz}C >{\zz}C@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			& First version & Second version & With \(m\) metricy \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			accuracy score  & 0.57 & 0.41 & 0.55\\
+			f1 score & 0.65 & 0.46 & 0.6\\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+\subsubsection{5. Conclusion}
+
+In this article, authors proposed a multi-lingual approach to the analysis of ad hoc discussions and, in particular, the sentiment analysis of messages in such discussions. The presented algorithms showed quite good results, which were represented in the relevant tables, taking into account the specifics of the given discussions. In the future work, the authors plan to develop this approach and compare it with the work of such classification algorithms as the support vector machines.
+
 \section{Методы суммаризации}\label{sec:ch5/sect4}
 
 \FloatBarrier
