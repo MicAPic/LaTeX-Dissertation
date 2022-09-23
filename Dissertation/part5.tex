@@ -1459,6 +1459,148 @@ In the course of carrying out the work described above, the problem of the analy
 
 In this article, authors proposed a multi-lingual approach to the analysis of ad hoc discussions and, in particular, the sentiment analysis of messages in such discussions. The presented algorithms showed quite good results, which were represented in the relevant tables, taking into account the specifics of the given discussions. In the future work, the authors plan to develop this approach and compare it with the work of such classification algorithms as the support vector machines.
 
+\subsection{When emotions grow: cross-cultural differences in the role of emotions in the dynamics of conflictual discussions on social media}\label{subsec:ch5/sec3/sub2}
+
+\subsubsection{1. Introduction}
+
+The spread of affective content on social media, as well as user grouping based on affect \cite{Papacharissi}, has been a focus of scholarly attention due to multiple reasons. Emotional content is seen mostly as a threat to the democratic quality of public discussions \cite{Cortese}, as it undermines its integrity and rationality \cite{BadjatiyaGuptaGupta}, as well as its civility and constructive character \cite{BurnapWilliams}, especially when one deals with hate speech and toxic expressions \cite{ParkFung,GeorgakopoulosTasoulisVrahatis}.
+
+Despite the evident necessity to learn how emotions work within the discussion, we lack evidence on what roles various particular emotions play in the dynamics of discussions on social media. Detection of particular emotions has been mostly linked to political emotionality and political functions of emotions \cite{Lyman,TicentoCloughHalley,HeaneyFlam,WahlJorgensen}, as well as their linkage to other features of content like fake news \cite{VosoughiRoyAral}.
+
+The substantially negative role of hate speech is practically non-questioned today; but several works still draw attention to controversial relations between freedom of speech and hate speech \cite{Dorsett,Cammaerts} and to the possible use of offensive language in positive sense in discriminated communities like LGBTQ \cite{WaseemDavidsonWarmsley}. Another potentially positive role of emotional content (negative just as well as positive) might lie in spurring the discussions, providing them flame and substance and not letting them ebb.
+
+In this paper, we explore just two aspects of this issue, namely -- the growth of emotional load in conflictual discussions and the relations between the number of overall users in the discussion and the angry and compassionate ones.
+
+For this, we use the data from three highly conflictual and emotionally polar discussions, more or less territorially localized, despite potential global participation on Twitter. Use of three discussions from different communicative cultures will allow us generalize on the nature of the relations between the overall growth of the discussion and its highly emotional content.
+
+To explore the discussion bulk, we collected the data via Twitter crawling, then coded the emotions with the help of native speakers, then taught the machine to recognize the emotions, and then detected the users who used emotional speech and reconstructed the hourly graphs of the discussions, as well as time series. We have also performed Granger test to spot the relations between the number of emotional and neutral users in the discussions.
+
+The remainder of the paper is organized as follows. Section 2 discusses our idea of the emotions as discussion drivers. Section 3 poses the hypotheses, and Sect. 4 describes the data collection procedures, sampling, and the method of detecting emotions. Section 5 provides and discusses the results.
+
+\subsubsection{2. Emotions Aggregated: What Can They Tell?}
+
+Emotional contagion theory \cite{HatfieldBensmanThornton} adapted for social media suggests that diffusion of emotions happens on individual level, via direct one-time contact with emotionalized content \cite{CovielloSohnKramer}. Individual emotions, though, play a key role in group behavior online, as they form the so-called ad hoc discussions \cite{BrunsBurgess} of affective publics \cite{Papacharissi} and, thus, matter more on the aggregate level and might work differently from what is expected, especially in fast-growing conflictual discourse online. Other theories, like theories of social influence or social learning \cite{Young}, suggest multiple, hierarchical, and/or topically-restricted contacts of users with emotional content; whether these limitations are also true for how the emotions grow and spread collectively, still remains unclear.
+
+The idea of affective agenda \cite{ColemanWu} implies that the dynamics of an emotional discussion might be dependent on mood changes or spillovers from group to group, language to language, or topic to topic. Also, the relations between various emotions might be a com- petitive one, since they work as the polarizing agents within the discussion: anger may overcome fear, and denial might beat compassion. A shockingly strong example of this is, of course, the case of \textit{Charlie Hebdo} which polarized the discussion participants to the extent of creating formally opposing hashtags (‘jesuischarlie’ and ‘jenesuispascharlie’, representing compassion and its rejection, anger, and discontent).
+
+The change of affective agenda or mood within the discussion might lead to its growth (or even outburst) or ebbing, and this question remains under-explored. We suggest that emotions of different stance (positive/negative) may spur/slow down the discussions in various ways.
+
+\subsubsection{3. The Research Hypotheses}
+
+In this paper, we have posed three hypotheses:
+
+\begin{itemize}
+	\item H1. In all the three conflictual discussions under our scrutiny, the dynamics of emotions will go ahead of the general discussion dynamics: the number of emotional users will grow and diminish faster than the number of emotional tweets.
+	\item H2. In all the three discussions, the dynamics of the number of involved users will depend on the dynamics of the number of emotional users.
+	\item H3. The dynamics of compassion and anger will differ in all the three discussions and will not correlate within the cases.
+\end{itemize}
+
+We will also qualitatively describe the picture we see on the web graphs and on time series graphs, to contextualize and reflect more on the received data. By analyzing the co-dynamics of the overall discussions and these two emotions we can conclude whether the pattern of the spread of emotions and its link with the discussion dynamics is the same in various language segments of Twitter.
+
+\subsubsection{4. Data Collection and Methods of Research}
+
+\paragraph{4.1 The Cases Under Scrutiny}
+
+We analyze the spread of two polar emotions -- anger and compassion -- in three Twitter discussions on inter-ethnic conflicts, namely:
+
+\begin{itemize}
+	\item The Ferguson unrest, USA, 2014: number of users who published tweets -- 70018, total number of messages -- 193812;
+	\item The Charlie Hebdo shooting, France, 2015: number of users who published tweets -- 238491, total number of messages -- 505069;
+	\item The mass harassment of women by the re-settlers from the Arab world in Cologne, Germany, in the New Year night of 2015-2016; number of users who published tweets -- 99981, total number of messages -- 215253.
+\end{itemize}
+
+The overall number of tweets collected based on the relevant hashtags and keywords is actually much bigger. The data we use were collected by our Twitter crawler in the aftermath of the conflicts and include altogether over 2,5 M tweets. The samples described above resulted from the fact that we selected the mono-language parts of the discussions only -- German for Cologne, French for Charlie Hebdo, and English for Ferguson. We have also cleaned spam, non-relevant tweets, and hashtag-only tweets.
+
+\paragraph{4.2 Emotion Detection}
+
+To be able to detect emotions, we have used an enhanced SVM-based approach with the use of Numpy and scikit-learn libraries. As we have been working with multi-lingual sentiment analysis for several years, we have modified the approach with two features. First, the experiments have shown that elimination of stop words from tweets actually diminishes the quality of the classifier. Thus, the stop words have been returned to the initial dataset, which has raised the quality by 4-5\%. Second, we have experimentally found the streaming hyper-parameters and adjusted them: the regularization parameter was 0.9, and we have also used the linear nuclear function and the OVR function. We have also spotted that, in several cases, the machine tended to over-learn; thus, we have balanced the samples to reach better results.
+
+Tweets from real-world discussions, despite we have used the well-preprocessed datasets, remain one of the ‘noisiest’ types of textual data; this has cast some negative impact upon the quality metrics of emotion detection. This is why we have used quite large collections for hand coding. We have selected the tweets for hand coding by the procedure described in our earlier works \cite{BodrunovaLitvinenkoBlekanov2017,BodrunovaBlekanovSmoliarova}, by selecting influential users by nine parameters -- four absolute ones (the number of posts, retweets, likes, and comments) and five graph-dependent ones (in-degree, out-degree, degree, betweenness and pagerank centralities). The top users’ tweets constitute the samples for coding. Altogether, we have coded: for Germany -- 13,620 tweets, for the USA -- 7200 tweets, and for France -- 7433 tweets.
+
+We have received the following best levels for the quality metrics (see Table~\cref{tab:threeCasesQualityMetrics}).
+
+\begin{table}[ht]%
+	\centering
+	\caption{Quality metrics for emotion detection for the three cases.}%
+	\label{tab:threeCasesQualityMetrics}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& \multicolumn{2}{c}{\makecell{Germany}} & \multicolumn{2}{c}{\makecell{The USA}} & \multicolumn{2}{c}{\makecell{France}} \\
+			& Accuracy & F-measure & Accuracy & F-measure & Accuracy & F-measure \\
+			\hline
+			Anger & 0.7 & 0.7 & 0.77 & 0.77 & 0.78 & 0.77 \\
+			Compassion & 0.75 & 0.74 & 0.8 & 0.8 & 0.84 & 0.84 \\
+			\bottomrule
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+\paragraph{4.3 Data Analysis and Visualization}
+
+We have marked the tweet datasets by emotion; then we have aggregated the tweets per user and have calculated hourly numbers of neutral, angry, and compassionate users, according on whether they have expressed these emotions within a given hour. Thus, we have received he hourly numbers of users who were emotional, either compassionate or angry. Of course, in a small number of cases, a user could express both compassion and anger within one hour; but this mattered only within the first couple of hours, while in the course of the discussion the number of such users became negligibly small.
+
+To visualize the results of the emotion detection, we have constructed the hourly web graphs for three days using the YifanHu algorithm from the Gephi library, as well as the time series graphs with the hourly lag. For Cologne and \textit{Charie Hebdo}, we have taken the first three days of after the trigger events; for Ferguson, we did not have such data and, thus, the three days were taken from the middle of the discussion.
+
+To assess the inter-emotional relations (in terms of the number of users), we have used the Spearmans’ Rho.
+
+To test the hypotheses, we have performed the Granger test with the hourly data and have also qualitatively assessed the graphs \cite{Wessa}. The results are presented below.
+
+\subsubsection{5. Results and Discussion}
+
+\textit{H1-H2.} When assessing the cases, we have seen that the basic pattern of the discussions is different from the expected: in general, the lines indicating the number of neutral users are generally followed by those of anger and compassion (see Fig.~\cref{fig:timeSeriesGraphs}). But, if we look at details and the results of the Granger test, the three start to diverge.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{timeSeriesGraphs}
+	}
+	\caption{a.Time series graphs, the Cologne case. b. Time series graphs, the Ferguson case. c. Time series graphs, the Charlie Hebdo case. (Color figure online)}\label{fig:timeSeriesGraphs}
+\end{figure}
+
+First of all, the three cases differ in whether the growth of the number of angry or compassionate users affects the rest of the speech in the case (see Table~\cref{tab:grangerTestResults}). In some sense, Cologne and Ferguson ‘mirror’ each other in terms of when exactly the emotional users spur the number of the neutral users. We can see from the Table~\cref{tab:grangerTestResults} that it is compassion, not anger, that plays a bigger role in predicting the number of neutral users -- that is, the very growth or ebbing of the discussions. As we see from the time series graphs, the regression shows the dependency when the discussion starts to grow. This happens with the first two days of Cologne where the journalists were reluctant to cover the mass harassment story as they were not sure how to report on the nationality of the harassers. It also happens during an outburst of emotions in the Ferguson case, on Day 3. Thus, the role of emotional content in the early-stage discussions needs to be well researched upon.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Quality metrics for emotion detection for the three cases.}%
+	\label{tab:grangerTestResults}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ c  c  c  c  }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Days 1-3 & Days 2-3 & Day 3 \\
+			\hline
+			Cologne anger & No No & No No & \colorbox{yellow}{11,17** 13,3**}\\
+			Cologne compassion & \colorbox{green}{13,1*** No} & \colorbox{green}{8,71** No} & \colorbox{yellow}{5* 9,8**} \\
+			Ferguson anger & \colorbox{violet}{No 4,13*} &	No No  & 4,76* No\\
+			Ferguson compassion & \colorbox{yellow}{5,53* 8,1**} & \colorbox{yellow}{4,68* 6,52*} & \colorbox{green}{5,89* No} \\
+			Charlie Hebdo anger & No No & No No & No No \\
+			Chare Hebdo compassion & No No & \colorbox{violet}{No 10,2**} & \colorbox{violet}{No 5,65*} \\
+			\hline
+			\multicolumn{4}{c}{\makecell{Note. Green: the test shows the dependency of the overall discussion upon these users and \\authors. Yellow: the test shows that the numbers of the neutral users and emotional users \\correlate due to a third factor.\\Violet: The linkage between emotional and neutral users shows the dependency of the\\ other direction: the higher the number of neutral tweets, the higher the number of the angry and/or compassionate tweets. That is, when the discussion is boiling itself, \\the number of angry users also grows without any coordinated effort.}} \\
+			\bottomrule
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+In the American case, there is also a smaller trend covered by a more general one. There are several moments in the course of the discussion when anger starts to diminish earlier than the number of the neutral tweets, and the blue line follows.
+
+Another important conclusion is that the emotions do not grow/diminish within the discussions but have intense hourly dynamics. The ‘jumps’ of the number and connectivity of users who express anger and compassion (see Fig.~\cref{fig:fastDynamcs}, the example of Cologne) need to be further explored within the aforementioned theories of emotional contagion and/or social learning.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{fastDynamcs}
+	}
+	\caption{a. Fast dynamics of growth of the number of angry users within 3h (a ‘jump’ of anger), Cologne, January 4, 2016. b. Fast dynamics of growth of the number of compassionate users within 3h (a ‘jump’ of compassion), Cologne, January 4, 2016
+	}\label{fig:fastDynamcs}
+\end{figure} 
+
+Thus, H1 and H2, in how they were formulated, needs to be rejected: the number of the neutral users does not grow depending of the spread of emotions between emotional users. But what is also important is that the dynamics of the emotions is intensive even within the hourly perspective and that the moments when the discussion grows might depend on compassion, rather than anger. The emotions matter in the very beginning of the discussions or in the moments of discussion outbursts.
+
+\textit{H3.} Ourthirdhypothesiswascreatedtoberejected,but,again,thisisnotwhathappens in the datasets. Thus, the correlations between the two hourly spreads of people are: for Cologne -- 0.950****, for Ferguson -- 0,988***, for Charlie Hebdo -- 0,937**. This adds to the evidence that emotional users do not lead the way and do not cause excessive discussion around them but appear within the discussion the same way as neutral users. But, when on an emotional peak, such users might create discussion outbursts.
+
+We have tested the dependence of the discussion dynamics on the number of emotional (angry and compassionate) users of Twitter. Within the three cases, there were no similar patterns of such dependence, which might be explained by socio-cultural differences or the structure of the sample. We have also detected a special role of emotional tweets in the beginnings of the discussions and the discussion outbursts; we suggest that, in future, not users but the tweets themselves need to become the unit of analysis.
+
 \section{Методы суммаризации}\label{sec:ch5/sect4}
 
 \FloatBarrier
