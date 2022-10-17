@@ -853,6 +853,474 @@ As a result of the analysis of the given conflict ad hoc discussions, Biterm Top
 
 Future work involves continuing the work on peer review, the first part of which was done for the Byrulevo data set by students and researchers from the journalism department of SPBU university. It has shown that the best results were obtained by the WNTM model. Comparing results of the models to the manual evaluation will allow us to measure not only the effectiveness of each model but also to compare coherence measures and find which one correlates better with human perception. The different prepocessing methods can also be used to improve the final result, tf-idf can be used instead of regular bag words approach to omit less frequent words more effectively.
 
+\subsection{Topic detection based on sentence embeddings and agglomerative clustering with markov moment}\label{subsec:ch5/sec2/sub2}
+
+\subsubsection{1. Introduction}
+
+The task of finding topical or sentiment-based clusters in real-world textual datasets provides a wide range of methodological problems that are linked to both text clustering as finding the optimal number of clusters and text classification as assignment of a class to a text. The problem of topic detection has two arrays of problems intertwined: that of defining the optimal number of clusters and that of detecting similar texts, as the number of "real topics” depends on how many texts in a given dataset may be called similar enough \cite{NikolenkoKoltcovKoltsova}.
+
+The ways of defining the topics may be divided into several major approaches. Of them, LSA- and LDA-based topic modelling goes “from clustering to classification”, by assigning texts to topic slots with probabilities that are based on the probabilistically measured word proximity \cite{Bodrunova2021}. Unlike traditional topic modelling, approaches as different as DBSCAN- and word2vec-based ones, go “from classification to clustering”, first measuring the word proximity and then defining clusters on this basis. But, for both ways, there are arbitrary parameters that need to be defined by the scholars, such as, e.g., the number of topics for LDA-based topic modelling or the two DBSCAN parameters that limit the number of possible clusters in advance. In “clustering-to-classification” thinking, the issue of optimal clustering is usually only partly resolved by multiple-run modelling with rounded number of clusters -- from 10 to 1000 or more \cite{GreeneCallaghanCunningham}. Additionally, LSA and LDA algorithms assume that all lexical units have equal weight within a dataset \cite{BleiNgJordan}, unlike in real sentences and texts, where nouns or verbs bear bigger semantic load, and some words are met much more frequently than others. To make models closer mirror the inequality of lexical units, various instruments of text pre-processing are employed that disambiguate between same-root words and eliminate stop words, rare words etc., as well as use more sophisticated models of pre-processing \cite{Bodrunova2021,SymeonidisEffrosynidisArampatzis}. DBSCAN-based approaches are widely used, but they are just as widely known for their low performance on data of high dimensionality, e.g., when the number of clusters goes over 10; for resolving this problem, a myriad of extensions have been proposed \cite{MittalGoyalHemanth}.
+
+Thus, one needs to tackle two issues to unite the tasks of clustering and classification: the issue of word proximity estimation and the issue of finding the optimal number of clusters. They might be tackled simultaneously by constructing a methodology that combines decisions for both issues.
+
+Below, we address both issues by testing the proposed clustering method on varying text representations and juxtapose the results with the known baselines. We propose a combination of Universal Sentence Encoder (USE) data pre-processing with sentence embeddings, agglomerative clustering by Ward’s method, and the Markov stopping moment. This method allows for uniting the assessment of text proximity with an optimal automated decision upon the number of clusters.
+
+Earlier, we have conceptualized and theoretically modelled text clustering with hierarchic agglomerative methods with the Markov stopping moment for small datasets; the models showed positive results, while pre-processing was not yet a matter of our concern. We have also suggested their application to network-like representation of texts and sentiment analysis \cite{OrekhovKharlamovBodrunova,KharlamovOrekhovBodrunova}. In this paper, we test the proposed method of agglomerative clustering by Ward’s method with Markov stopping moment for several options of text representation, including more traditional tf-idf and improved word2vec and the sentence embeddings-based text representation. As quality metrics (in particular, V-measure) show, our method (Appendix A) stabilizes the result at the level of >0.5, the number of expected clusters being 10 and 20. Thus, the model performs much better than the existing baseline ones, including DBSCAN and OPTICS.
+
+Raw data that are collected from social media provide additional challenges in terms of topic detection, due to their high noise, post length variations, author-induced grammar and lexicon distortions, and user-by-user dialogue fragmentation. The problem is especially significant for short user texts, like tweets \cite{BodrunovaBlekanovKukarkin}. Thus, before applying the model to data from social media for social science tasks, we used more structured real-world datasets for our experiment; these datasets had to be pre-labeled, as our goal was to test the method. To test our methodology, we have used the well-known real-world labeled dataset “20 newsgroups” (or, in short, News20) (http://qwone.com/~jason/20Newsgroups/) with pre-marked topicality. Four News20 subsets were used as the model text corpora, namely News3 (three classes and 83 documents), News5 (five classes and 121 documents), News10 (10 classes and 268 documents), and News20 (20 classes and 18,846 documents). We have also employed another real-world dataset, namely the BBC one (http://mlg.ucd.ie/datasets/bbc.html), with five thematic clusters \cite{GreeneCunningham}, to ensure that our results are dataset-independent.
+
+For numerical experiments, we used a program code that was written in the Python 3.7 programming language. The NumPy and SciPy libraries were used for calculating distance matrices. The calculations were carried out using the PyCharm shell by JetBrains based on IntelliJ IDEA, and Collaboratory, a free environment for Google’s Jupiter Notebook.
+
+The remainder of the paper is organized, as follows. Section 2 describes the methodological design, including data pre-processing with USE-based text representation, the approximation-estimation criterion and test, and the Markov stopping moment for finding the optimal number of clusters for the texts represented via embeddings. In Section 3, we report on the results as compared to the DBSCAN and OPTICS baselines by V-measure, NMI, and the number of clusters’ inference accuracy. In Discussion (Section 5) and Conclusion (Section 6), we re-assess the method and reflect upon its use on real-world data.
+
+\subsubsection{2. Methods}
+
+\paragraph{2.1. Data Pre-Processing with the Use Model}
+In the “classification-to-clustering” logic, we have first represented the texts in a vector space. We have applied the Universal Sentence Encoder (USE) as a text pre-processing procedure to obtain high-quality contextual embeddings. USE is a transformer-based sentence encoding model that constructs sentence embeddings using the encoding sub-graph of the transformer architecture \cite{CerYangKong}. Transformer architecture consists of two main parts: an encoder and a decoder, where the latter outputs the final result in the form of a vector representation for a given sentence. USE utilizes the attention mechanisms to learn context-aware representations of words and, then, taking their ordering and identity, converts into a fixed-length sentence encoding vectors.
+
+In our test, a pre-trained USE model is utilized in order to obtain sentence-level representations for the original data from the News20 dataset. The USE model was chosen due to several reasons. First, it is its efficiency in modeling small amounts of data, due to its nature as a pre-trained text model \cite{AharoniGoldberg}. Second, it is the quality it provides in general. Third, it is its quality of modelling on short or unbalanced texts then used as a pre-trained model. Fourth, there is a variety of pre-trained USE models that are suitable both for single-language and multilingual text corpora, which allows for economizing on computational resources.
+
+\paragraph{2.2. Approximation-Estimation Test}
+For the next step of our methodology, we rethink the classification problem as a more complex classification and clustering problem of automated typology of texts. In this case, both the topics of the documents and the number of these topics are unknown; they are not pre-defined by the supervisor. As stated above, a possible approach to the automated typology of texts could be unsupervised learning while using cluster analysis methods. For cluster analysis of texts, hierarchical agglomerative algorithms \cite{Everitt,DudaHartStork} can be used.
+
+In general, strict cluster analysis (without intersecting clusters as subsets) is understood as algorithmic typologization of the elements of a certain set (sample) \(X\) by the “measure” of their similarity with each other. An arbitrary clustering algorithm is mapping
+
+\begin{equation}
+	\label{eqn:32}
+	\mathcal{A}:
+	\begin{cases}
+		X \longrightarrow \mathbb{N},\\
+		\overline{x_i} \longmapsto k,
+	\end{cases}
+\end{equation} which maps to any element \(\overline{x_i}\) from the set \(X\) the only \(k\), which is the number of the cluster to which \(\overline{x_i}\) belongs. The clustering process splits the \(X\) into pairwise disjoint subsets of \(X_h\) called clusters: \(X = \bigcup_{h = 1}^m X_h\), where for \(\forall h, l \mid 1 \le h, l \le m : X_h \cap X_l = \O\). Therefore, the map \(\mathcal{A}\) defines an equivalence relation on \(X\) \cite{Orekhov,Orekhov201811}. If an equivalence relation is given on some set X, not all set X can be considered, but only one element from each equivalence class. These elements are called “a representatives” of equivalence classes \cite{VanDerWaerden,Lang}. For cluster analysis, these are, for example, centroids or nearest neighbors. It greatly simplifies calculations and theoretical researchers of the map \(\mathcal{A}\).
+
+One of the main problems when using agglomerative clustering methods is to calculate the preferred number of clusters and determine when the process stops. Moreover, a characteristic feature of these methods is the emergence of the so-called “chain effect” at the final stage of clustering. As we approach the end of the process, one large cluster is formed due to the addition of either previously created clusters or isolated points. If there is no criterion for stopping the clustering process, all points of the set \(X\) will be combined into a single cluster \cite{AldenderferBlashfield,Hartigan}.
+
+The issue of defining the moment of completion of the clustering algorithm is the same moment that determines the optimal number of clusters. The problem of finding this moment can be solved within the framework of the theory of optimal stopping rules \cite{Wald,Sirjaev}.
+
+Before proceeding to the formal mathematical calculations, we will explain the logic of the research design. Thus, we need to detect the optimal number of text types or classes (by topicality, sentiment, etc.) within a certain corpus and assign the types or classes to the texts. Formally, the number of classes (topics, in our case) will coincide with the number of clusters. An adequate number of clusters can be obtained if hierarchical agglomerative clustering stops at the “right moment”. Agglomerative clustering methods are based on combining the elements of some set \(X\) that are located closest to each other. Moreover, the agglomerative process begins with the assumption that each point in \(X\) is a separate cluster. During clustering, the clusters “grow” according to the principle described above. The clusters are clumps (subsets of higher density) inside \(X\). Obviously, with this approach, one of the main characteristics of the clustering process will be the function of minimum distances. While points close to each other are combined, the function of minimum distances slowly increases as a linear quantity. However, when the formed clusters begin to unite, the function of minimum distances increases sharply. In the vicinity of this point, the increase in the function of minimum distances ceases to be linear and becomes parabolic. By common sense, this is the moment of completion of the agglomerative clustering process. Analytically, this moment can be detected as a point at which an incomplete (without a linear term) parabolic approximation becomes more precise than the linear one.
+
+In other words, in the neighborhood of this point, the quadratic error of incomplete parabolic approximation becomes smaller than the quadratic error of linear approximation. When clusters merge or one of the isolated points joins any of them, there should be a sharp jump in the minimum distance’s numerical value. It is the moment when the clustering process is complete. At such a moment, the values of the set of minimum distances are more accurately approximated by an incomplete quadratic parabola (without a linear term), rather than the direct line \cite{Orekhov,Orekhov201811}. Within this approach, the iteration of the agglomerative process of clustering, at which there is a change in the nature of the increase in the function of minimum distances from linear to parabolic, is defined as the Markov stopping moment.
+
+We now turn to formal mathematical notation. Consider the set of minimum distances obtained
+after \(m - 1\) iteration of any agglomerative clustering algorithm. It has the form \( \{F_1, F_2, \ldots, F_{m-1}\} \); for all of the agglomerative clustering methods, except for the centroid one, it is linearly ordered
+relative to numerical values of its elements: \( 0 \le F_1 \le F_2 \le \ldots \le F_{m-1} \). We use this set to derive the statistical criterion for completing the clustering process in an arbitrary Euclidean space \(\mathbb{R}^n\).
+
+We use the previously constructed parabolic approximation-estimation test in order to determine the moment when the character of a monotonic increase in the numerical sequence changes from linear
+to parabolic \cite{Orekhov201809,Orekhov2018}.
+
+We distinguish between a linear approximation in the class of functions of the form \(l(x) =
+ax + b\) and an incomplete parabolic approximation (without a linear term) in the class of functions \(q(x) = cx^2 + d\). The quadratic errors in \(k\) nodes for linear and incomplete parabolic approximation will be, respectively, equal to:
+
+\begin{equation}
+	\label{eqn:33}
+	\delta_l^2(k) = \sum_{i=0}^{k-1}(a \cdot i + b - y_i)^2; \quad \delta_q^2(k) = \sum_{i=0}^{k-1}(c \cdot i^2 + d - y_i)^2.
+\end{equation}
+
+If, in our reasoning, the number of approximation nodes is not essential or obvious from the context, then the corresponding quadratic errors will simply be denoted by \(\delta_l^2\), and \(\delta_q^2\).
+
+When comparing \(\delta_l^2\), and \(\delta_q^2\), there are three possible cases: \(\delta_q^2 < \delta_l^2\); \(\delta_q^2 > \delta_l^2\); \(\delta_q^2 = \delta_l^2\).
+
+We say that the sequence \(y_n\) has linear increase at the nodes (points): \(y_0, y_1, \ldots , y_{k-1}\), if \(y_n\) is monotonic and the quadratic errors of linear and incomplete parabolic approximation over these nodes are related by the inequality: \(\delta_q^2 > \delta_l^2\).
+
+If, under the same conditions, the inequality: \(\delta_q^2 < \delta_l^2\), holds, then we say that the sequence \(y_n\) has parabolic increase at points: \(y_0, y_1, \ldots , y_{k-1}\).
+
+If, for a set of approximation nodes: \(y_0, y_1, \ldots , y_{k-1}\), the equality \(\delta_q^2 = \delta_l^2\) holds, then the point \(y_{k-1}\) is called critical.
+
+We calculate coefficients \(a,b\) of a linear function \(ax+b\) and the coefficients \(c,d\) for an incomplete quadratic function \(cx^2 + d\) approximating the nodes \(y_0, y_1, \ldots , y_{k-1}\) \cite{Orekhov201809,Orekhov2018}.
+
+First, using the method of least squares, we calculate the coefficients \(a, b\) of the linear function \(f(x) = ax + b\) approximating the nodes \(y_0, y_1, \ldots , y_{k-1}\). For this, we find the local minimum of the
+function of two variables
+
+\begin{equation}
+	\label{eqn:34}
+	f_l (a, b) = \sum_{i=0}^{k-1}(a \cdot i + b - y_i)^2.
+\end{equation} We calculate the partial derivatives of the function \(f_l (a, b)\):
+\begin{equation}
+	\label{eqn:35}
+	\frac{\partial f_l}{\partial a} = 2a \sum_{i=0}^{k-1} i^2 + 2b \sum_{i=0}^{k-1}i - 2\sum_{i=0}^{k-1}i \cdot y_i;
+\end{equation}
+\begin{equation}
+	\label{eqn:36}
+	\frac{\partial f_l}{\partial b} = 2a \sum_{i=0}^{k-1} i + 2b \sum_{i=0}^{k-1}1 - 2\sum_{i=0}^{k-1} y_i;
+\end{equation} By equating them to zero, we obtain a system of linear equations for the unknown \(a\) and \(b\):
+\begin{equation}
+	\label{eqn:37}
+	\begin{cases}
+		\frac{k(k-1)(2k-1)}{6} \cdot a + \frac{k(k-1)}{2} \cdot b = \sum_{i=1}^{k-1} i \cdot y_i \\
+		\frac{k(k-1)}{2} \cdot a + k \cdot b = \sum_{i=1}^{k-1} y_i,
+	\end{cases}
+\end{equation} which implies:
+\begin{equation}
+	\label{eqn:38}
+	a = \frac{6}{k(k^2 - 1)} {\sum_{i=1}^{k-1}(2i + 1 - k)y_i} \quad b = \frac{2}{k(k-1)} \sum_{i=1}^{k-1}(2k-1 - 3i)y_i.
+\end{equation}
+
+We calculate the coefficients \(c, d\) of the incomplete quadratic function \(cx^2 + d\) as the coordinates of
+the local minimum for:
+
+\begin{equation}
+\label{eqn:39}
+f_q(c, d) = \sum_{i=0}^{k-1} (c \cdot i^2 + d - y_i)^2.
+\end{equation}
+
+
+Differentiating \(f_q(c, d)\), we find:
+
+\begin{equation}
+	\label{eqn:40}
+	\frac{\partial f_q}{\partial c} = 2c \sum_{i=0}^{k-1} i^4 + 2d \sum_{i=0}^{k-1}i^2 - 2\sum_{i=0}^{k-1}i^2 \cdot y_i,
+\end{equation}
+\begin{equation}
+	\label{eqn:41}
+	\frac{\partial f_q}{\partial d} = 2c \sum_{i=0}^{k-1} i^2 + 2d \sum_{i=0}^{k-1}1 - 2\sum_{i=0}^{k-1} y_i,
+\end{equation} and
+\begin{equation}
+	\label{eqn:42}
+		\begin{cases}
+		\frac{k(k-1)(2k-1)(3k^2 - 3k - 1)}{30} \cdot c + \frac{k(k-1)(2k-1)}{6} \cdot d = \sum_{i=1}^{k-1} i^2 \cdot y_i \\
+		\frac{k(k-1)(2k-1)}{6} \cdot c + k \cdot d = \sum_{i=1}^{k-1} y_i,
+	\end{cases}
+\end{equation}
+
+We find that:
+\begin{equation}
+	\label{eqn:43}
+	c = \frac{30}{k(k-1)(2k - 1)(8k^2 - 3k -11)}{\sum_{i=1}^{k-1}(6i^2 - (k-1)(2k -1))y_i};
+\end{equation}
+\begin{equation}
+	\label{eqn:44}
+	d = \frac{6}{k(8k^2 - 3k -11)}{\sum_{i=1}^{k-1}(3k(k-1) - 1 - 5i^2)y_i};
+\end{equation}
+
+Subsequently, to determine the moment when the character of the increase in the monotonic
+sequence \(y_n\) changes from linear to parabolic, we construct the parabolic approximation-estimation
+test \(\delta_{ql}^2\).
+
+By definition, we assume that, for approximation nodes:  \(y_0, y_1, \ldots , y_{k-1}\) the parabolic
+approximation-estimation test \cite{Orekhov201809,Orekhov2018} is expressed by the formula:
+
+\begin{equation}
+	\label{eqn:45}
+	\delta^2 = \delta_{ql}^2(k) = \delta_l^2(k) - \delta_q^2(k).
+\end{equation}
+
+Moreover, we assume that always \(y_0 = 0\). It is easy to achieve this condition at any approximation step while susing the transformation:
+
+\begin{equation}
+	\label{eqn:46}
+	y_0 = y_j - y_j, y_1 = y_{j+1} - y_j, \ldots, y_{k-1} = y_{j+k-1} - y_j.
+\end{equation}
+
+Now, we calculate, using the values of the coefficients \(a, b, c, d\), the quadratic errors of the linear and incomplete parabolic approximations at four points \(y_0, y_1, y_2, y_3\), and we obtain an explicit expression for \(\delta^2\)  \cite{Orekhov201809,Orekhov2018}.
+
+\begin{equation}
+	\label{eqn:47}
+	\delta^2(4) = \delta_{ql}^2(k) = \delta_l^2(4) - \delta_q^2(4) = \frac{1}{245}(19y_1^2 - 11y_2^2 + 41y_3^2 + 12y_1y_2 - 64 y_1y_3 - 46y_2y_3).
+\end{equation}
+
+Thus, we have derived a quadratic form equal to the difference of the quadratic errors of linear and incomplete parabolic approximation. This quadratic form changes its sign when the character of an increase in the numerical sequence changes from linear to parabolic.
+
+\paragraph{2.3. Cluster Analysis as a Random Process and the Markov Moment of Its Stopping}
+
+Now, we will formally determine the moment of stopping the clustering process using the theory of random processes and the theory of sequential statistical analysis. Here, the approximation-estimation test is used as the decisive statistical criterion.
+
+Let \(T = \overline{1, m - 1}\) be a bounded subset of the natural series, containing natural numbers: \(1, 2, \ldots, m - 1\). Subsequently, the family \(\xi = \{\xi_t, t \in T\}\) of random variables \(\xi_t = \xi_t(\omega)\) defined for \(\forall t \in T\) on the same probability space \((\Omega, \mathcal{F}, P)\) is called a discrete random process.
+
+Each random variable \(\xi_t\) generates a \(\sigma\)-algebra, which we denote as \(\mathcal{F}_{\xi_t}\). Subsequently, the \(\sigma\)-algebra generated by the random process \(\xi = \{\xi_t,t \in T\}\) is called the minimal \(\sigma\)-algebra containing all \(\mathcal{F}_{\xi_t}\) i.e.,
+
+\begin{equation}
+	\label{eqn:48}
+	\sigma(\xi) = \sigma(\bigcup_{t=1}^{m-1} \mathcal{F}_{\xi_t}).
+\end{equation}
+
+The discrete random process \(\xi = \{\xi_t, t \in T\}\) can be considered as a function of two variables \(\xi = \xi(t, \omega)\), where \(t\) is the natural argument, \(\omega\) is a random event. If we fix \(t\), then, as indicated above, we obtain a random variable \(\xi_t\); if we fix a random event \(\omega_0\), we obtain a function of the natural argument \(t\), which is called the trajectory of the random process \(\xi\) and is a random sequence of \(\xi_t(\omega_0)\).
+
+We consider the clustering of a finite set \(X\) from the Euclidean space \(\mathbb{R}^n\) as a discrete random process \(\xi = \xi(t,\omega)\). A random event of \(\omega \in \Omega\) will be the extraction of a sample of \(X\) from \(\mathbb{R}^n\). Theoretically, any point \(\overline{x} \in \mathbb{R}^n\) can belong to the sample set \(X\), therefore the \(\sigma\)-algebra from the probability space \((\Omega, \mathcal{F}, P)\) contains all \(\mathbb{R}^n\), any finite set \(X\) from the space \(\mathbb{R}^n\), all possible countable unions of such sets, and additions to it. We denote this set system as \(\mathcal{S}(\mathbb{R}^n)\) and call it selective $\sigma$-algebra, \(\mathcal{F} = \mathcal{S}(\mathbb{R}^n)\). The same reasoning holds for any $\sigma$-algebra \(\mathcal{F}_{\xi_t}\) . Therefore, \(\sigma(\xi) = \mathcal{S}(\mathbb{R}^n)\).
+
+Consider the binary problem of testing the statistical hypotheses \(H_0\) and \(H_1\). Where the null hypothesis \(H_0\), or the random sequence of \(\xi_t(\omega_0)\), increases linearly, and the alternative hypothesis \(H_1\), or the random sequence \(\xi_t(\omega_0)\), increases non-linearly (parabolically). It is necessary to construct the criterion as a strict mathematical rule that tests the statistical hypothesis.
+
+In the Euclidean space, \(\mathbb{R}^n\) during agglomerative clustering of sample data, one of the main characteristics of the process will be a set of minimum distances. It is natural to consider its values as a random variable \(\xi_t : \Omega \longrightarrow \mathbb{R}\), assuming that t is the iteration number of the agglomerative clustering algorithm $\mathcal{A}$. For any fixed random event \(\omega_0 \in \Omega\), the corresponding trajectory \(\xi_t(\omega_0) = F_t\) is a monotonically increasing random sequence.
+
+On the probability space \((\Omega, \mathcal{F}, P)\) the family of $\sigma$-algebras \(\mathfrak{F} = \{\mathcal{F}_t, t \in T\}\) is called a filtration, if for \(\forall i, j \in T \mid i < j: \mathcal{F}_i \subset \mathcal{F}_j \subset \mathcal{F}\). Moreover, if for \(\forall t \in T: \mathcal{F}_t = \sigma(\xi_i, i < t)\),then the filtration is called natural. The random process \(\xi = \{\xi_t, t \in T\}\) is called consistent with the filtration $\mathfrak{F}$, if for \(\forall t \in T :\sigma (\xi_t) = \mathcal{F}_{\xi_t} \subset \mathcal{F}_t\). Obviously, any random process is consistent with its natural filtration.
+
+The mapping \(\tau: \Omega \longrightarrow T\) is called Markov moment with respect to the filtering $\mathfrak{F}$, if for \(\forall t \in T\) the preimage of the set is \(\{\tau \le t\} \in \mathcal{F}_t\). If, in addition, the probability \(P(\tau < +\infty) = 1\), then $\tau$ is called the Markov stopping time \cite{Sirjaev}.
+
+In other words, let $\tau$ be the moment of the occurrence of some event in the random process \(\xi = \{\xi_t, t \in T\}\). If for \(\forall t_0 \in T\) we can definitely say whether the event $\tau$ occurred or not, provided that the values of \(\xi_t\) are only known in the past (to the left of \(t_0\)), then $\tau$ is the Markov moment relative to the natural filtering $\mathfrak{F}$ of the random process \(\xi = \{\xi_t, t \in T\}\). If the moment of the occurrence of $\tau$ has a probability equal to one, then $\tau$ is the Markov stopping time.
+
+For a random sequence of minimum distances \(F_t\), when we cluster the sample \(X \subset \mathbb{R}^n\), the natural filtration consistent with the process is the “sample $\sigma$-algebra” \(\mathcal{S}(\mathbb{R}^n)\). Subsequently, by definition, the Markov moment of stopping the agglomerative process of clustering will be statistics
+
+\begin{equation}
+	\label{eqn:49}
+	\tau = \min\{t \in T \mid \delta_t^2 > 0\}.
+\end{equation}
+
+Thus, the statistical criterion for the completion of the agglomerative process of clustering can be formulated, as follows. Let \(\{F_1, F_2,\ldots, F_k\}\) be a linearly ordered set of minimum distances, and the set \(\{y_1, y_2, \ldots, y_k\}\) be the “trend set” obtained using the transformation \(y_i = F_i + q \cdot i\), where \(q\) is the “trend coefficient”, and \(i\) is the iteration number of the agglomerative clustering algorithm \(\mathcal{A}\). The clustering process is considered to be completed at the \(k\)-th iteration, if for the nodes \(y_{k-4}, y_{k-3}, y_{k-2}, y_{k-1}\) the inequality \(\sigma^2 \le 0\), and for the set of points \(y_{k-3}, y_{k-2}, y_{k-1}, y_k\), the inequality \(\delta^2 > 0\).
+
+In other words, the Markov moment of stopping the agglomerative clustering process is the minimum value \(t\) at which the null hypothesis \(H_0\) is rejected (“the values of the elements of a linearly ordered trend set increase linearly”) and the alternative hypothesis is accepted \(H_1\) (“the values of the elements of a linearly ordered trend set increase parabolically”) \cite{Orekhov}.
+
+\paragraph{2.4. Clustering Stability and Determining the Preferred Number of Clusters: The Stopping Criterion}
+
+The clustering process is completed using the parabolic approximation-estimation test described above, which estimates the jumps of a monotonically increasing sequence of “trend set” values. The magnitude of the significant jump sufficient to stop the process depends on the sensitivity of the stopping criterion, which is set using the non-negative coefficient \(q\) \cite{Orekhov,Orekhov201811}. The higher the value of \(q\), the lower the criterion’s sensitivity for stopping the clustering process. The stopping criterion has the highest sensitivity at \(q = 0\), in this case, as a result of clustering, the most significant number of clusters will be obtained. By increasing \(q\), the stopping criterion’s sensitivity can be reduced so that the process continues until all \(m\) vectors are combined into one cluster. In this case, intervals of stable clustering \(Q_i = [\alpha_i, \beta_i]\) will occur on which for \(\forall q \mid \alpha_i \le q \le \beta_i\) the same clustering results will be obtained.
+
+Cluster analysis, in a sense, has a high degree of subjectivity. Therefore, the interpretation of its results largely depends on the researcher. So far, no rigorous definition of “sustainable/stable clustering” has been introduced; the scholars only speak of an intuitive concept. They argue that “clustering stability” shows how different the resulting partitions into equivalence classes become after using the clustering algorithms for the same data many times. A slight discrepancy between the results is interpreted as high stability \cite{GranichinShalymovAvros}.
+
+In our case, a quantitative measure of stability of clustering can be considered the value of the interval of variation of the coefficient \(q\), within which the same result is obtained for the set \(X\). Here, we note again that the “chain effect” arises at the final stage of the clustering process when already-formed clusters are added one after another to some other cluster. In this case, the correct choice of sensitivity threshold for the stopping criterion on the account of the non-negative coefficient \(q\) is essential. In the general case, the sequence of intervals of stable clustering, for various values of the coefficient \(q\), is denoted by: \(Q_1, Q_2,\ldots, Q_{e-2}, Q_{e-1}, Q_e\),where \(Q_i (1\le i \le e - 1)\)is the interval of stable clustering, and \(Q_e\) is the set of values of the coefficient \(q\), in which all \(m\) points are combined into one cluster.
+
+Clustering with Markov stopping time allows for automation of the procedure for determining the number of clusters in the text corpus. Based on the analysis of numerical experiments and general considerations, the following hypothesis was formulated earlier: “Preferred a number of clusters is formed at \(q \in Q_{e-2''}\) \cite{Orekhov201811}. The main motive for formulating this hypothesis was that a chain effect is manifested in the interval of stable clustering \(Q_{e-1}\), at which already formed clusters are combined.
+
+\subsubsection{3. Comparison of the Proposed Approach with the Silhouette Score and the Elbow Method}
+
+As stated above, to define the preferred number of clusters, we use the “e-2” hypothesis.
+
+In detail, the “e-2” hypothesis works the following way. The coefficient of trend \(q\) increases monotonically, with some discreteness step from \(0\) to \(+\infty\). The first stable clustering interval is \(Q_1 = [0, a_1]\). For any \(q\) from \([0, a_1]\), the same clustering result is obtained, and the sample is divided into the largest number of clusters. These clusters are the smallest. The next stable clustering interval, \(Q_2 = [a_1, a_2]\), for any \(q\) from \([a1, a2]\), the same result is obtained again. Nevertheless, the number of clusters decreases, and the clusters become larger, etc. When the \(q\) trend coefficient increases, the preferred number of clusters is obtained. We denote this stable clustering interval \(Q_{e-2} = [a_{e-3}, a_{e-2}]\). It is clear that, for any \(q\) from \([a_{e-3}, a_{e-2}]\), the preferred number of clusters is obtained. On the interval of stable clustering \(Q_{e-1} = [a_{e-2}, a_{e-1}]\), a “chain effect” occurs, described in the literature on cluster analysis, for example \cite{AldenderferBlashfield}. In this interval of stable clustering, some of the already formed clusters merge. The coefficient \(q\) increases and reaches such a value ae that all sampling elements are combined into one cluster. We denote this ray of stable clustering by \(Q_e = [a_e, +\infty)\). From the text stated above, it is obvious that if the marked dataset contains less than three clusters, then the interval of stable clustering \(Q_{e-1} = [a_{e-2}, a_{e-1}]\) disappears. Therefore, for such datasets, the “e-2” hypothesis gives a bad result. Thus, it is clear that, for two-cluster datasets, use of the “e-2” hypothesis is not recommended, as the “e-1” step will be eliminated; however, for data with the presumed number of clusters being three or more, our method is capable of providing refined results. It needs to be underlined that the overwhelming majority of real-world datasets contain far more than two clusters: even in the simplest tasks of sentiment analysis, there are three clusters (negative, positive, and neutral), while, in topic detection, the number of clusters in large corpora is expected to be much bigger. Thus, our method is suitable for such datasets.
+
+Below, we support this claim by applying our method first to the simplest standard model datasets from scikit-learn (https://scikit-learn.org/stable/modules/clustering.htmllibrary). The scikit-learn visualization of runs of clustering methods on six datasets of varying nature demonstrates that various clustering methods work differently on datasets with varying number of clusters (one, two, and three) and varying spreads of data units within the Euclidean space. The pictures at scikit-learn show that some methods work better on two-cluster datasets, and some do best on three-cluster ones.
+
+Figure~\cref{fig:scikitLearnResults} shows the results of application of our method to the six model datasets.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{scikitLearnResults}
+	}
+	\caption{Results of the proposed approach made on datasets from scikit-learn.}\label{fig:scikitLearnResults}
+\end{figure}
+
+Figure~\cref{fig:scikitLearnResults} allows for two conclusions. First, for three-cluster datasets, our method works well, the results are close to the Ward method, but work even better with borderline units (see visualizations for the datasets 3, 4, and 5, in comparison with the respective visualizations at scikit-learn for the Ward method). The visualization confirms that our method suits well for the datasets with three or more clusters. In this respect, the dataset 3 at Figure~\cref{fig:scikitLearnResults} deserves particular attention. This dataset contains three spherical clusters with fuzzy boundaries (compare to the dataset 5). Such distribution of points in a Euclidean space is typical for text representations by normalized vectors (e.g., embeddings-based representations). If we a priori assume that, according to the Euclidean metric, similar texts have similar vector representations, they should form spherical clusters. At the same time, the problem of fuzzy boundaries between different types of texts is well-known. According to Snell-Hornby \cite{SnellHornby}, there are no clear boundaries between types of texts, but only a certain center for each of the types. Therefore, we can assume that the representation of textual data by normalized vectors in the Euclidean space most closely matches the one of the dataset 3 at Figure~\cref{fig:scikitLearnResults}. Additionally, this is exactly where our method works best. Second, for the datasets with one or two clusters, our method detects a big number of clusters (see visualizations for the datasets 1, 2, and 6 at Figure~\cref{fig:scikitLearnResults}). This proves that use of the “e-2” hypothesis allows for catching the moment when the clustering process begins, before the chain effect shows up. Again, this proves that our method is suitable for datasets with large number of clusters, like the real-world ones used for topic detection.
+
+Now, let us see how the “e-2” hypothesis works in comparison with more traditional ways of stopping to determine the preferred number of clusters, namely the silhouette metric and the elbow method. Our approach differs from both of them. The elbow method is a heuristic used to determine the number of clusters in a dataset. It consists of finding the “elbow” of the graph of change as a function of the number of clusters. The most common variation that is used in the elbow method is total variance within the cluster. The proposed method for determining the number of clusters using approximation-estimation tests is also based on finding the “elbow” of the graph of some values that characterize the clustering process. The difference is that the definition number of clusters with help of “elbow” is based upon heuristic visual assessment, but the definition number of clusters with help of approximation-estimation tests and “e-2” hypothesis is based upon sequential statistical analysis.
+
+Unlike the elbow method, the silhouette coefficient is non-heuristic. It is based on two scores: \(a(x)\) is the average distance from current point \(x\) to objects of its own cluster \(A\), and \(b(x)\) is the average distance from the current point \(x\) to the objects of cluster \(B\), which is the closest one to \(x\). The silhouette coefficient of point \(x\) is the number \(s(x)\):
+
+
+\begin{equation}
+	\label{eqn:50}
+	s(x) = \frac{b(x) - a(x)}{\max\{a(x), b(x)\}}.
+\end{equation}
+
+It is easy to see that \(-1 \le s(x) \le 1\). The value of \(s(x)\) being close to 1 implies that the point is clustered well; the value being close to \(-1\) implies that the point is clustered incorrect. If the value is close to 0, it it means that the distances from \(x\) to both clusters \(A\) and \(B\) are the same, and the point x should be assigned to either \(A\) or \(B\). This case can be considered as “ntermediate”. The silhouette coefficient of a dataset is defined as the average of the silhouette coefficients for all of the points of the sample. The number of clusters with the highest silhouette coefficient for the fixed clustering method can be determined as the optimal number of clusters for this method applied to the dataset under scrutiny \cite{Rousseeuw}.
+
+However, the silhouette coefficient has its shortcomings. It takes much time to compute the silhouette coefficients for every data unit in large datasets for every possible clustering result. Additionally, the silhouette coefficient cannot detect well the original number of clusters if the clusters overlap and have fuzzy boundaries, while our method helps to eliminate this problem.
+
+To prove it, we have applied our method to another well-known model dataset, namely the iris dataset (https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load\_iris.html\#sklearn. datasets.load\_iris). The results of the application are shown in Tables~\cref{tab:irisSilhouetteCoefficient} and~\cref{tab:irisE2} (the silhouette coefficient and “e-2” hypothesis, respectively). The iris dataset consists of data of three classes, with two of them slightly overlapping, and our features for each data unit. Thus, the expected number of clusters is three. The results presented in Tables~\cref{tab:irisSilhouetteCoefficient} and~\cref{tab:irisE2} clearly show that the silhouette coefficient misses the point in detecting the right number of clusters, while our method finds the right number of clusters on the interval of stable clustering “e-2”.
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of clusters received for the iris dataset by the silhouette coefficient.}%
+	\label{tab:irisSilhouetteCoefficient}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Number of Clusters & Silhouette Coeffecient\\
+			\hline
+			\textbf{2} & \textbf{0.6867} \\
+			3 & 0.5543 \\
+			4 & 0.4889 \\
+			5 & 0.4843 \\
+			6 & 0.3592 \\
+			7 & 0.3422 \\
+			8 & 0.3436 \\
+			9 & 0.3305 \\
+			10 & 0.2925 \\			
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of clusters received for the iris dataset by application of the e-2 hypothesis.}%
+	\label{tab:irisE2}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Number of Clusters & The Number of the Interval of Stable Clustering\\
+			\hline
+			1 & \(e\) \\
+			2 & \(e - 1\) \\
+			\textbf{3} & \textbf{\textit{e} − 2} \\
+			8 & \(e - 3\) \\
+			25 & \(e - 4\) \\
+			144 & \(e - 5\) \\			
+			145 & \(e - 6\) \\			
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\subsubsection{4. The Experiment against the Baselines and Its Results}
+
+The tests were performed on two distinct datasets. News20 is a dataset containing news headlines and articles, which was split into four subsets. Each division contains rows with unique labels e.g., rows from a subset containing three classes is not used in subsets with five and 10 classes. BBC is a dataset containing BBC articles with each row labeled as one of the five distinct classes: sport, tech, business, entertainment, and politics.
+
+The proposed model was tested against two other well-known clustering methods that have the ability to infer the optimal number of clusters as part of the training process. DBSCAN and OPTICS were chosen as one of the few classic approaches that does not require the number of clusters to train the model \cite{EsterKriegelSander,SchubertGertz}.
+
+Three metrics were utilized to evaluate the performance of our method against classic approaches. The V-measure can be described as a weighted harmonic mean of homogeneity and completeness \cite{RosenbergHirschberg}. In this metric, the homogeneity criterion is satisfied if the algorithm only assigns to a single cluster the data units that are members of a single class. In order to satisfy the completeness criteria, the algorithm must assign to a single cluster all of the data units that are members of a single class. NMI (Normalized Mutual Information) \cite{StrehlGhosh} was used as additional performance metric, which utilises entropies of class labels and mutual information (a reduction in the entropy of class labels after training). Both of these metrics are independent of the absolute values of the labels, and the results of clustering can be directly compared with the true labels, which are document classes of the original data assigned by the authors of this dataset. Finally, to test models’ ability to accurately determine the number of clusters in a given corpus, we employed a measure of similarity between the optimal number of clusters and the number obtained by algorithms (number of clusters’ inference accuracy).
+
+Experiments were conducted with different encoding techniques, in order to test their possible impact on the model’s performance. The first model is TF-IDF, as it is, to this day, a very popular encoding methods for relatively simple tasks. Another employed method is FastText \cite{BojanowskiGraveJoulin}, which is an extension of a well-known word2vec model with improved accuracy and faster training time due to the usage of negative sampling. Finally, we use the context-aware USE model described in Section 2, which, unlike FastText, can output embeddings not just for words but for entire sentences and, by doing so, bypasses the process of averaging the word embeddings typically performed by the models that do not utilise context information, such as FastText.
+
+The results for different combinations of training and encoding models, as well as different metrics, can be seen in Tables~\cref{tab:vMeasure35}-\cref{tab:bbcDatasetResults}.
+
+\begin{table}[ht]%
+	\centering
+	\caption{V-measure for News3 and News5.}%
+	\label{tab:vMeasure35}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			 & \multicolumn{3}{c}{\makecell{News3}} & \multicolumn{3}{c}{\makecell{News5}}\\
+			\hline
+			Method & W2V & TF-IDF & USE & W2V & TF-IDF & USE \\
+			\hline
+			“e-2” hypothesis & 0.38 & 0.28 & \textbf{0.40} & 0.09 & 0.33 & \textbf{0.41} \\
+			DBSCAN & 0.05 & 0.09 & 0.31 & 0.06 & 0.05 & 0.22 \\
+			OPTICS & 0.20 & 0.26 & 0.24 & 0.08 & 0.16 & 0.11 \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{V-measure for News10 and News20.}%
+	\label{tab:vMeasure1020}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& \multicolumn{3}{c}{\makecell{News3}} & \multicolumn{3}{c}{\makecell{News5}}\\
+			\hline
+			Method & W2V & TF-IDF & USE & W2V & TF-IDF & USE \\
+			\hline
+			“e-2” hypothesis & 0.09 & 0.13 & \textbf{0.64} & 0.08 & 0.22 & \textbf{0.52} \\
+			DBSCAN & 0.01 & 0.24 & 0.38 & 0.02 & 0.18 & 0.09 \\
+			OPTICS & 0.20 & 0.28 & 0.36 & 0.14 & 0.23 & 0.01 \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{NMI for News3 and News5.}%
+	\label{tab:nmi35}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& \multicolumn{3}{c}{\makecell{News3}} & \multicolumn{3}{c}{\makecell{News5}}\\
+			\hline
+			Method & W2V & TF-IDF & USE & W2V & TF-IDF & USE \\
+			\hline
+			“e-2” hypothesis & 0.43 & 0.29 & \textbf{0.51} & 0.10 & \textbf{0.75} & \textbf{0.75} \\
+			DBSCAN & 0.03 & 0.06 & 0.50 & 0.06 & 0.04 & 0.31 \\
+			OPTICS & 0.19 & 0.31 & 0.26 & 0.06 & 0.19 & 0.11 \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{NMI for News10 and News20.}%
+	\label{tab:nmi1020}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& \multicolumn{3}{c}{\makecell{News3}} & \multicolumn{3}{c}{\makecell{News5}}\\
+			\hline
+			Method & W2V & TF-IDF & USE & W2V & TF-IDF & USE \\
+			\hline
+			“e-2” hypothesis & 0.17 & 0.20 & \textbf{1.43} & 0.17 & 0.49 & \textbf{1.48} \\
+			DBSCAN & 0.02 & 0.39 & 0.73 & 0.04 & 0.34 & 0.15 \\
+			OPTICS & 0.30 & 0.47 & 0.70 & 0.24 & 0.46 & 0.01 \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of clusters’ inference accuracy for News3 and News5.}%
+	\label{tab:clusterInfluence35}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& \multicolumn{3}{c}{\makecell{News3}} & \multicolumn{3}{c}{\makecell{News5}}\\
+			\hline
+			Method & W2V & TF-IDF & USE & W2V & TF-IDF & USE \\
+			\hline
+			“e-2” hypothesis & 0.71 & \textbf{1} & 0.50 & 0.50 & 0.26 & 0.43 \\
+			DBSCAN & \textbf{1} & \textbf{1} & 0.33 & 0.50 & 0.50 & 0.43  \\
+			OPTICS & 0.20 & 0.14 & 0.14 & 0.78 & 0.25 & \textbf{0.82}\\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of clusters’ inference accuracy for News10 and News20.}%
+	\label{tab:clusterInfluence1020}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& \multicolumn{3}{c}{\makecell{News3}} & \multicolumn{3}{c}{\makecell{News5}}\\
+			\hline
+			Method & W2V & TF-IDF & USE & W2V & TF-IDF & USE \\
+			\hline
+			“e-2” hypothesis & 0.14 & 0.08 & \textbf{1} & 0.20 & 0.14 & 0.84 \\
+			DBSCAN & 0.33 & 0.33 & 0.38 & 0.33 & 0.78 & 0.51  \\
+			OPTICS & 0.60 & 0.18 & 0.11 & 0.84 & 0.45 & \textbf{0.95} \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Results for BBC dataset (Universal Sentence Encoder (USE) data pre-processing).}%
+	\label{tab:bbcDatasetResults}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Method & V\_measure & NMI & The Number of Clusters’ Inference Accuracy \\
+			\hline
+			“e-2” hypothesis & \textbf{0.698} & \textbf{1.115} & \textbf{1} \\
+			DBSCAN & 0.001 & 0.001 & 0.142 \\
+			OPTICS & 0.166 & 0.216 & \textbf{0.816} \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+The experiment shows that the proposed method of agglomerative clustering with USE pre-processing provides a much better result when compared to the baselineS, namely DBSCAN and OPTICS. The model performs especially well when the number of classes increases, reaching eight-times better performance than the baseline model if compared by the V-measure.
+
+\subsubsection{5. Discussion}
+
+As we have demonstrated above, the proposed method shows high efficiency against the baseline; however, it is not deprived of shortcomings.
+
+As for data pre-processing and the dataset, the most notable downside to models, such as USE, are their requirements in terms of hardware and their time-consuming nature. This is especially true then the model is trained from scratch, but even the inference process can be rather slow then dealing with large corpora. Additionally, News20 has very well-defined classes and, as such, may not be representative of the performance on the real data. However, it provides a good enough estimate of the model performance by giving us the ability to check the clustering performance via comparing obtained cluster labels with the true labels defined for this set by human coding.
+
+As for the clustering procedure with the Markov moment, it still possesses some residual subjectivity, as sensitivity of the stopping criterion may be changed by the researcher. As we noted above, clustering \textit{per se} is a subjective instrument when used for topicality or sentiment detection, as almost all of the stopping criteria (that is, the criteria for selection of the optimal number of clusters) are subjective by nature, being based on heuristic approaches to problem resolution. The use of “e-2 hypothesis” that we have suggested above aims at reducing the level of subjectivity. Additionally, more experiments are needed to collect empirical data on the optimal values of the stopping criterion for the real-world data. In order to overcome the problem of subjectivity, the data might as well undergo further experiments with various procedures for stopping, while the results might be compared to expert opinion, given that the level of agreement of 0.7-0.8 among the human coders is reached. However, we need to note that our prior experiments with topic models and human coding have shown that manual coding should not be taken as baseline. In particular, for pairs of human coders, topic interpretability and proximity varied for over 10 times, depending on prior familiarity with the dataset and coding experience \cite{BlekanovBodrunovaZhuravleva}. Thus, the quality assessment of clustering remains an issue. Our approach significantly helps researchers to reduce subjectivity but does not eliminate it completely. The advantage of our approach is that it allows for testing subtle changes in topicality distribution by nuanced variances of the stopping criterion, rather than changing the number of topic slots in arbitrary manner.
+
+Possible limitations of our work may also lie in two aspects. The utilization of transformer-based sentence embeddings and USE may be advised to scholars interested in text clustering, but application of USE may be technically unfeasible for some of them. Additionally, the limitations might be linked to the nature of the datasets, which, as mentioned before, stands between regularized text collections and highly noisy data from social media.
+
+\subsubsection{6. Conclusions}
+
+
+Above, we have demonstrated the efficiency of a combined method for automated text typology that unites the tasks of text classification and text clustering. We have used sentence embeddings at the stage of pre-processing and hierarchical agglomerative clustering with an approximation-estimation test and the Markov stopping moment for defining the time of completion of clustering.
+
+We have shown that this methodological design showed high efficiency in comparison with two baselines, DBSCAN and OPTICS. It is especially true for the number of clusters higher than five. The quality of the model does not drop at 10 and 20 classes, which allows overcoming the well-known problem of low performance of text classification for high numbers of clusters. The results may be applied to a wide array of tasks of text classification, including topic detection, multi-class sentiment analysis, and clustering of multilingual datasets by language. In combination with social network analysis, it may be applied for community detection on social networks and to other tasks of networked discussion analytics.
+
+Real-world data can pose challenges to our method, as mentioned above. Thus, our future work will develop in three directions. First, we will apply the proposed method to the real-world datasets from unilingual and multilingual Twitter and Youtube that we have collected in 2014 to 2019 \cite{BodrunovaBlekanovSmoliarova}. We expect the results to drop to some extent, as the real-world data substantially complicate pre-processing. This is why, second, our future work will involve testing the model with other encoding methods such as XLNet, BERT, and others. Third, testing the model against other, more specialized clustering models and comparing them with the help of a wide array of metrics can also provide for better understanding of the efficiency of the model.
+
 \subsection{The ideal topic: interdependence of topic interpretability and other quality features in topic modelling for short texts}\label{subsec:ch5/sec2/sub3}
 
 \subsubsection{1. Introduction}
