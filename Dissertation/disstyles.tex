@@ -193,3 +193,28 @@
     \newtotcounter{totalappendix}
     \newtotcounter{totalchapter}
 }
+
+%%% Дополнительно %%%
+
+%% используется в длинных таблицах
+\UseTblrLibrary{booktabs} 
+\DefTblrTemplate{contfoot-text}{default}{}
+\DefTblrTemplate{middlehead,lasthead}{default}{Продолжение таблицы \thetable}
+\DefTblrTemplate{caption-sep}{default}{\enskip---\enskip}
+
+\DefTblrTemplate{caption}{default}{
+	\par
+	\UseTblrTemplate{caption-tag}{default}
+	\UseTblrTemplate{caption-sep}{default}
+	\UseTblrTemplate{caption-text}{default}
+	\par
+}
+
+\DefTblrTemplate{capcont}{default}{%
+	\par
+	\UseTblrTemplate {caption-tag}{default}%
+	\UseTblrTemplate {caption-sep}{default}%
+	\UseTblrTemplate {caption-text}{default}
+	\UseTblrTemplate {conthead-text}{default}
+	\par
+}

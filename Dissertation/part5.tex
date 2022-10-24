@@ -1140,7 +1140,7 @@ To prove it, we have applied our method to another well-known model dataset, nam
 			\hline
 			1 & \(e\) \\
 			2 & \(e - 1\) \\
-			\textbf{3} & \textbf{\textit{e} − 2} \\
+			\textbf{3} & \textbf{\textit{e} - 2} \\
 			8 & \(e - 3\) \\
 			25 & \(e - 4\) \\
 			144 & \(e - 5\) \\			
@@ -2069,6 +2069,399 @@ Thus, H1 and H2, in how they were formulated, needs to be rejected: the number o
 We have tested the dependence of the discussion dynamics on the number of emotional (angry and compassionate) users of Twitter. Within the three cases, there were no similar patterns of such dependence, which might be explained by socio-cultural differences or the structure of the sample. We have also detected a special role of emotional tweets in the beginnings of the discussions and the discussion outbursts; we suggest that, in future, not users but the tweets themselves need to become the unit of analysis.
 
 \section{Методы суммаризации}\label{sec:ch5/sect4}
+
+\subsection{Global Agendas: Detection of Agenda Shifts in Cross-National Discussions Using Neural-Network Text Summarization for Twitter}\label{subsec:ch5/sec4/sub1}
+
+\subsubsection{1. Introduction}
+
+The spread of agendas in online media has been a focus of scholarly attention for nearly two decades \cite{McCombs2004}. However, for social media, the meaning of agendas transform; scholars discuss smaller-scale agendas and their shifts \cite{KoltsovaNagornyy} within particular online discussions, including hashtagged ones. Despite its seemingly smaller impact, in-discussion agendas may spill over to traditional media and thus press public bodies, gather support, call for action, or fuel protest. Also, affect-based discussions \cite{Papacharissi} help identify immediate popular reaction to trigger events and issues behind them.
+
+Global-scale discussions caused by events of international relevance may evoke varying interpretations in different national contexts. And yet, evidence on cross-cultural, especially multilingual, dynamics of agendas in large-scale public discussions is still highly under-explored. In particular, we lack knowledge on whether affect-based agendas develop concurrently in various languages and to what extent they become contextualized within language-bound discussion segments, while knowing it would be relevant for elaborating quicker institutional response by, e.g., UN, EU, or other international and macro-regional organizations. Knowing how people perceive ongoing conflicts might help incorporate this knowledge into political decision-making.
+
+Computational methods of textual analysis allow for automated detection of agendas in user talk, agenda being reinterpreted as topicality, and agenda research reconceptualized as topic detection and modeling \cite{KoltsovaNagornyy}. Earlier, we have shown that it is possible to detect pivotal points in debate on social media by assessing the saliency of detected topics within the time of discussion \cite{SmoliarovaBodrunovaYakunin}. However, classic topic models like LDA or BTM demand data processing which is often multi-run \cite{KoltcovKoltsovaNikolenko2014,BodrunovaKoltsovaKoltcov} or unfeasible due to longevity of procedures or scarcity of instruments. They also demand reading top words and inter- preting topics by human assessors, which might be tricky, and the results might be misleading. Thus, close-to-real-time agenda detection remains an unreached goal, and this often leaves potential industrial, political, and academic consumers of topicality assessment frustrated.
+
+In this paper, we propose a method of topicality detection based on text summariza- tion produced by neural network models. And, as we aim at agenda detection in general as well as cross-language agenda shifts and comparisons, we will try to define one topic per short time slot or fixed number of user posts, to be able to follow how the agendas move. To test the method we propose, we use the Twitter discussion on the infamous \textit{Charlie Hebdo} massacre of 2015 and exploit tweets in English, French, and German that were posted under \#jesuischarlie within 24 h after the massacre (which makes thousands of tweets from all around the world).
+
+The remainder of the paper is organized as follows. In Sect. 2, we shortly review the existing literature on agenda detection on social media and use of topic modeling and text summarization for this task. In Sect. 3, we tell of the case under scrutiny and our research questions. In Sect. 4, we describe the methodology, formation of sub-datasets and their processing, as well as quality checks by application of sentiment analysis. In Sect. 5, we provide the results of text summarization and assess the cross-language agenda shifts. In Sect. 6, we discuss the findings and reflect on methodological limitations of our research.
+
+\subsubsection{2. Agenda Detection vs. Topicality Detection: Current Approaches}
+
+\paragraph{2.1 Public Agendas on Social Media: Do They Matter?}
+As stated above, agendas in online media have been a focus of scholarly research for nearly two decades \cite{McCombs,KimLee}. From the very beginning, the major attention has been put to how agendas of online media, then blogs, and then social media (‘mediated public agendas’) built into the exiting agenda-setting infrastructures. Reverse and cross-platform agenda-setting, as well as other types of interplay between older and newer agenda-setting actors, were suggested. The focus on ‘who sets the agendas’, however, provoked a certain inertia in understanding of the nature of public agendas and processes of their formation – not only regarding the topics that people discuss but also the features of ‘agenda building blocks’ and discursive localization of agendas.
+
+Gradually, computational research has entered agenda studies \cite{RussellNeumanGuggenheimMoJang,Guo,KoltsovaBodrunova}, and, following the works on methods of textual analysis, ‘public agendas’ were in several influential works reconceptualized via topicality and explored with the help of topic modeling and similar techniques \cite{KoltsovaKoltcov}, thanks to the capability of probabilistic text clustering to capture the themes in large text corpora.
+
+These studies, though, had a double-edged impact upon how we understand public agendas that emerge on social media platforms. On one hand, topicality studies have highlighted the importance of in-discussion topicality and agenda shifts, while, earlier, agendas were seen as belonging to the highest level of content generalization, e.g., the whole content of public debate. On the other hand, the scholarly attention massively moved to methodological aspects of topic detection, and, due to early-stage methodological limitations, the topics could not be discovered in real time and were substituted by the post-factum evaluations. Later works have tackled this problem in various ways (see below), but, till today, we lack approaches that would be relatively easy solutions for assessment of agenda shifts in near-to-real time.
+
+This is especially relevant for the areas where cross-country comparisons are neces- sary. The 2020–2021 COVID-19 pandemic has shown how crucially important it was to trace local public reactions to global-scale events and issues; earlier, European migra- tion crisis, the 2008–2209 global recession, and globalized military conflicts like the one in Syria have demanded for advancement of methodologies of agenda detection in multilingual online environments.
+
+We cannot help mentioning, of course, that there is also a substantial corpus of academic and analytical writing that emphasizes trivial nature and unimportance of public agendas \cite{Fuchs,MartinGrub}. Indeed, empirical research suggests provides mixed evidence on whether social media and microblogs can well play an indicator role in terms of agenda shifts. Partly, it is due to social non-representativity of platform use. But it is also true because the Twitter population has its own substantial agendas, as compared to traditional media and survey results \cite{PoseggaJungherr}, while Twitter agendas of politicians my closely correlate with their offline deliberative agendas \cite{CasasMorar}. This proves again that ‘patterns of societal activity observed through the lens of Twitter research are... dependent on a range of additional variables’ and need to be assessed case-to-case \cite[p.~4]{BrunsStieglitz}.
+
+\paragraph{2.2 Automated Agenda Detection}
+Automated means of topicality detection has been a rapidly growing area of research, and its relations with agenda studies, being truly multi-faceted, have not escaped certain meaningful limitations.
+
+\textbf{Agendas vs. Topics: The Issue of Simultaneity.} One of the biggest limitations of topic modeling for agenda detection is that the models work with text corpora as if the texts they contain were created simultaneously; the posting time is not calculated in. Thus, in classic models, it is impossible to see how agendas (topic diversity and substance) change in time. However, tracking the agenda shifts is basically the essential task of agenda setting studies. Several studies have used Granger causality testing and vector autoregressions (VAR) to detect agenda dependence either across platforms \cite{RussellNeumanGuggenheimMoJang} or across actor groups on Twitter \cite{BarberaCasasNagler}. Both studies, even if successfully detected dependencies in cross-platform impact, issue attention, and prediction by groups of Twitter users, did not focus on agendas themselves and how they evolved, seeing agenda issues as constant. Another work \cite{TsurCalacciLazer} assessed political spin and party discipline in the US Democrat and Republican tweets with the help of topic modeling, autoregressive distributed-lag modeling, and n-gram assessment; the authors have detected time lags between the party agendas and differences in ‘discourse ownership’ in terms of lexicons; the authors also used data slicing into varying time spans to detect agenda cycles. But the very agendas and time shifts between them were not discussed.
+
+This, in effect, does not allow us to learn about \textit{the pace of public agendas} on social media -- how quickly they change, i.e., what time or number of posts is needed to significantly shift them. While media are still, even if to a much-decreased extent, subjected to their news production cycle which takes hours and days, social media can potentially shift agendas in minutes during (and within!) outbursts of public reaction.
+
+\textbf{Topic Evolution Studies.} Scholars have tried to overcome this limitation by developing topic evolution studies -- the area of research that models emergent and evolving topics within social media data. But the general intention of this group of studies is looking at how the identified topics evolve in time within themselves (see, e.g., \cite{AlamRyuLee,ZhangMaoLin} and also \cite{ZhangMaoZeng} for short texts), including how they evolve all in parallel, not how the public shifts from one dominant theme to another. This idea, though, has been amplified in various ways that come closer to the idea of representing agendas. Thus, by focusing on both evolving themes and emergent topics, researchers have introduced emergence regularization for topic detection, which may potentially be used to detect emerging agendas \cite{SahaSindhwani}, as well as metrics for measuring novelty and fading of topics \cite{HuangPengWang}. However, the focus on emergent topics still blurs from view the detection of the \textit{main} topics in each period of time.
+
+Several studies \cite{DengCaiZhang}, including ours \cite{SmoliarovaBodrunovaYakunin}, have focused on relative saliency of the topics found throughout the dataset. By such studies, we can see \textit{what} (of the topics discovered) is discussed more and \textit{when}; but we do not see \textit{how} the themes look like and what their substantial features are, which is essential in agenda studies. Another pack of research papers focusses on topic-sentiment relation over time (for a short review and original results, see \cite{DermoucheVelcinKhouas}). In this work, again, the authors receive results within the pre-discovered topics.
+
+Thus, paradoxically, in the works dedicated to modeling topic evolution, we do not see the evolving topics themselves, only the model on the whole and its quality. The same goes for trending topics detection \cite{WangAgichteinBenzi}: except for Twitter itself, we practically do not see how exactly the new trending topics look and how they are thematically or otherwise connected/different from the existing topics.
+
+This is why it remains important to look at what people actually talk about in dynamics and, moreover, learn it in the quickest possible way.
+
+\textbf{Cross-Language Agenda in Online Discussions: Putting Topics in Context.} Another issue in social media agenda studies is the (alleged) global character of the discussions and, thus, the extent to which the agendas related to the same issues or events and discussed in various language-bound segments of discussions get contextualized and ‘nationalized.’
+
+First of all, it needs to be stated that the discussions that are seen as global by conventional wisdom demonstrate, in reality, high inequalities in language (and, thus, country, culture, and values) representation. This is true for the case we assess further in the text, namely the discussion hashtagged \#jesuischarlie of 2015 \cite{BodrunovaSmoliarovaBlekanov}. However, such discussions are involving enough cross-nationally to pose questions of whether the topicality and agendas that emerge can be compared across countries and what their substance is in comparative perspective; how and via what means they get contextualized in national discussion segments; and whether there are time lags between the rising waves of compassion, shock, or outrage.
+
+Till today, cross-country studies in general social media remain relatively rare \cite{BodrunovaBlekanovSmoliarova}. At the same time, the issue of context as the discussion definer is one of those of acute importance \cite{Bodrunova,Bodrunova2020} -- and, despite this, remains a significant research gap. Context for Twitter studies is understood in varying ways: it is defined via the hashtag distribution/hashtag clusters \cite{AlamRyuLee}, in some cases, Twitter itself is seen as provider of social context for interpreting news agendas in traditional media \cite{KalyanamMantrachSaezTrumper}. The closest to the agenda- tracking idea seems to be the evolutionary clustering approach called Recurrent Chinese Restaurant Process (RCRP) \cite{AhmedXing}, as it has been developed to involve contextual variability by capturing temporal dynamics and local semantic sequential dependencies \cite{LuTanLi}. The only problem with this method is that it demands complicated layer-introduction procedures.
+
+Thus, we are looking for a method that would allow for tracking the current (or immediately previous) agenda/topicality of online discussions that would allow for showing the agenda in a quick enough and accessible way in comparative cross-language perspective.
+
+\paragraph{2.3 Text Summarization in Agenda Detection Studies}
+
+For resolving this task, we suggest to use another method of topic formulation, which is text summarization. Successfully used in computational studies of text corpora, text sum- marization allows to ‘summarize the text documents in order to obtain a brief overview of a large text document or a set of documents on a topic’ \cite[p.~4]{AggarwalZhai} and ‘to produce a concise and fluent summary conveying the key information in the input’ \cite[p.~44]{NenkovaMcKeown}. Summarizations may be of extractive and abstractive nature; in the latter case, the machine provides a textual summary of a text (sub-)corpus that may contain words that were not found in the initial data. They may also be indicative (providing a very brief indication summary) and informative (providing more information on the text); and be executed over single or multiple documents  \cite{NenkovaMcKeown}. Previous research also shows that summarization may depend on the text subject and the nature of the dataset (e.g. news texts, documents, or social media posts) \cite{TasKiyani}.
+
+Today, advanced text summarization studies are conducted with the use of neural networks (for an early account, see \cite{FerreiraFreitasDeSouza}; for a later one on abstractive summarization, \cite{Kaikhah}). Neural networks are employed for both extractive \cite{NallapatiZhouGulcehreXiang} and abstractive summarization \cite{CelisKeswani} for Twitter. Earlier, several successful instruments for Twitter text summarization have been proposed, like TweetMotif \cite{LiZhang}. Later models employ BERT \cite{CelisKeswani} and USE \cite{MottaghiniaFeiziDerakhshiFarzinvash} architectures. In 2019--2020, new transformer-based architectures such as Longformer \cite{AsgariChenaghluNikzadKhasmakhiMinaee} and t5 \cite{BeltagyPetersCohan}, have been proposed and tested; we see them as most suitable for our tasks.
+
+In our research, we use the existing text summarization models; their quality has been tested multiple times. This is why we do not use traditional quality metrics assuming that the models produce sustainable results. However, we provide additional checks oriented to our research questions and use sentiment analysis for detecting the quality of summarization. Even if, as a rule, sentiment analysis is used in combination with summarization in order to reach substantial goals, there is also evidence that sentiment detection can be used as a quality indicator for topics \cite{RaffelShazeerRoberts} and summarizations.
+
+\subsubsection{3. Research Questions and the Datasets}
+
+\paragraph{3.1 The Case Under Scrutiny and the Language-Based Datasets}
+Thus, in this study, we focus on detecting agendas and agenda shifts in various language-bound segments within one globalized discussion. For that, we use the dataset we have collected in 2015 by the hashtag \#jesuischarlie that gathered much of the user reaction to the Charlie Hebdo massacre in Paris, France. The dataset was collected using our own patented web crawler \cite{BodrunovaBlekanovKukarkin}, comprised the three first days of the discussion and, after cleaning and preprocessing, contained 420,080 tweets.
+
+This dataset of over five years ago was chosen, as it was much less bot-infested than today’s data. It contained a discussion that, to a large extent, reproduced the language structure of Twitter itself \cite{BlekanovSergeevMartynenko}, with circa 50\% of posts being in English \cite{BodrunovaSmoliarovaBlekanov}.
+
+This dataset allows for looking at two languages -- English and French -- as similarly dense, which makes it possible to juxtapose the ‘global’ (Eng-lang) and ‘local’ (Francophone) reaction of the Twitter populace. We have also chosen a third language, in order to see how the discussion differs in a much looser discussion segment. We have chosen German based on the number of tweets on main languages of the discussion (see Fig.~\cref{fig:charlieHebdoLanguageDistribution} and Table~\cref{tab:projectSubDatasets}). The language of tweets was detected by using the FastText algorithm \cite{MocanuBaronchelliPerra}.
+
+As a result, we have received three datasets: English (213,558 tweets), French (133,671 tweets), and German (7,430 tweets).
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{charlieHebdoLanguageDistribution}
+	}
+	\caption{Language distribution in the \#jesuischarlie discussion.}\label{fig:charlieHebdoLanguageDistribution}
+\end{figure}
+
+\begin{table} [htbp]%
+	\centering
+	\caption{Sub-datasets of the project.}%
+	\label{tab:projectSubDatasets}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\begin{SingleSpace}
+		\begin{tabulary}{\textwidth}{@{}>{\zz}L >{\zz}L >{\zz}L >{\zz}L@{}} %Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Language & Accuracy & N of tweets & \textit{\%} of total\\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			English & 0.6961355805397034 & 213,558 & 0.51\\
+			French & 0.8610345721244812 & 133,671 & 0.32\\
+			Spanish & 0.7578563690185547 & 21,604 & 0.05 \\
+			Italian & 0.8599529266357422 & 11,251 & 0.027 \\
+			Dutch & 0.8691623210906982 & 7,699 & 0.018 \\
+			German & 0.8065633773803711 & 7,430 & 0.018 \\
+			Japanese & 0.30159252882003784 & 5,946 & 0.014 \\
+			Portuguese & 0.8060423731803894 & 3,874 & 0.009 \\
+			Chinese & 0.2554042339324951 & 3,423 & 0.008 \\
+			Turkish & 0.8499038219451904 & 2,261 & 0.005 \\
+			\bottomrule %%% нижняя линейка
+		\end{tabulary}%
+	\end{SingleSpace}
+\end{table}
+
+\paragraph{3.2 Research Questions}
+Our research questions relate to both methodology of text summarization and to the substance of our study of agenda shifts.
+
+\paragraph{RQ1. How well does the neural-network-based text summarization capture agendas from tweets in three languages?}
+
+\begin{itemize}
+	\item H1. Summarized sentiment of the tweet conglomerates is reflected by the sentiment of summarizations.
+\end{itemize}
+
+\paragraph{RQ2. Do agendas develop simultaneously in the global and local segments of a Twitter discussion?}
+
+\begin{itemize}
+	\item H2. Agendas shift simultaneously (within very short timing) in the local and global discussion segments. There is no detectable time lag between the same agendas in the local and global segments of discussions if they develop with comparable density.
+	\item H3. In looser discussion segments, agendas shift more radically thematically.
+\end{itemize}
+
+\paragraph{RQ3. Are Twitter agendas within one discussion get contextualized in various language segments?}
+
+\begin{itemize}
+	\item H4. Text summarizations represent local context in a negligible percentage of cases (less than 5\%) for all the three cases.
+\end{itemize}
+
+\subsubsection{4. Methods and Data Processing}
+
+\paragraph{4.1 Application of Text Summarization}
+
+\textbf{The Choice of Summarization Models.} Basedonthelatestliterature,wehavechosen two models mentioned above, namely Longformer and t5, for text summarization.
+
+Pretrained Longformer model was used to summarize subset in the English language. Longformer is a language model with a unique attention mechanism that scales linearly with sequence length (as opposed to the quadratic scaling of traditional models), making it easy to process documents of thousands of tokens or longer \cite{AsgariChenaghluNikzadKhasmakhiMinaee}. The resulting summarization is obtained using the longformer-large-4096 pretrained model.
+
+For French and German, t5 model was used with t5-base-fr-sum-cnndm and mt5-small-german-finetune-mlsum pretrained models, respectively. T5 is an encoder-decoder model and converts all NLP problems into a text-to-text format. T5 is an encoder-decoder model and converts all NLP problems into a text-to-text format. While providing a very general and well-built structure with unified framework for a variety of NLP tasks, authors achieve state-of-the-art results on many benchmarks covering summarization, question answering, text classification, and more. T5 uses a standard encoder-decoder Transformer with a baseline model designed so that the encoder and decoder are each similar in size and configuration to a BERT. Specifically, both the encoder and decoder consist of 12 blocks (each block comprising self-attention, optional encoder-decoder attention, and a feed-forward network with ReLU nonlinearity) \cite{BeltagyPetersCohan}.
+
+\textbf{The Choice of Increment.} Aswehavestatedabove,threelanguageswerechosenbased on the models’ accessibility, peer review potential, identification quality, and the sample structure and volume.
+
+The most problematic issue for us was the choice of the ‘step’ for agenda shifts, or the increment, that would fit both our RQs and the tweet distribution. And it was not the timing itself. The matter was that both summarization models had a limitation, as they worked best with certain number of texts. To find the optimal number of tweets for summarization, we have constructed diagrams of tweet distribution in time in each sub-set. We have constructed them for 1-h, 3-h, and 6-h increments (see Fig.~\cref{fig:frenchTweetDistribution},~\cref{fig:englishTweetDistribution}, and~\cref{fig:germanTweetDistribution} for 1-h increments for French, English, and German, respectively).
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{frenchTweetDistribution}
+	}
+	\caption{The French-language tweet distribution, 1-h increment.}\label{fig:frenchTweetDistribution}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{englishTweetDistribution}
+	}
+	\caption{The English-language tweet distribution, 1-h increment.}\label{fig:englishTweetDistribution}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{germanTweetDistribution}
+	}
+	\caption{The German-language tweet distribution, 1-h increment.}\label{fig:germanTweetDistribution}
+\end{figure}
+
+Our decision-making in choosing the increment for summarization was, in the end, based on two circumstances. First, the limitation of the model showed circa 300 tweets to be the optimal number to be summarized; second, the German model as the most sparce showed that 300 tweets would comprise 1 to 2 h in the most sparce case, which suits our goal. But, to make the pace comparable, we should have either used an increment based on tweets or the one based on hours.
+We have opted for the number of tweets, even if it looks counter-intuitive. This was because: (1) the hourly number of tweets varied highly in 24-h cycles, and thus the summarizations would be incomparable; (2) the 300-tweet samples allow for a more fine-grained study, and several 300-tweet summarizations may reflect an hourly time span; but an hourly time span that comprises several thousand tweets might be too general and non-informative.
+
+Thus, we have chosen 300-tweet increments for summarization. They allow to trace hourly dynamics of agenda for the German case (daytime) and for more fine-grained gaze into the English and French cases.
+
+\textbf{Summarization Results.} However, the models we have received were not satisfactory at the first trials. While the English-language one was clearly understandable, with only rare non-comprehensible inclusions, the German and French versions returned understandable but broken sentences with loose endings (for examples, see Table~\cref{tab:threeLanguagesSummarizations}, marked in bold). Additional runs did not bring better results; later, we will check the model with other datasets to find out why the sentences were broken.
+
+\begin{table}[ht]%
+	\caption{Text summarizations: examples for the three languages.}%
+	\label{tab:threeLanguagesSummarizations}% label всегда желательно идти после caption
+	\renewcommand{\arraystretch}{1.6}%% Увеличение расстояния между рядами, для улучшения восприятия.
+	\def\tabularxcolumn#1{m{#1}}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedleft}X >{\raggedleft}X >{\raggedleft\arraybackslash}X@{}}% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+		\toprule     %%% верхняя линейка
+		English & French & German \\
+		\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+		2015–01-07 12:26:00 the terrorist attack on the offices of the satirical magazine Charlie Hebdo has left 12 dead & 2015–01-07 12:03:00 Le mardi, à Bruxelles, il y a une minute de silence \textbf{pour} & 2015–01-07 12:24:00 RT und klingt nicht nur ähnlich.. \textbf{Du caricaturiste haitien Bousiko}\\
+		2015–01-07 12:31:00 this is a tribute to the 12 people who were killed in the attack on the satirical magazine \textbf{@xmath0} & 2015–01-07 12:28:00 Le hashtag \#suischarlie est le plus utilisé de toute l’histoire\textbf{de} & 2015–01-07 15:20:00 Anschlag auf Satire-Zeitung: Dieter Nuhr rettet sich in Bunker\\
+		2015–01-07 12:33:00 the attack on the offices of the satirical magazine Charlie Hebdo has left 12 people dead and 12 others wounded & 2015–01-07 12:29:00 Le dessin de Cabu s’éteint en hommage aux 12 & 2015–01-07 21:17:00 Der Pariser Anschlag ist auch auf Facebook und Twitter das grosse Thema. Irr\\
+		2015–01-07 12:34:00 this is a tribute to the 12 people killed in the terrorist attack on the satirical magazine on the 12th of january 2015 & 2015–01-07 12:30:00 Charlie Hebdo est mort dimanche à Brest. \textbf{Les kiosques} & 2015–01-07 23:52:00 Hollande hat in der Hand, ob Frankreichs Demokratie Anschlag überlebt-\textbf{zu}\\
+		2015–01-07 12:36:00 we are all Charlie & 2015–01-07 12:32:00 Nouveau: hommage à Stéphane Charbonnier \textbf{et} & 2015–01-08 01:27:00 Cartoonist Jean Jullien:. "Wir trauern um Frankreichs \textbf{bedeuten}\\
+		\bottomrule %%% нижняя линейка
+	\end{tabularx}%
+\end{table}
+
+\paragraph{4.2 Quality Assessment of Summarization by Sentiment Detection}
+
+Given that the models, despite their high reputation, have provided results that were not fully satisfactory, we have introduced additional checks of the model quality. As we mentioned above, we have used sentiment detection to construct a quality metric. A BERT model \cite{JoulinGraveBojanowski} pretrained for multilingual sentiment analysis was used for each summarization to analyze summaries in the context of generalised sentiment.
+
+In general, the idea was to compare sentiment of the original tweet samples to that of the respective summarizations. First, we have compared the mean sentiment of 300 tweets to the sentiment of the summarizations. We have seen that, in the overwhelming majority of cases, the sentiment of the 300 tweet samples tends to neutral (see Fig.~\cref{fig:englishMeanSentiment} for English). This is why we have introduced another way of measurement that aimed at highlighting the positive/negative difference in the samples. We have labeled the tweets: ‘negative’ -- \(0 \le k < 0.4\); ‘neutral’ -- \(0.4 \le k < 0.6\); ‘positive’ -- \(0.6 \le k \le 1\). Then we eliminated the neutral tweets and calculated the difference between the positive and negative tweets, to see which sentiment dominated in the sample. We compared the sentiment of the samples to that of the summarizations (see Fig.~\cref{fig:englishPosNegDiff},~\cref{fig:frenchPosNegDiff}, and~\cref{fig:germanPosNegDiff} for English, French, and German, respectively).
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{englishMeanSentiment}
+	}
+	\caption{Representation of sentiment distribution in time, the English sub-dataset, mean sent iment score: tweet samples, blue; summarizations, red. (Color figure online)}\label{fig:englishMeanSentiment}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{englishPosNegDiff}
+	}
+	\caption{Representation of sentiment distribution in time, the English sub-dataset, positive/negative difference, blue; summarizations, red. (Color figure online)}\label{fig:englishPosNegDiff}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{frenchPosNegDiff}
+	}
+	\caption{Representation of sentiment distribution in time, the French sub-dataset, positive/negative difference, blue; summarizations, red. (Color figure online)}\label{fig:frenchPosNegDiff}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{germanPosNegDiff}
+	}
+	\caption{Representation of sentiment distribution in time, the German sub-dataset, positive/negative difference, blue; summarizations, red. (Color figure online)}\label{fig:germanPosNegDiff}
+\end{figure}
+
+By manual assessment of over 100 tweet samples vs. summarizations, we have established that good correspondence in the pair ‘sample -- summarization’ is when the distance between them is circa 0.25. To measure the quality of the model, we calculated the percentage of the pairs ‘sample -- summarization’ with the distances of 0.25 or less for both types of sentiment measurement. The received values are shown in Table~\cref{tab:modelQualityMeasurements}.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Sub-datasets of the project.}%
+	\label{tab:modelQualityMeasurements}% label всегда желательно идти после caption
+		\small
+		\begin{tabular}{ c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule     %%% верхняя линейка
+			Language & Metric by average score & Metric by difference score \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			English & 27\% & 51\%\\
+			French & 69\% & 61\%\\
+			German & 58\% & 48\% \\
+			\bottomrule %%% нижняя линейка
+		\end{tabular}%
+\end{table}
+
+Our measurements show that, despite the broken sentences in French and German, the sentiment scores for these models are relatively high. The graphs show, though, that the ‘movement’ of summarizations does not follow the positive/negative dynamics of tweet samples. Thus, in future, more manual assessment needs to be done for short-text data to understand how well the summaries capture the tone of public speak in a particular moment.
+
+\subsubsection{5. Results: Global Interpretational Agendas vs. Local News Agendas in a Global Twitter Discussion}
+
+\paragraph{5.1 RQ1: Quality of Representation of Agendas by Tweet Summaries}
+As we have seen from Table~\cref{tab:modelQualityMeasurements}, the models work moderately well in terms of overall performance, when sentiment is measured as the difference between positive and negative tweets. However, when we have given a look to the original texts vs. summaries, we have noticed that the English ones summarized the user sentiment and contents much better. Thus, in our future work, we will use Longformer and train it to be used for German and French. As for now, H1 may be partly proven but needs more studies.
+
+
+The two other RQs are based on our additional coding of the summarizations (see Table~\cref{tab:subDatasetAgendas}). We coded them for being (1) news or opinion/issue and (2) local/global. Combining (1) and (2) and stating keywords for the issues found, we have received the agendas and could judge their nature and shifts.
+
+%\begin{table} [htbp]%
+%	\centering
+%	\caption{Agendas in the sub-datasets, first 50 summarizations of January 07 (English and French)/full list (German)}
+%	\label{tab:subDatasetAgendas}
+%	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
+%	\begin{longtable}{ l l l l l l }
+%		\caption{Agendas in the sub-datasets, first 50 summarizations of January 07 (English and French)/full list (German)}
+%		\label{tab:subDatasetAgendas}
+%		\toprule     %%% верхняя линейка
+%		Time & English & Time & French & Date time & German \\
+%		\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+%		8:51 & news & 12:03 & news & 07.01 12:24 & uninterpretable \\
+%		12:26 & news & 12:25 & \textbf{news: local} & 07.01 13:20 & media \\
+%		12:28 & freedom of expression & 12:26 & tribute & 07.01 14:10 & news: French\\
+%		12:29 & freedom of expression & 12:28 & hashtag & 07.01 15:20 & \textbf{news: local}\\
+%		12:31 & news & 12:29 & \textbf{tribute: local} & 07.01 21:17 & hashtag\\
+%		12:33 & news & 12:30 & news & 07.01 23:52 & Francois Hollande\\
+%		12:34 & news & 12:32 & \textbf{news: local} & 08.01 1:27 & mourning: French \\
+%		12:36 & solidarity & 12:33 & news & 08.01 2:52 & solidarity: French \\
+%		12:38 & news & 12:35 & news & 08.01 4:06 & opinion \\
+%		12:40 & news & 12:36 & \textbf{news: local} & 08.01 5:45 & mourning: global \\
+%		12:42 & deadliest in history & 12:38 & \textbf{news: local} & 08.01 7:36 & news: French \\
+%		12:43 & news & 12:39 & \textbf{news: local} & 08.01 9:09 & news: French \\
+%		12:45 & religion & 12:40 & tribute & 08.01 10:26 & media \\
+%		12:47 & solidarity & 12:42 & media & 08.01 11:57 & opinion \\
+%		12:48 & pacifism & 12:43 & news & 08.01 13:58 & opinion \\
+%		12:50 & freedom of expression & 12:45 & \textbf{tribute: local} & 08.01 22:55 & Mohammad cartoons \\
+%		12:51 & freedom of expression & 12:46 & armistice over ChEbdo & 09.01 1:43 & opinion \\
+%		12:53 & freedom of expression & 12:47 & \textbf{news: local} & 09.01 4:32 & solidarity \\
+%		12:55 & impact & 12:49 & \textbf{France is rising} & 09.01 6:51 & opinion \\
+%		12:57 & news & 12:50 & news & 09.01 8:58 & solidarity \\
+%		12:59 & news & 12:52 & \textbf{news: local} & 09.01 12:06 & war on terrorism \\
+%		13:00 & freedom of expression & 12:53 & news & 10.01 0:44 & news: French \\
+%		13:02 & freedom of expression & 12:55 & \textbf{solidarity: local} & 10.01 5:52 & opinion \\
+%		13:04 & mourning & 12:56 & Fidel Castro & 10.01 13:36 & mourning: French \\
+%		13:06 & news & 12:58 & \textbf{Death of the Republic} & & \\
+%		13:08 & solidarity & 13:00 & \textbf{news: local} & & \\ 
+%		13:10 & freedom of expression & 13:01 & \textbf{news: local} & & \\
+%		13:12 & cartoons control the world & 13:03 & Muslims oppose murder &  & \\
+%		13:14 & world’s fury & 13:04 & \textbf{mourning: local} & & \\
+%		13:16 & freedom of expression & 13:06 & \textit{irrelevant} & & \\
+%		13:18 & news & 13:07 & hostages & & \\
+%		13:20 & solidarity & 13:09 & hashtag & & \\
+%		13:22 & solidarity & 13:11 & \textbf{news: local} & & \\
+%		13:24 & mourning & 13:12 & freedom & & \\
+%		13:26 & Banksy & 13:14 & media & & \\ 
+%		13:28 & solidarity & 13:16 & mourning: local & & \\
+%		13:30 & news & 13:18 & \textbf{news: local} & & \\
+%		13:32 & freedom of expression & 13:19 & news & & \\
+%		13:34 & news & 13:21 & \textbf{tribute: local} & & \\
+%		13:36 & news & 13:23 & \textbf{tribute: local} & & \\
+%		13:38 & freedom of expression & 13:24 & \textbf{tribute: local} & & \\
+%		13:41 & freedom of expression & 13:26 & \textbf{tribute: local} & & \\
+%		13:43 & news & 13:28 & \textbf{news: local} & & \\
+%		13:45 & solidarity / pacifism & 13:30 & hashtag & & \\
+%		13:47 & news & 13:32 & \textbf{news: local} &  & \\
+%		13:50 & war on Islam & 13:34 & news & & \\
+%		13:51 & solidarity & 13:36 & \textit{irrelevant} &  & \\
+%		13:54 & solidarity & 13:38 & \textbf{news: local} & & \\
+%		13:56 & news & 13:40 & freedom of expression & & \\
+%		13:58 & news & 13:42 & solidarity & & \\
+%		\hline
+%		\multicolumn{6}{c}{\makecell{Note. Highlighted: local; red: new; grey: news; black: previously mentioned issues}}\\
+%		\bottomrule %%% нижняя линейка
+%	\end{longtable}
+%\end{table}
+
+\begin{longtblr}[
+	caption = {Agendas in the sub-datasets, first 50 summarizations of January 07 (English and French)/full list (German)},
+	label = {tab:subDatasetAgendas},
+	remark{Note} = {Highlighted: local; red: new; grey: news; black: previously mentioned issues.},
+	]{
+		colspec = {XXXXXX}, 
+		width = 1.0\linewidth,
+		rowhead = 1,
+	} 
+			\toprule     %%% верхняя линейка
+			Time & English & Time & French & Date time & German \\
+			\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
+			8:51 & news & 12:03 & news & 07.01 12:24 & uninterpretable \\
+			12:26 & news & 12:25 & \textbf{news: local} & 07.01 13:20 & media \\
+			12:28 & freedom of expression & 12:26 & tribute & 07.01 14:10 & news: French\\
+			12:29 & freedom of expression & 12:28 & hashtag & 07.01 15:20 & \textbf{news: local}\\
+			12:31 & news & 12:29 & \textbf{tribute: local} & 07.01 21:17 & hashtag\\
+			12:33 & news & 12:30 & news & 07.01 23:52 & Francois Hollande\\
+			12:34 & news & 12:32 & \textbf{news: local} & 08.01 1:27 & mourning: French \\
+			12:36 & solidarity & 12:33 & news & 08.01 2:52 & solidarity: French \\
+			12:38 & news & 12:35 & news & 08.01 4:06 & opinion \\
+			12:40 & news & 12:36 & \textbf{news: local} & 08.01 5:45 & mourning: global \\
+			12:42 & deadliest in history & 12:38 & \textbf{news: local} & 08.01 7:36 & news: French \\
+			12:43 & news & 12:39 & \textbf{news: local} & 08.01 9:09 & news: French \\
+			12:45 & religion & 12:40 & tribute & 08.01 10:26 & media \\
+			12:47 & solidarity & 12:42 & media & 08.01 11:57 & opinion \\
+			12:48 & pacifism & 12:43 & news & 08.01 13:58 & opinion \\
+			12:50 & freedom of expression & 12:45 & \textbf{tribute: local} & 08.01 22:55 & Mohammad cartoons \\
+			12:51 & freedom of expression & 12:46 & armistice over ChEbdo & 09.01 1:43 & opinion \\
+			12:53 & freedom of expression & 12:47 & \textbf{news: local} & 09.01 4:32 & solidarity \\
+			12:55 & impact & 12:49 & \textbf{France is rising} & 09.01 6:51 & opinion \\
+			12:57 & news & 12:50 & news & 09.01 8:58 & solidarity \\
+			12:59 & news & 12:52 & \textbf{news: local} & 09.01 12:06 & war on terrorism \\
+			13:00 & freedom of expression & 12:53 & news & 10.01 0:44 & news: French \\
+			13:02 & freedom of expression & 12:55 & \textbf{solidarity: local} & 10.01 5:52 & opinion \\
+			13:04 & mourning & 12:56 & Fidel Castro & 10.01 13:36 & mourning: French \\
+			13:06 & news & 12:58 & \textbf{Death of the Republic} & & \\
+			13:08 & solidarity & 13:00 & \textbf{news: local} & & \\ 
+			13:10 & freedom of expression & 13:01 & \textbf{news: local} & & \\
+			13:12 & cartoons control the world & 13:03 & Muslims oppose murder &  & \\
+			13:14 & world’s fury & 13:04 & \textbf{mourning: local} & & \\
+			13:16 & freedom of expression & 13:06 & \textit{irrelevant} & & \\
+			13:18 & news & 13:07 & hostages & & \\
+			13:20 & solidarity & 13:09 & hashtag & & \\
+			13:22 & solidarity & 13:11 & \textbf{news: local} & & \\
+			13:24 & mourning & 13:12 & freedom & & \\
+			13:26 & Banksy & 13:14 & media & & \\ 
+			13:28 & solidarity & 13:16 & mourning: local & & \\
+			13:30 & news & 13:18 & \textbf{news: local} & & \\
+			13:32 & freedom of expression & 13:19 & news & & \\
+			13:34 & news & 13:21 & \textbf{tribute: local} & & \\
+			13:36 & news & 13:23 & \textbf{tribute: local} & & \\
+			13:38 & freedom of expression & 13:24 & \textbf{tribute: local} & & \\
+			13:41 & freedom of expression & 13:26 & \textbf{tribute: local} & & \\
+			13:43 & news & 13:28 & \textbf{news: local} & & \\
+			13:45 & solidarity / pacifism & 13:30 & hashtag & & \\
+			13:47 & news & 13:32 & \textbf{news: local} &  & \\
+			13:50 & war on Islam & 13:34 & news & & \\
+			13:51 & solidarity & 13:36 & \textit{irrelevant} &  & \\
+			13:54 & solidarity & 13:38 & \textbf{news: local} & & \\
+			13:56 & news & 13:40 & freedom of expression & & \\
+			13:58 & news & 13:42 & solidarity & & \\
+			\bottomrule %%% нижняя линейка
+\end{longtblr}
+
+\paragraph{5.2 RQ2: Agenda Nature and Agenda Shifts}
+
+\textit{H2. Agenda shifts.} In the English sub-dataset, we clearly see a globalized agenda which is constructed as interpretational: news on the 12 killed change to globally-relevant issues of freedom of expression, solidarity, and mourning, as well as the non-omnipresent pacifism (‘the pen is mightier than the sword’). These issues appear within the first 40 min from the start of the active discussion (January 7, 12:26). The dynamics show that news spread through the discussion, as well as the issue of freedom of expression, and other issues rise each 6 to 8 min in the discussion within the first hour. As to the French agenda, it is shallower and more local in focus. However, we see that the first ‘issue outburst’ appears nearly simultaneously on 12:40/12/45 to 12:49/12:52, and then issues start to dominate. The issues of freedom of expression and solidarity, though, appear relatively late in France where local tribute and news play an expectedly bigger role. Thus, we can make several conclusions for equally dense discussion segments: (1) active discussion starts the same moment, and news change to interpretation within one hour of active discussion, with very similar timing; (2) after the ‘issue outburst’, both agendas exist in the form of issues with news popping up between them; (3) the array of issues is practically the same; (3) however, in the global discussion, the leading issues appear 1 to 1,5 h earlier and (5) understanding of issues is more general, abstract, and detached from realities of the event, more commentative and rhetoric, while the national agendas are much more focused on local events and context, which puts the same issues on another level and turns them into news. E.g., in France, mourning was mostly expressed via spreading news on who mourns (cartoonists, students etc.). Thus, H1 is confirmed in terms of discussion timing, but rejected in terms of depth and generalization of issues and the time of appearance of the leading issues.
+
+\textit{H3. The German agenda.} The German-language discussion looks like incomparable with the two other sub-datasets. What differentiates German-language summaries is that many of them look as personal opinions (‘Can’t wait...’, ‘I was asked...’), and this effect needs to be investigated. However, we definitely see a similar pattern of news changing to interpretations from the midnight of January 8 on, and the issues of mourning, solidarity, and hashtag impact similarly arise. For national agendas, the issue of media behavior is important. Thus, we see the ‘lagging effect’: in sparser discussions, the shift from news to interpretations is stretched in time.
+
+\paragraph{5.3 RQ3. Contextualization of Agendas}
+
+\textit{H4: Low presence of local context.} Two of the three discussions, indeed, have shown the lowest number of summaries where local context played a role (in Table~\cref{tab:subDatasetAgendas}, 1 in English and 1 in German). France, however, involved local context in 50\% of summaries. This shows that local segments of Twitter other from those where the event ‘belongs’ do not tend to put the discussion into local context, and it is limited to globalized interpretations and news from the country where the event happened. The English discussion is purely global, with Banksy being the only ‘local context’ which is, though, already a global artist, too. Thus, H4 is proven for contexts other than France.
+
+\subsubsection{6. Discussion and Conclusion}
+
+In this paper, we have tried to show how the agendas within one globalized discussion on Twitter shift and differ. We have seen that there is a pattern of changing news to stable issues that may stretch in time; that topicality shifts take minutes. We have seen that public agendas are \textit{interpretational} and abstract everywhere except for the place of the event, while in the country of the event agendas are much more news-oriented and contextualized. We show that interpretation first outbursts and then takes a stable pace with some stable topics and interpretations repeating, thus pointing out to cumulative effects in socially-mediated discourse. Such stable topics may be detected within hours in the global segment of the discussion and do not change much within days, and the global (Eng-lang) discussion might be an indicator of what shows up in other languages.
+
+Methodologically, the paper has demonstrated serious shortcomings of the t5 model for German and French, including uninterpretable summaries, broken endings, and mismatches with tweet substance. Also, we have seen that sentiment is not a very good instrument for assessing the model quality, as summaries may capture the factual side of the tweets but not sentiment. This demands both searching for more adequate quality metrics and for improving the quality of text summarization models.
 
 \FloatBarrier
 
