@@ -1,5 +1,85 @@
 \chapter{Интеллектуальных анализ данных Web-ресурсов}\label{ch:ch5}
 
+\subsubsection{5.1.1}
+
+Studies of political polarization in social media demonstrate mixed evidence for whether discussions necessarily evolve into left and right ideological echo chambers. Recent research shows that, for political and issue-based discussions, patterns of user clusterization may differ significantly, but that cross-cultural evidence of the polarization of users on certain issues is close to non-existent. Furthermore, most of the studies developed network proxies to detect users’ grouping, rarely taking into account the content of the Tweets themselves. Our contribution to this scholarly discussion is founded upon the detection of polarization based on attitudes towards political actors expressed by users in Germany, the USA and Russia within discussions on inter-ethnic conflicts. For this exploratory study, we develop a mixed-method approach to detecting user grouping that includes: crawling for data collection; expert coding of Tweets; user clusterization based on user attitudes; construction of word frequency vocabularies; and graph visualization. Our results show that, in all the three cases, the groups detected are far from being conventionally left or right, but rather that their views combine anti-institutionalism, nationalism, and pro- and anti-minority views in varying degrees. In addition to this, more than two threads of political debate may co-exist in the same discussion. Thus, we show that the debate that sees Twitter as either a platform of ‘echo chambering’ or ‘opinion crossroads’ may be misleading. In our opinion, the role of local political context in shaping (and explaining) user clusterization should not be under-estimated.
+
+\subsubsection{5.1.2}
+
+The media are normatively expected to play significant roles in conflictual discussions within national and international communities. As previous research shows, digital platforms make scholars rethink these roles based on media behavior in online communicative environments as well as on the structural limitations of the platforms. At the same time, traditional dichotomies between information dissemination and opinion formation roles, although seemingly universal, also vary across cultures. We look at four recent conflicts of comparable nature in the United States, Germany, France, and Russia to assess the roles that legacy media have performed in the respective ad hoc discussions on Twitter. Our approach differs from previous studies, as we combine content analysis of tweets by the media and journalists with the resulting positions of the media in the discussion graphs. Our findings show that, despite the overall trend of the “elite” and regional media sticking to information dissemination, online-only media and individual journalists vary greatly in their normative strategies, and this is true across countries. We also show that combining performance in content and social network analysis may allow for reconceptualization of media roles in a more flexible way.
+
+\subsubsection{5.1.3}
+
+\textit{Background.} Public discussions on social networks have trans-border and multilingual nature. This is especially true for conflictual discussions that reach global trending topics. Being part of the global public sphere, such discussions were expected by many observers to become horizontal, all-involving, and democratically efficient. But, with time, criticism towards the democratic quality of discussions in social media arose, with many works discovering the patterns of echo chambering in social networks. Even if so, there is still scarce knowledge on how affective hashtags work in terms of user clusterization, as well as on the differences between emotionally ‘positive’ and ‘negative’ hashtags. \textit{Objectives.} We address this gap by analyzing the Twitter discussion on the \textit{Charlie Hebdo} massacre of 2015. In this discussion, the Twittershpere has created \#jesuischarlie and \#jenesuispascharlie -- two discussion clusters with, allegedly, opposite sentiments towards the journal’s ethics and freedom of speech. \textit{Research design.} We were interested in whether echo chambers formed both on the hashtag level (based on language use) and within a language (based on user sentiment of French-speaking users). For data collection, we used vocabulary-based Twitter crawling. For data analysis, we employed network analytics, manual coding, web graph reconstruction, and automated sentiment analysis. \textit{Results.} Our results show that \#jesuischarlie and \#jenesuispascharlie are alike in language distribution, with French and English being the dominant languages and the discussions remaining within the Euro-Atlantic zone. The language-based echo chambers formed in both cases. But if \#jesuiuscharlie was a clear sentiment crossroads, \#jenesuispascharlie was a negative echo chamber, thus allowing us to draw conclusions about multi-layer echo chambering.
+
+\subsubsection{5.1.4}
+
+\textit{Ad hoc} discussions have been gaining a growing amount of attention in scholarly discourse. But earlier research has raised doubts in comparability of \textit{ad hoc} discussions in social media, as they are formed by unstable, affective, and hardly predictable issue publics. We have chosen inter-ethnic conflicts in the USA, Germany, France, and Russia (six cases altogether, from Ferguson riots to the attack against \textit{Charlie Hebdo}) to see whether similar patterns are found in the discussion structure across countries, cases, and vocabulary sets. Choosing degree distribution as the structural proxy for differentiating discussion types, we show that exponents change in the same manner across cases if the discussion density changes, this being true for neutral vs. affective hashtags, as well as hashtags vs. hashtag conglomerates. This adds to our knowledge on comparability of \textit{ad hoc} discussions online, as well as on structural differences between core and periphery in them.
+
+\subsubsection{5.2.1}
+
+In this paper authors carry out the research of three different topic models in the context of analyzing different large scale twitter ad hoc discussions, obtained from social network on different social and political events. An experiment is being conducted to test the effectiveness of models in analyzing three known discussions: the riots in Biryulyovo (Russia), Ferguson unrest (USA), Charlie Hebdo shooting (France). The results of the experiment show that the BTM topic model in terms of both Umass and Npmi, yielded the best results on all discussions in comparison to the baseline LDA model and another model for short unbalanced texts -- WNTM.
+
+\subsubsection{5.2.2}
+
+The paper is dedicated to solving the problem of optimal text classification in the area of automated detection of typology of texts. In conventional approaches to topicality-based text classification (including topic modeling), the number of clusters is to be set up by the scholar, and the optimal number of clusters, as well as the quality of the model that designates proximity of texts to each other, remain unresolved questions. We propose a novel approach to the automated definition of the optimal number of clusters that also incorporates an assessment of word proximity of texts, combined with text encoding model that is based on the system of sentence embeddings. Our approach combines Universal Sentence Encoder (USE) data pre-processing, agglomerative hierarchical clustering by Ward’s method, and the Markov stopping moment for optimal clustering. The preferred number of clusters is determined based on the “e-2” hypothesis. We set up an experiment on two datasets of real-world labeled data: News20 and BBC. The proposed model is tested against more traditional text representation methods, like bag-of-words and word2vec, to show that it provides a much better-resulting quality than the baseline DBSCAN and OPTICS models with different encoding methods. We use three quality metrics to demonstrate that clustering quality does not drop when the number of clusters grows. Thus, we get close to the convergence of text clustering and text classification.
+
+\subsubsection{5.2.3}
+
+\textit{Background.} Topic modelling is a method of automated probabilistic detection of topics in a text collection. Use of topic modelling for short texts, e.g. tweets or search engine queries, is complicated due to their short length and grammatical flaws, including broken word order, abbreviations, and contamination of different languages. At the same time, as our research shows, human coding cannot be perceived as a baseline for topic quality assessment. \textit{Objectives.} We use biterm topic model (BTM) to test the relations between two topic quality metrics independent from topic coherence with the human topic interpretability. Topic modelling is applied to three cases of conflictual Twitter discussions in three different languages, namely the \textit{Charlie Hebdo} shooting (France), the Ferguson unrest (the USA), and the anti-immigrant bashings in Biryulevo (Russia), which represent, respectively, a global multilingual, a large monolingual, and a mid-range monolingual type of discussions. \textit{Method.} First, we evaluate the human baseline coding by providing evidence for the Russian case on the coding by two pairs of coders who have varying levels of knowledge of the case. We then measure the quality of modelling on the level of topics by looking at topic interpretability (by experienced coders), topic robustness, and topic saliency. \textit{Results.} The results of the experiment show that: 1) the idea of human coding as baseline needs to be rejected; 2) topic interpretability, robustness, and saliency can be inter-related; 3) the multilingual discussion performs better than the monolingual ones in terms of interdependence of the metrics. \textit{Conclusion.} We formulate the idea of an ‘ideal topic’ that rethinks the goal of topic modelling towards finding a smaller number of good topics rather instead of maximization of the number of interpretable topics.
+
+\subsubsection{5.2.4}
+
+Topic modelling is a technique widely used today to detect hidden topicality of text corpora, including those from social media. But, for many quite widespread online languages, like, e.g., Russian, topic modelling is still used rarely. For the Russian Twitter, only a handful of works exists, and these works lack substantial discussion on topic interpretability. Also, the impact of various properties of texts upon the modelling results remains widely unexplored. We partly cover these gaps by assessing a mid-range text corpus of a conflictual Twitter discussion in two respects. In continuation to our earlier study that applied three topic modelling algorithms (LDA, WNTM, and BTM) and assessed their quality via automated means, we here juxtapose automated assessment to human coding and link the human evaluation of topic quality to sentiment of the topics. We show that human coding disagrees with the results of the objective metrics in the number of interpretable topics, showing slightly higher interpretability for the LDA algorithm, but inter-coder reliability is much higher for BTM. We discuss a range of coding issues true for all the three topic models. We also find that interpretability of a topic by the human coders is linked to presence of negative keywords among the topic descriptors, with the strongest linkage shown by BTM.
+
+\subsubsection{5.2.5}
+
+The linkages between intensity and topicality of online discussions, on one hand, and those of offline on-street political activity, on the other hand, have recently become a subject of studies around the world. But the results of quantitative assessment of causal relations between onsite and online activities of citizens are contradictory. In our research, we use conflicts with violent trig-gers and the subsequent lines of events that include street rallies, political manifestations, and/or peaceful mourning, as well as public political talk, to trace the pivotal points in the conflict via measuring Twitter content. We show that in some cases Granger test does not work well, like in the case of Cologne mass harassment, for detecting the causality between online and onsite activities. In order to suggest a way to qualitatively assess the linkages between online and offline activities of users, we deploy topic modeling and further qualitative assessment of the changes in the topicality to link the topic saliency to the time of offline events. We detect several periods with varying topicality and link them to what was going on in the offline conflict.
+
+\subsubsection{5.2.6}
+
+Topic modeling is a method of automated definition of subtopics in a text corpus. Usage of topic modeling for short texts, e.g. tweets, is highly complicated due to their short length and grammatical restructuring, including broken word order, abbreviations, and contamination of different languages. In this paper, the authors use the BTM topic modelling algorithm (previously found to work best in comparison with two other topic models measured by automated coherence metrics Umass and NPMI) to test three topic quality metrics independent from topic coherence. Topic modelling is applied to three cases of ethnic conflict discussions on Twitter in three different main languages, namely the Charlie Hebdo shooting (France), the Ferguson unrest (the USA), and the anti-immigrant bashings in Biryulevo (Russia), thus combining a large multilingual, a large monolingual, and a mid-range monolingual type of discussion. We measure the quality of modeling by looking at topic interpretability, topic robustness, and topic saliency. The results of the experiment show that the three topic features may be interdependent (but not always are); the multilingual discussion performs better than the monolingual ones in terms of interdependence of the metrics and formation of ideal topics; and interpretability does not depend on multi-/monolingualism and the dataset volume.
+
+\subsubsection{5.2.7}
+
+\paragraph{EN} In this paper, the authors consider two topic models LDA (Latent Dirichlet Allocation) and WNTM (Word Network Topic Model), which rely on statistical data on the co-occurrence of words within the text, to identify topics in the problem of analysing the corpus of short texts. An experiment is conducted in which a comparative analysis of these models is made on the well-known test collection News and a set of data consisting of messages from users of the social network Twitter with the hashtag Biryulyovo. The results of the experiment show that the WNTM model, specialized for working with short texts, is more effective than the base model (LDA) on all the data presented for all performance measurements used.
+
+\paragraph{RU} В данной работе авторы рассматривают две тематические модели LDA (Latent Dirichlet Allocation) и WNTM (Word Network Topic Model), которые опираются на статистические данные о совпадениях слов внутри текста, для выявления тем в задаче анализа корпуса коротких текстов. Ставится эксперимент, в котором проводится сравнительный анализ данных моделей на известной тестовой коллекции News и наборе данных, состоящих из сообщений пользователей в социальной сети Twitter по хэштегу Бирюлево. Результаты эксперимента показывают, что специализированная модель WNTM для работы с короткими текстами, имеет большую эффективность на всех представленных данных по сравнению с базовой моделью (LDA) по всем представленным критериям.
+
+\subsubsection{5.3.1}
+
+Over the past few years the sentiment analysis task of users' posts in social networks has become very popular among researchers. In this paper, authors present and describe the developed multi-lingual knowledge-based approach of sentiment analysis in major conflict ad hoc discussions of the social network Twitter. An experiment is made in which the quality of the proposed method is evaluated with different parameters on two real ad hoc discussions: Ferguson unrest (USA) and Biryuliovo bashings (Russia). The results of the experiment show a good quality of the sentiment analysis of the discussions. In particular, the average value of the accuracy of Russian and English is 0.65, and the f-measure is 0.7.
+
+\subsubsection{5.3.2}
+
+\textit{Background.} The spread of affective content on social media, as well as user grouping based on affect \cite{Papacharissi}, has been a focus of scholarly attention for over a decade. But, despite this, we lack evidence on what roles various particular emotions play in the dynamics of discussions on social media. Emotional contagion theory (Hatfield et al. 2014) adapted for social media suggests that diffusion of emotions happens on individual level, via direct one-time contact with emotionalized content \cite{CovielloSohnKramer}. Other theories, like theories of social influence or social learning \cite{Young}, thought, suggest multiple, hierarchical, and/or topically-restricted contacts. The idea of affective agenda \cite{ColemanWu} implies that the dynamics of an emotional discussion needs to be assessed on the aggregate level. The question remains -- what role the emotions taken on aggregate level play in the discussion dynamics, being either catalyzers or inhibitors of the discussions. One may suggest that emotions of different stance (positive/negative) may spur/slow down the discussions in various ways. \textit{Objectives.} We analyze the spread of two polar emotions -- anger and compassion -- in three Twitter discussions on inter-ethnic conflicts, namely Ferguson protests (the USA, 2014), Charlie Hebdo massacre (France, 2015), and mass harassment in Cologne (Germany, 2015--2016). By analyzing the co-dynamics of the overall discussions and these two emotions we can conclude whether the pattern of the spread of emotions and its link with the discussion dynamics is the same in various language segments of Twitter. \textit{Data collection and methods.} The data we use were collected by our patented Twitter crawler in the aftermath of the conflicts and include altogether over 2,5 M tweets. We used manual coding by native speakers and machine learning to detect the emotions; then, we visualized the dynamics of growth of the emotional content of the discussions and used Granger test to see whether anger or compassion gave a spur to the discussions. \textit{Results.} We have received moderate results in terms of the dependence of the number of neutral users upon that of emotional users, but have spotted that the beginnings of the discussions, as well as the discussion outbursts, depend more on compassion, not on angry users, which needs more exploration. We have also shown that the hourly dynamics of emotions replicates that of the larger discussion, and the numbers of angry and compassionate users per hour highly correlate in all the cases.
+
+\subsubsection{5.3.3}
+
+Studies of user sentiment on social networks like Twitter have formed a steadily growing research area. But there is still lack of knowledge on whether the discussion clusters tagged by emotionally opposite hashtags differ in sentiment distribution, both in terms of difference between hashtags and between user types, e.g. non-influencers and influential accounts. We look at two hashtags that marked the discussion on the \textit{Charlie Hebdo} massacre of 2015, namely \#jesuischarlie and \#jenesuispascharlie. As sentiment analysis studies for the French language are rare, we elaborate our own approach to sentiment vocabulary. We apply human coding and machine learning to correct the automated sentiment assessment. Then we apply the enhanced knowledge on sentiment to both discussion segments and compare the configuration of the resulting sentiment-based nebulae in overall and francophone-only discussions. Also, we define influencers for both discussions and compare whether ordinary and institutional users differ by sentiment. We have three notable findings. First, negativity structures \#jenesuispascharie more than \#jesuischarlie. Second, while francophones communicate cross-sentiment inside the francophone talk, their negativity tends to cast impact upon cluster formation inside general discussions. Third, influencers in both cases tend to be more negative than positive, but institutional users bear neutral and positive sentiment more than ordinary people.
+
+\subsubsection{5.3.4}
+
+\paragraph{RU} В последнее десятилетие дискуссии в Интернете, маркированные хэштегами, и участвующие в них социальные группы породили новое и  быстро растущее поле междисциплинарных исследований. Оно связывает изучение общественного мнения, исследования публичной сферы и анализ социальных сетей. Но все эти исследования пока однозначно не ответили, «можно ли найти Хабермаса в Твиттере», -- в силу экспрессивности и недиалогичности коммуникации в социальных сетях, низкого потенциала тематических дискуссий по созданию «перекрестка мнений», а  также языковых границ, препятствующих кросскультурной дискуссии пользователей и  развитию глобальной публичной сферы.
+
+Данное исследование призвано оценить языково-пространственный аспект дискуссий под двумя «аффективными» и  взаимоисключающими хэштегами, отражающими ценностные позиции пользователей Твиттера, -- \#JeSuisCharlie и \#JeNeSuisPasCharlie. Мы оцениваем языковое распределение в коллекциях твитов и распространение хэштег-маркированных обсуждений за пределы французского языка. Для идентификации языковой структуры дискуссии используются автоматизированный веб-краулинг, ручное кодирование коллекций твитов, реконструкция веб-графов, их визуальный и сетевой анализ.
+
+Результаты исследования свидетельствуют о  том, что, несмотря на  разницу в  объеме обсуждения, обе дискуссии имеют сходную языковую структуру, включающую языковообусловленные «эхо-камеры» как на уровне самой дискуссии (особенно для \#JeNeSuisPasCharlie), так и внутри нее; при этом дискуссии не демонстрируют «столкновение цивилизаций» и не являются по-настоящему глобальными. В трансграничных дискуссиях идея «эхо-камер» выходит на уровень национального языка. Мы также показываем, что билингвальные, а не мультилингвальные пользователи являются связующими узлами многоязычной дискуссии.
+
+\paragraph{EN} Within the last decade, hashtag-based publics and various aspects of the discussions produced by them have created a rapidly growing field of interdisciplinary research linking public opinion and public sphere studies to social network analysis. Despite this growth, there is still scarce evidence that ‘Habermas is on Twitter’, due to the affective and non-dialogue nature of expression in social networks, seemingly low capacity of ad hoc discussions to create ‘opinion crossroads’, and language boundaries that prevent, i. a., cross-cultural participation of users in a given discussion and, thus, do not let the global public sphere develop. Having this in mind, we explore the spatial dimension of two affective hashtag-based publics with mutually exclusive value-loaded positions -- \#JeSuisCharlie and \#JeNeSuisPasCharlie. We look at language distribution within the tweet collections and the expansion of the hashtagged discussion to the languages other than French. To trace the discussion outbursts, we use automated web crawling, manual coding of tweet collections, and web graph reconstruction and visual analysis. Our results suggest that, despite the differences in the volume of expression, the language structure of both hashtags was quite similar and formed echo chambers on the level of a hashtag as well as on sub-levels. Also, we see that bilingual but not multilingual users bridge the sub-level echo chambers. We argue that global compassion publics not only lift up the idea of echo chambers to a new level (since ‘national’ language-based echo chambers clearly show up on the discussion graphs) but also revive the concept of spiral of silence.
+
+\subsubsection{5.3.5}
+
+Abstract Today, aggressive verbal behavior is generally perceived as a threat to integrity and democratic quality of public discussions, including those online. However, we argue that, in more restrictive political regimes, communicative aggression may play constructive roles in both discussion dynamics and empowerment of political groups. This might be especially true for restrictive political and legal environments like Russia, where obscene speech is prohibited by law in registered media and the political environment does not give much space for voicing discontent. Taking Russian YouTube as an example, we explore the roles of two under-researched types of communicative aggression -- obscene speech and politically motivated hate speech -- within the publics of video commenters. For that, we use the case of the Moscow protests of 2019 against non-admission of independent and oppositional candidates to run for the Moscow city parliament. The sample of over 77,000 comments for 13 videos of more than 100,000 views has undergone pre-processing and vocabulary-based detection of aggression. To assess the impact of hate speech upon the dynamics of the discussions, we have used Granger tests and assessment of discussion histograms; we have also assessed the selected groups of posts in an exploratory manner. Our findings demonstrate that communicative aggression helps to express immediate support and solidarity. It also contextualizes the criticism towards both the authorities and regime challengers, as well as demarcates the counter-public.
+
+\subsubsection{5.4.1}
+
+Abstractive summarization is a technique that allows for extracting condensed meanings from long texts, with a variety of potential practical applications. Nonetheless, today’s abstractive summarization research is limited to testing the models on various types of data, which brings only marginal improvements and does not lead to massive practical employment of the method. In particular, abstractive summarization is not used for social media research, where it would be very useful for opinion and topic mining due to the complications that social media data create for other methods of textual analysis. Of all social media, Reddit is most frequently used for testing new neural models of text summarization on large-scale datasets in English, without further testing on real-world smaller-size data in various languages or from various other platforms. Moreover, for social media, summarizing pools of texts (one-author posts, comment threads, discussion cascades, etc.) may bring crucial results relevant for social studies, which have not yet been tested. However, the existing methods of abstractive summarization are not fine-tuned for social media data and have next-to-never been applied to data from platforms beyond Reddit, nor for comments or non-English user texts. We address these research gaps by fine-tuning the newest Transformer-based neural network models LongFormer and T5 and testing them against BART, and on real-world data from Reddit, with improvements of up to 2\%. Then, we apply the best model (fine-tuned T5) to pools of comments from Reddit and assess the similarity of post and comment summarizations. Further, to overcome the 500-token limitation of T5 for analyzing social media pools that are usually bigger, we apply LongFormer Large and T5 Large to pools of tweets from a large-scale discussion on the Charlie Hebdo massacre in three languages and prove that pool summarizations may be used for detecting micro-shifts in agendas of networked discussions. Our results show, however, that additional learning is definitely needed for German and French, as the results for these languages are non-satisfactory, and more fine-tuning is needed even in English for Twitter data. Thus, we show that a ‘one-for-all’ neural-network summarization model is still impossible to reach, while fine-tuning for platform affordances works well. We also show that fine-tuned T5 works best for small-scale social media data, but LongFormer is helpful for larger-scale pool summarizations.
+
+\subsubsection{5.4.2}
+
+Agendas in online media have become a scholarly focus nearly two decades ago, leading to shifting conceptualizations of what we see as agenda. Thus, agendas and agenda shifts inside online discussions have shown its potential to influence offline deliberation, aggregate support, fuel protest, passing through and/or bypassing traditional media’s gatekeeping. Real-time (or nearly-real-time) learning about quick agenda movement inside globalized public debate might be particularly important for international organizations like UN or EU. However, we today lack both knowledge on how agendas move in such discussions and instruments on such analysis. In particular, we are next-to-unaware of to what extent globally relevant themes get contextualized within language-based discussion segments, as well as to what extent the latter depend on each other and lag behind each other in developing agendas and public opinion on quickly evolving issues or conflicts. In this paper, we propose a method of agenda detection based on neural-network text summarization and compare summaries of tweet packages across three languages within the Twitter hashtag \#jesuischarlie. We show that sentiment detection may allow for quality assessment of the text summaries, as compared to aggregated sentiment to the original tweets. We show that, outside France, agendas were more interpretational, abstract, and non-contextualized. The pattern of news changing to ‘issue outburt’ was simultaneous in dense discussion segments and lagged behind in a sparser one. We also show that, globally, main issues of the discussion may be spotted within the first hour.
+
 \section{Анализ Web-графов}\label{sec:ch5/sect1}
 
 \subsection{Beyond left and right: Real-world political polarization in twitter discussions on inter-ethnic conflicts}\label{subsec:ch5/sec1/sub1}
@@ -1456,9 +1536,12 @@ Rejection of H1 and H2 is telling, as it provides input for understanding the na
 			Interpretability & -- & \(-0,080\) & 0,064 & -- & 0,226* & 0,192 & -- & 0,337*** & 0,396*** \\
 			Saliency & \(-0,080\) & -- & 0,261** & 0,226* & -- & \(-0,086\) & 0,337*** & -- & 0,345*** \\
 			Robustness & 0,064 & 0,261** & -- & 0,192 & \(-0,086\) & -- & 0,396*** & 0,345*** & -- \\
-			\hline
-			\multicolumn{10}{c}{\makecell{Note. * -- \(p \le 0,05\); ** -- \(p \le 0,01\); *** -- \(p \le 0,001\).}}\\
 			\bottomrule
+			\multicolumn{10}{@{}p{\textwidth}}{%
+%				\vspace*{-4ex}% этим подтягиваем повыше
+				\hspace*{2.5em}% абзацный отступ - требование ГОСТ 2.105
+				Note. * -- \(p \le 0,05\); ** -- \(p \le 0,01\); *** -- \(p \le 0,001\).
+			}\\
 		\end{tabular}%
 			\end{adjustbox}
 \end{table}
@@ -2045,7 +2128,11 @@ First of all, the three cases differ in whether the growth of the number of angr
 			Charlie Hebdo anger & No No & No No & No No \\
 			Chare Hebdo compassion & No No & \colorbox{violet}{No 10,2**} & \colorbox{violet}{No 5,65*} \\
 			\hline
-			\multicolumn{4}{l}{\makecell{Note. Green: the test shows the dependency of the overall discussion upon these users and \\authors. Yellow: the test shows that the numbers of the neutral users and emotional users \\correlate due to a third factor.\\Violet: The linkage between emotional and neutral users shows the dependency of the\\ other direction: the higher the number of neutral tweets, the higher the number of the\\ angry and/or compassionate tweets. That is, when the discussion is boiling itself, \\the number of angry users also grows without any coordinated effort.}} \\
+			\multicolumn{4}{@{}p{\textwidth}}{%
+%				\vspace*{-4ex}% этим подтягиваем повыше
+				\hspace*{2.5em}% абзацный отступ - требование ГОСТ 2.105
+				Note. Green: the test shows the dependency of the overall discussion upon these users and authors. Yellow: the test shows that the numbers of the neutral users and emotional users correlate due to a third factor.Violet: The linkage between emotional and neutral users shows the dependency of the other direction: the higher the number of neutral tweets, the higher the number of the angry and/or compassionate tweets. That is, when the discussion is boiling itself, the number of angry users also grows without any coordinated effort.
+			}\\
 			\bottomrule
 		\end{tabular}%
 	\end{adjustbox}
@@ -2315,77 +2402,10 @@ As we have seen from Table~\cref{tab:modelQualityMeasurements}, the models work 
 
 The two other RQs are based on our additional coding of the summarizations (see Table~\cref{tab:subDatasetAgendas}). We coded them for being (1) news or opinion/issue and (2) local/global. Combining (1) and (2) and stating keywords for the issues found, we have received the agendas and could judge their nature and shifts.
 
-%\begin{table} [htbp]%
-%	\centering
-%	\caption{Agendas in the sub-datasets, first 50 summarizations of January 07 (English and French)/full list (German)}
-%	\label{tab:subDatasetAgendas}
-%	\renewcommand{\arraystretch}{1.5}%% Увеличение расстояния между рядами, для улучшения восприятия.
-%	\begin{longtable}{ l l l l l l }
-%		\caption{Agendas in the sub-datasets, first 50 summarizations of January 07 (English and French)/full list (German)}
-%		\label{tab:subDatasetAgendas}
-%		\toprule     %%% верхняя линейка
-%		Time & English & Time & French & Date time & German \\
-%		\midrule %%% тонкий разделитель. Отделяет названия столбцов. Обязателен по ГОСТ 2.105 пункт 4.4.5
-%		8:51 & news & 12:03 & news & 07.01 12:24 & uninterpretable \\
-%		12:26 & news & 12:25 & \textbf{news: local} & 07.01 13:20 & media \\
-%		12:28 & freedom of expression & 12:26 & tribute & 07.01 14:10 & news: French\\
-%		12:29 & freedom of expression & 12:28 & hashtag & 07.01 15:20 & \textbf{news: local}\\
-%		12:31 & news & 12:29 & \textbf{tribute: local} & 07.01 21:17 & hashtag\\
-%		12:33 & news & 12:30 & news & 07.01 23:52 & Francois Hollande\\
-%		12:34 & news & 12:32 & \textbf{news: local} & 08.01 1:27 & mourning: French \\
-%		12:36 & solidarity & 12:33 & news & 08.01 2:52 & solidarity: French \\
-%		12:38 & news & 12:35 & news & 08.01 4:06 & opinion \\
-%		12:40 & news & 12:36 & \textbf{news: local} & 08.01 5:45 & mourning: global \\
-%		12:42 & deadliest in history & 12:38 & \textbf{news: local} & 08.01 7:36 & news: French \\
-%		12:43 & news & 12:39 & \textbf{news: local} & 08.01 9:09 & news: French \\
-%		12:45 & religion & 12:40 & tribute & 08.01 10:26 & media \\
-%		12:47 & solidarity & 12:42 & media & 08.01 11:57 & opinion \\
-%		12:48 & pacifism & 12:43 & news & 08.01 13:58 & opinion \\
-%		12:50 & freedom of expression & 12:45 & \textbf{tribute: local} & 08.01 22:55 & Mohammad cartoons \\
-%		12:51 & freedom of expression & 12:46 & armistice over ChEbdo & 09.01 1:43 & opinion \\
-%		12:53 & freedom of expression & 12:47 & \textbf{news: local} & 09.01 4:32 & solidarity \\
-%		12:55 & impact & 12:49 & \textbf{France is rising} & 09.01 6:51 & opinion \\
-%		12:57 & news & 12:50 & news & 09.01 8:58 & solidarity \\
-%		12:59 & news & 12:52 & \textbf{news: local} & 09.01 12:06 & war on terrorism \\
-%		13:00 & freedom of expression & 12:53 & news & 10.01 0:44 & news: French \\
-%		13:02 & freedom of expression & 12:55 & \textbf{solidarity: local} & 10.01 5:52 & opinion \\
-%		13:04 & mourning & 12:56 & Fidel Castro & 10.01 13:36 & mourning: French \\
-%		13:06 & news & 12:58 & \textbf{Death of the Republic} & & \\
-%		13:08 & solidarity & 13:00 & \textbf{news: local} & & \\ 
-%		13:10 & freedom of expression & 13:01 & \textbf{news: local} & & \\
-%		13:12 & cartoons control the world & 13:03 & Muslims oppose murder &  & \\
-%		13:14 & world’s fury & 13:04 & \textbf{mourning: local} & & \\
-%		13:16 & freedom of expression & 13:06 & \textit{irrelevant} & & \\
-%		13:18 & news & 13:07 & hostages & & \\
-%		13:20 & solidarity & 13:09 & hashtag & & \\
-%		13:22 & solidarity & 13:11 & \textbf{news: local} & & \\
-%		13:24 & mourning & 13:12 & freedom & & \\
-%		13:26 & Banksy & 13:14 & media & & \\ 
-%		13:28 & solidarity & 13:16 & mourning: local & & \\
-%		13:30 & news & 13:18 & \textbf{news: local} & & \\
-%		13:32 & freedom of expression & 13:19 & news & & \\
-%		13:34 & news & 13:21 & \textbf{tribute: local} & & \\
-%		13:36 & news & 13:23 & \textbf{tribute: local} & & \\
-%		13:38 & freedom of expression & 13:24 & \textbf{tribute: local} & & \\
-%		13:41 & freedom of expression & 13:26 & \textbf{tribute: local} & & \\
-%		13:43 & news & 13:28 & \textbf{news: local} & & \\
-%		13:45 & solidarity / pacifism & 13:30 & hashtag & & \\
-%		13:47 & news & 13:32 & \textbf{news: local} &  & \\
-%		13:50 & war on Islam & 13:34 & news & & \\
-%		13:51 & solidarity & 13:36 & \textit{irrelevant} &  & \\
-%		13:54 & solidarity & 13:38 & \textbf{news: local} & & \\
-%		13:56 & news & 13:40 & freedom of expression & & \\
-%		13:58 & news & 13:42 & solidarity & & \\
-%		\hline
-%		\multicolumn{6}{c}{\makecell{Note. Highlighted: local; red: new; grey: news; black: previously mentioned issues}}\\
-%		\bottomrule %%% нижняя линейка
-%	\end{longtable}
-%\end{table}
-
 \begin{longtblr}[
 	caption = {Agendas in the sub-datasets, first 50 summarizations of January 07 (English and French)/full list (German)},
 	label = {tab:subDatasetAgendas},
-	remark{Note} = {Highlighted: local; red: new; grey: news; black: previously mentioned issues.},
+	remark{\hspace*{2.5em}Note} = {Highlighted: local; red: new; grey: news; black: previously mentioned issues.},
 	]{
 		colspec = {XXXXXX}, 
 		width = 1.0\linewidth,

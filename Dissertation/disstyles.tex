@@ -218,3 +218,20 @@
 	\UseTblrTemplate {conthead-text}{default}
 	\par
 }
+
+\DefTblrTemplate { remark } { normal }
+{
+	\UseTblrAlign { remark }
+	\UseTblrIndent { remark }
+	\MapTblrRemarks
+	{
+		\hangindent = 2.5em
+		\hangafter = 1
+		\UseTblrHang { remark }
+		\leavevmode
+		\UseTblrTemplate { remark-tag } { default }
+		\UseTblrTemplate { remark-sep } { default }
+		\UseTblrTemplate { remark-text } { default }
+		\par
+	}
+}
