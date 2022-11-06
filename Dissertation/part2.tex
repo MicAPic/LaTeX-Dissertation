@@ -201,6 +201,634 @@ YouTube-based discussions are a growing area of academic attention. However, we 
 
 \section{Анализ пользовательских Web-графов}\label{sec:ch2/sec4}
 
+\subsection{Detection of Hidden Communities in Twitter Discussions of Varying Volumes}\label{subsec:ch2/sec4/sub1}
+
+\subsubsection{1. Introduction}
+
+With the growth of the Internet, its complexity has also grown substantially. In particular, social networking has provided for formation of user clusters corresponding to an increasingly big number of communities at various levels, up to the cross-platform one. As previous research states, the formation of communities is based on user traits (e.g., group belonging, identity, spoken language, or location), discussion patterns (e.g., liking, commenting, mentioning, or reposting), and content features (e.g., political views, values, or cultural differences). Communities may also be situational, or ad hoc \cite{BrunsBurgess}, such as hashtag-based ones, or calculated, created by special curation \cite{BrunsBurgess2015}; in such cases, their borders are seen well enough. However, there are cases when hidden communities gradually accumulate online, e.g., within hashtagged discussions, and remain latent for non-involved observers; or, they are hidden on purpose, such as those created by terrorist groups. In any case, the detection of latent communities may serve not only as a metric for assessing the complexity of online discussions but also as a measure that can add to resolving burning social issues of security, political polarization, or cultural intolerance.
+
+Despite the growing number of works dedicated to detection of intentionally hidden and/or latent self-cumulative communities on social media \cite{PerligerPedahzur,WangGongLiu}, a cumulation of communities in real-world discussions has so far mostly been an object of ‘one case/one model’ studies where tests on real data bear an illustrative function only, if at all. There is almost no comparative assessment of community detection models. Furthermore, the  and traits of discovered communities found by one model are not judged against those detected by other models, which, though, seems natural to do. Rare exceptions include works on several spectral algorithms for directed graphs \cite{VanLierdeDelvenneVanDooren} which consider clustering algorithms based on cyclic and acyclic patterns, as well as comparative evaluation of community detection algorithms \cite{GeorgeShujaeeKerwat} in which only two algorithms, Infomap and Louvain, are considered (also assessed in our paper -- see below). However, in these works, the authors do not assess the possibility of using methods for identifying communities on graphs of different sizes, especially large (around 100,000 nodes) and extra-large (more than 500,000 nodes), and also do not investigate user interactions in discussions. Another shortcoming of the current research on hidden communities is that the models are not compared on the datasets of varying size, despite the fact that not all the models work with large-scale data well enough.
+
+Our research aims at partly covering the three aforementioned research gaps. The first gap is absence of comparative assessment of community detection models. The second one is selecting (or creating) the best model for real-world discussion data from social media. The third one is testing the models for the datasets belonging to one platform but significantly differing in size. Thus, the research design of this paper is the following: we test nine existing models of community detection in social media data on four datasets collected in 2013 to 2016 on Twitter by seven quality metrics that are considered precise in the previous literature. The old enough datasets are used, as they are virtually clean, in terms of botization and other types of computational propaganda, and are free from algorithmic impact upon the discussions cast by the platform itself.
+
+The remaining part of this paper is organized as follows. Section 2 describes the difference between various clustering algorithms for networks seen as directed/undirected graphs. Section 3 provides the selection of community detection methods and metrics for their quality evaluation, while Section 4 tells of our research design. We demonstrate the results for four various datasets in Section 5 and discuss them in the Conclusion.
+
+\subsubsection{2. Related Work}
+
+\paragraph{2.1. Selecting Community Detection Algorithms} Community allocation methods can be divided into two categories.
+
+The first category includes destiny-based clustering (DBSCAN, OPTICS, K-Means type) \cite{EsterKriegelSander,KriegelKrogerSander,Lloyd}. One of the advantages of these methods is the efficiency of the allocation of compacted clusters, but when applying these methods to graph analysis, the following problems arise:
+
+\begin{enumerate}
+	\item The need to use additional metrics to estimate the distance between vertices, and, in the case of oriented graphs, this choice is very narrow;
+	\item The limitations of computing on large-dimensional graphs (with more than 50,000 nodes) (in particular, the speed of searching for new clusters is significantly reduced, and, on super-large graphs (with more than 500,000 nodes), this class of algorithms cannot get a result without additional optimization);
+	\item Limited application to sparse data \cite{BodrunovaOrekhovBlekanov}.
+\end{enumerate}
+
+The second type includes graph methods for searching for hidden communities based on graph properties \cite{CauteruccioCorradiniTerracina} and the structure of connections of graph nodes \cite{RosvallAxelssonBergstrom,BlondelGuillaumeLambiotte,RaghavanAlbertKumara}. The advantages of these methods include the speed and the ability to calculate, including on large-scale graphs. However, when using such approaches, the number of hidden communities found in the graph can vary from several hundred to several thousand (although in many SNA tasks it is required to find up to several dozen). In addition, this class of algorithms is very sensitive to graph data. This is why a separate task within community detection in graphs is used to adapt existing methods to specific real data from the relevant subject area. In \cite{AgresteDeMeoFiumara}, the authors received high ratings of the efficiency of the Infomap \cite{RosvallAxelssonBergstrom} and LPA \cite{RaghavanAlbertKumara} algorithms on synthetic data and real web data of large size. In \cite{DengZhaiLv}, the authors compared their algorithm with the Infomap and OSLOM \cite{LancichinettiRadicchiRamasco} algorithms, where they obtained the best results in speed and floating quality results on billing network data. In \cite{AmatiAngeliniCruciani}, the authors used the Louvain \cite{BlondelGuillaumeLambiotte} algorithm as one of two algorithms for clustering large volumes of related data, and, in \cite{YuLiangJieJie,MotheMkhitaryanHaroutunian}, the authors also used graph algorithms for searching communities on real data, which showed high application efficiency. In studies \cite{DeitrickHu,ChenYinLi}, Infomap and SLPA (GANXiS) \cite{XieSzymanskiLiu} were also used in their work, but Infomap proved to be better.
+
+As we can see from the above studies, there are few works dedicated to the analysis of user discussions on social networks. Individual tasks, such as topic modeling and sentiment analysis, are being investigated; however, user interaction within the discussion has not been investigated using these methods. Therefore, in this work, the main focus is on the application and testing of the most efficient methods for identifying hidden communities on real-data graphs of user discussions.
+
+\paragraph{2.2. Communities in Networked Discussions: A Social Scientific Perspective} Testing algorithms and assessing their quality implies that they are tested either against known baseline results (by other methods or on marked-up data) or some pre-set ground truth. Establishing the latter requires a clear sociological task, e.g., for networked discussions, detection of politically polarized communities, sentiment-based grouping, and discursive or cultural divisions (as such a task would shape expectations on the number, size, and interaction patterns of the latent communities).
+
+In this research, however, we cannot fix strict enough ground truth, as we compare the algorithms without setting a task. Yet, despite intentionally not setting the ground truth to compare to before testing, it is quite clear and commonsensical that social researchers who would like to use the algorithms for community detection usually aim at goals that imply a low number of communities. Thus, in political polarization studies or research on social group conflicts, the number of polarized views-based communities cannot be high \cite{BodrunovaBlekanovSmoliarova}. In general, studies of hidden communities are often necessary to detect the structure of conflict, such as (non-)binary political polarization, mutual hostility of social groups, opinion preferences towards burning issues on public agendas, recommender communities in marketing, or hidden chains of influencers \cite{BodrunovaBlekanovMaksimov}. In all these cases, it is expected that the discussion graphs are divided into a small number (2 to 5) of comparably large communities that represent social groups, political views, communities of practice, or center-periphery relations.
+
+This is why, comparing the algorithms, we will not only look at the metrics calculated automatically (see below) but also judge qualitatively, by comparing the number and size of the detected communities, implying that algorithmic group detection should aim at finding a small number of robust communities.
+
+\subsubsection{3. Models and Methods in SNA}
+
+\paragraph{3.1. User Discussion Model} In this work, as a model of user discussion, we present a directed user web graph \(G\):
+
+\begin{equation}
+	\label{eqn:51}
+	G_D = G(V,E),
+\end{equation} where \(V = \{V_G,V_R, V_{GR}\}\) means all the users who took part in the discussion, \(V_G\) are the users who only generated content in the discussion \(D\), \(V_R\) are the users who only reacted to the content in discussion \(D\), and \(V_{GR}\) are the users who both generated content and reacted to other content. Furthermore, \(E\) refers to the connections that represent likes, comments, or reposts between the discussion participants. Visual representation of a networked discussion split by participation type according to \cref{eqn:51} is presented on Figure~\cref{fig:networkedDiscussionRepresentation}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.7]{networkedDiscussionRepresentation}
+	}
+	\caption{Visual representation of the structure of a networked discussion, by user type.}\label{fig:networkedDiscussionRepresentation}
+\end{figure}
+
+Let us assume that user \(A\) from \(V_G\) published a message on the social network on some event, and user \(B\) from \(V_R\) reacted to this post via a like, comment, or repost. Then there will be a connection \(B -- A\) (‘\(A\) caused by this publication a reaction from user \(B\)’) in an unweighted directed graph. 
+
+Thus, in this paper, the search for communities in social graphs is the task of analyzing \cref{eqn:51} -- that is, finding sub-structures in a discursive community with three different participation strategies. The methods used for this analysis are discussed below.
+
+\paragraph{3.2. Description of Community Detection Methods} This section will describe clustering techniques that have not yet been applied to \cref{eqn:51}.
+
+\textit{3.2.1. The Directed Louvain Algorithm} Directed Louvain \cite{DuguePerez} is an extension for directed graphs of the greedy Louvain \cite{BlondelGuillaumeLambiotte} algorithm: starting from any set of vertices, the algorithm calculates the increase in modularity from moving vertices between communities. This increase is calculated using the following formula:
+\[
+	\Delta_{Q_d} = \frac{d^C_i}{m} - \left[\frac{d^{out}_i \cdot \sum_{tot}^{in} + d^{in}_i \sum_{tot}^{out}}{m^2}\right],
+\] where \(d^C_i\) -- the degree of node \(i\) in community \(C\); \(d^{in}_i\) \((d^{out}_i)\) -- the indegree (outdegree) of node \(i\); \(sum^{in}_{tot}\) \((\sum_{tot}^{out})\) -- the incoming (outcoming) edges of community \(C\).
+
+\textit{3.2.2. The Leiden Algorithm} The Leiden \cite{TraagWaltmanVanEck} algorithm is partially based on the smart local move algorithm, which can be seen as an improvement on the Louvain \cite{BlondelGuillaumeLambiotte} algorithm, and also uses the idea of speeding up local movement of nodes and the idea of moving nodes to random neighbors. The algorithm can use CPM or modularity as quality functions, and includes three stages:
+
+\begin{enumerate}
+	\item Local node movement;
+	\item Improving partition;
+	\item Enhanced partition-based network aggregation using a non-enhanced partition to
+	create an initial partition for the aggregate network.
+\end{enumerate}
+
+\textit{3.2.3. The Directed Label Propagation Algorithm} The directed label propagation algorithm (DLPA) \cite{Li} is a development for directed graphs of the label propagation algorithm \cite{RaghavanAlbertKumara} method. LPA is one of the fastest community finding algorithms for undirected graphs. It can be used with large graphs, relies on topology, and is easy to implement:
+
+\begin{enumerate}
+	\item The algorithm assigns a unique label to each node;
+	\item Each node selects a label among its neighbors based on the frequency of occurrence; 
+	\item If the distribution of labels reaches a steady state, the algorithm stops, otherwise it returns to step 2;
+\end{enumerate}
+
+The principle of label selection looks like this:
+\[
+	l^{new}_v = \lvert N^l(v) \rvert,
+\]
+where \(v\) -- the node, \(l\) -- the node label, and \(N(v)\) -- neighbors of node \(v\).
+
+DLPA differs from the original algorithm by the weighting rule for each edge:
+\[
+1 - \frac{E^{out}_S E^{in}_T}{k_S k_T}
+\]
+where \(E^{out}_S\) -- the outdegree of the source node, \(E^{in}_S\) -- the indegree of the target node, \(k_S\) -- the degree of the source node, and \(k_T\) -- the degree of the target node.
+
+\textit{3.2.4. The Infomap Algorithm} The Infomap \cite{RosvallAxelssonBergstrom} algorithm works as follows: each node is assigned to a separate community. Then, in random sequential order, each node is moved to a neighboring com- munity, if this movement decreases the map equation value. The repetition is performed each time in a new random sequential order until no movement leads to a decrease in map equation. Then, the graph is rebuilt, and the communities of the last level are replaced by nodes at this level. Then, the procedure is repeated for this level. The network is rebuilt until the map equation result cannot be reduced any more.
+
+\textit{3.2.5. The Generalized K-Means Algorithm} Generalized K-means using PageRank \cite{HajijSaidTodd} improves the k-means \cite{Lloyd} method, generalizing it to both directed and undirected graphs. Generalized k-means uses the PageRank algorithm as a measure of centrality and the Dijkstra’s algorithm as a metric for the distance between vertices for directed graphs.
+
+Like the usual k-means, this algorithm consists of three stages:
+
+\begin{enumerate}
+	\item The initialization stage: k centroid vertices are randomly selected;
+	\item The assignment stage: using Voronoi diagrams with centroids to divide the set of vertices into subsets;
+	\item The update stage: building subgraphs, calculating PageRank for each subgraph, and updating the centroids.
+\end{enumerate}
+
+\textit{3.2.6. The Order Statistics Local Optimization Method} The order statistics local optimization method (OSLOM) \cite{LancichinettiRadicchiRamasco} is based on local optimization of the fitness function, which expresses the statistical significance of clusters in relation to random fluctuations, which is estimated using the extreme and order statistics tools. OSLOM can be used on its own or as a rework procedure for breaks/coverage provided by other methods. The method includes three phases:
+
+\begin{enumerate}
+	\item The search for significant clusters before convergence;
+	\item Analysis of the resulting set of clusters to detect their internal structure or possible
+	associations;
+	\item Discovery of the hierarchical structure of clusters.
+\end{enumerate}
+
+\textit{3.2.7. The Speaker–Listener Propagation Algorithm} GANXiS, aka SLPA \cite{XieSzymanskiLiu}, is another extension of the LPA \cite{RaghavanAlbertKumara} algorithm that consists of three stages, as described below.
+
+\begin{itemize}
+	\item The memory of each node is initialized with the identifier of this node (unique label).
+	\item The steps are repeated until the stopping criterion is met:
+	\begin{enumerate}
+		\item one node is selected as a listener;
+		\item each neighbor of the selected node sends one tag following a certain conversation rule, e.g., choosing a random tag from its memory with a probability proportional to the frequency of occurrence of this tag in memory;
+		\item the listener accepts a label from a collection of labels received from neighbors following a specific listening rule, e.g., choosing the most popular label from what it has observed at the current stage.
+	\end{enumerate}
+	\item Finally, post-processing based on in-memory labels of nodes is used to display communities.
+\end{itemize}
+
+SLPA utilizes an asynchronous update scheme, i.e., when updating a listener’s memory at time \(t\), some already-updated neighbors have memories of size \(t\) and some other neighbors still have memories of size \(t - 1\). SLPA reduces to LPA when the size of memory is limited to 1, and the stopping criterion is the convergence of all labels. Thus, SLPA is a joint version of the LPA algorithm that is suitable for detecting overlapping (fuzzy) clusters, while the disjoint version of the algorithm may be employed for finding non-fuzzy clusters and is used here for comparative purposes. We will name the joint algorithm GANXiSo, and the disjoint one GANXiSd.
+
+\paragraph{3.3. Evaluation Metrics for Community Detection} In order to evaluate partitions, we decided to use various quality indicators that characterize how similar the structure of connections of a given network is to a community. The metrics are based on the idea that communities are collections of nodes with more connections inside and fewer connections outside. They were selected from a standard set of known metrics, which are commonly used to assess the graph properties of detected communities in a directed graph \cite{Rahman,LeichtNewman,Newman,Fagiolo,ChenNguyenSzymanski,KaurSinghKaushal}. Such properties, for example, include the ability to distinguish large communities in a graph, the density of internal connections within formed communities, the number of edges in a graph outside the community, and the ratio of incoming edges to the total number of community edges. In selecting the metrics, we also used the following logic: (1) the metrics must vary in terms of which graph properties they measure; (2) the metrics have to suit both the density-based and pattern-based clustering; and (3) taken together, the metrics must describe the main graph properties in terms of community detection. The metrics selected have no underlying ‘ground truth’ capacity; that is, none of them can tell whether a hidden community is found or not. However, taken together, the metrics provide for much better clarity on how well the algorithms cluster the graph nodes. The metrics, though, may provide for sociological meaning (e.g., stronger connection of nodes may reveal modularity based on opinion, group belonging, or expression sentiment), but the meaning of the result is task-dependent (e.g., we consider it better when a discussion is less modular, which would mean more equal spread of political opinion). It is not the peculiar sociological meaning that we demand from each metric; taken together, they are to provide for a bigger picture of how close a given algorithm is to finding a closer-to-life number of communities.
+
+\begin{enumerate}
+	\item The \textit{NEDindex} \cite{Rahman} value ranges from 0 to 1. Cluster nodes are more strongly con- nected to the entire graph if \textit{NEDindex} tends towards 1, and vice versa, cluster nodes are weakly connected if \textit{NEDindex} is close to 0. \[D(G) = 2 \sum_{1 \le i \le n}e_i,\] \[\textit{NED}(C) = \frac{\lvert V_c \rvert + \lvert E_c \rvert + D(C)}{\lvert V_c \rvert + \begin{pmatrix}
+			\lvert V_c \rvert \\
+			2 \\
+	\end{pmatrix} + D(G,V_c)},\] \begin{equation} 
+		\label{eqn:52} 
+		\textit{NEDindex} = \sum_{1 \le i \le n} \frac{\textit{NED}(C_i) \cdot D(C_i)}{D(G)}. 
+	\end{equation} This metric indicates the strength of the connection between the cluster vertices relative to the entire graph.
+	
+	\item Directed modularity \cite{LeichtNewman} is an extended version of the modularity metric \cite{Newman} for directed graphs. The higher the value, the better the result. \begin{equation}
+		\label{eqn:53} 
+		Q = \frac{1}{m} \sum_{ij}\left[A_{ij} - \frac{k^{in}_i k^{out}_j}{m}\right]\delta_{c_ic_j}
+	\end{equation} Modularity reflects the concentration of edges within communities compared with random distribution of links between all nodes regardless of communities. Modularity also shows the effectiveness of the method to detect large communities.
+
+	\item Clustering Coefficient is used in this paper as a version of the clustering coefficient \cite{Fagiolo} extended for directed and weighted graphs. \begin{equation}
+		\label{eqn:54} 
+		C^D = N^{-1} \sum_{i=1}^{N} C_i^D
+	\end{equation} In this metric, the average value of the ratio of existing triangles based on the vertex \(i\) to all kinds of triangles based on this vertex is considered, that is, the completeness of the relationship between the vertices is considered. The closer the metric value is to 1, the better the community detection.
+
+	\item Conductance \cite{ChenNguyenSzymanski} is the proportion of the total number of edges outside the commu- nity for unweighted networks or the proportion of the total weight of such edges for weighted networks. This metric allows you to know the “conductivity” of the resulting community. The closer the conductance value to 0, the better the quality of the community. \begin{equation}
+		\label{eqn:55}
+		\frac{\lvert E_c^{out} \rvert}{\lvert E_c^{in} \rvert + \lvert E_c^{out} \rvert}
+	\end{equation}
+
+	\item Contraction \cite{ChenNguyenSzymanski} measures the average number of edges per node within community C or the average weight per node of such edges. This metric shows how important this community is to the rest of the graph. The closer the contraction value to 1, the better the quality of the community. \begin{equation}
+		\label{eqn:56}
+		\frac{\lvert E_c^{in} \rvert}{c}
+	\end{equation}
+
+	\item Expansion \cite{ChenNguyenSzymanski} measures the average number of edges (per node) outside the community C, or the average weight per node of such edges. This metric shows how strongly this community is connected to the rest of the graph. The lower the expansion value, the better the quality of the community.\begin{equation}
+		\label{eqn:57}
+		\frac{\lvert E_c^{out} \rvert}{c}
+	\end{equation}
+
+	\item Community Fitness \cite{KaurSinghKaushal} calculates the ratio of the total indegree number of the community \(C\) to the total degree of \(\alpha\), where is \(\alpha\) a positive number that controls the size of communities. This allows you to find out the density of detected communities. The higher the community fitness value, the better result we get. \begin{equation}
+		\label{eqn:58}
+		\textit{comfit} = \frac{k_{in}^C}{(k_{in}^C + k_{out}^C)^\alpha}
+	\end{equation}
+\end{enumerate}
+
+\subsubsection{4. Experiment}
+
+\paragraph{4.1. Experiment Description} The methods suggested above will be applied to the four datasets, after which the resulting values will be evaluated by the metrics~\cref{eqn:52,eqn:53,eqn:54,eqn:55,eqn:56,eqn:57,eqn:58}. For completeness of the experiment, as test data, we take a graph of small size (about 10 thousand nodes), medium size (up to 50 thousand nodes), large size (up to 200 thousand nodes), and extra-large (more than 500 thousand nodes). Moving from a small dataset to large ones during testing, algorithms and metrics that do not perform efficiently on the task will be cut off. Next, two tables will be created for each dataset. The first table will contain the results of applying the metrics, highlighting the best results in each metric. The second table will contain the count of resulting clusters and the size of the seven largest of them. Based on the data obtained for each dataset, it will be possible to draw a conclusion on efficiency of the algorithms on the datasets of varying volume.
+
+Our strategy differs from the ‘ground truth’ one: instead of having just one pre- analyzed discussion with known modularity as a ‘ground truth’ (which might lead to the situation of random closeness of this or that model to the content-based graph modularity), we take four discussions on various volume and set the sociological perspective for expectations, to see which algorithm(s) come closer to them on datasets of varying volume. This is why our design implies use of multiple metrics and multiple datasets.
+
+\paragraph{4.2. The Datasets} To test and evaluate the extant tools, real-world datasets crawled from Twitter, a microblogging service with elements of a social network, were used. Each of these datasets was collected using the Twitter API during or immediately after high-profile, socially resonant events that triggered social unrest \cite{BodrunovaBlekanovSmoliarova,BodrunovaLitvinenkoBlekanov,BodrunovaBlekanov}. For accurate results, the datasets vary in size (the number of tweets), and testing will be carried out from the smallest to the largest one.
+
+The mall size dataset (hereinafter referred to as “Biryulevo”) consists of the tweets posted on 17 to 31 October 2013, during the sharp phase of the riots in the Moscow district Biryulevo-Zapadnoe. Initially, it contains 20,106 links and 11,429 users, but, after cleaning from isolate users, 10,275 vertices and 20,093 edges remain.
+
+The medium size dataset (hereinafter referred to as “Cologne”) contains the data collected for 1 to 31 January 2016, within the discussion on mass attacks on women in Cologne on the eve of 2016. Initially, it contained 40,117 users and 98,508 links, after cleaning from isolate users, the number of users decreased to 36,850, and the number of links to 96,244.
+
+The large size dataset (hereinafter referred to as “Ferguson”) contains data from 22 to 31 August 2014, on the riots in Ferguson, USA, provoked by a murder of an African Ameri- can teenager by a white policeman. The dataset contains 169,676 users with 334,050 links, and, after cleaning from isolate users, 143,024 users with 325,369 links remain.
+
+The extra-large dataset (hereinafter referred to as “Charlie Hebdo”) was obtained for the period of 7 to 10 January 2015 by collecting a response to a terrorist attack in the editorial office of the Charlie Hebdo magazine. The total number of participants is 719,503, connections are 981,131, and, after clearing, there are 617,041 users and 980,351 connections.
+
+\subsubsection{5. Results}
+
+As stated above, in this section we present the results of the experiment for four various datasets of different volumes.
+
+The results of the task solution for the Biryulevo case are shown in Tables~\cref{tab:biryulevoMetricsEvaluation} and~\cref{tab:biryulevoCommunityNumber}. Each method has its own peculiarities:
+
+\begin{itemize}
+	\item The Infomap algorithm tends to highlight one large community, which can be used as a starting point for deeper research;
+	\item Similar to the Infomap algorithm, GANXiS (both pure and overlapping versions) distinguishes one large society, but this set is smaller than for Infomap;
+	\item The generalized K-means algorithm does not take into account the lack of connections between isolates, which is the reason for the unification of almost all small discussions (2-3-4 participants) into one large society;
+	\item Directed Louvain shows good results. However, it was not able to get ahead in any metric, steadily holding on to the second or third place;
+	\item Despite it only partially belonging to the directed graph clustering algorithms, Leiden (both the one that uses modularity and the one that uses the clique percolation method) shows good results, being ahead of the directed Louvain algorithm in almost every point. Its peculiarity is that it highlights the communities of average size and/or close to each other in size;
+	\item DLPA allocates almost twice as many communities as other algorithms, all but the largest do not differ much in size;
+	\item OSLOM identifies a large number of communities, which, moreover, can strongly overlap. 
+\end{itemize}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Results of evaluations by metrics on the Biryulevo dataset.}%
+	\label{tab:biryulevoMetricsEvaluation}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& DirMod & ClusCoe & ComFit & NEDind & Conduc & Contrac & Expans\\
+			\hline
+			DLPA & 0.486 & \textbf{0.056} & 1.373 & 0.605 & 0.625 & \textbf{0.849} & 2.361 \\
+			DirLouv & 0.574 & 0.039 & 6.548 & 0.793 & 0.286 & 0.766 & 0.715\\
+			Infomap & 0.088 & 0.034 & 7.877 & \textbf{0.940} & \textbf{0.209} & 0.685 & \textbf{0.375}\\
+			OSLOM & -- & 0.035 & 2.479 & 0.501 & 0.967 & 0.087 & 1.403 \\
+			GKM & 0.390 & 0.0099 & 7.956 & 0.423 & 0.950 & 0.190 & 2.161 \\
+			LeidMod & \textbf{0.584} & 0.039 & 6.686 & 0.806 & 0.278 & 0.761 & 0.686 \\
+			LeidCPM & 0.571 & 0.040 & 5.052 & 0.676 & 0.365 & 0.828 & 1.001 \\
+			GANXiSd & 0.406 & 0.040 & 2.538 & 0.661 & 0.526 & 0.841 & 1.681\\
+			GANXiSo & -- & 0.049 & 3.295 & 0.643 & 0.550 & 0.848 & 2.282 \\
+			\bottomrule
+			\multicolumn{8}{@{}p{\textwidth}}{%
+				\hspace*{2.5em}% абзацный отступ - требование ГОСТ 2.105
+				Note. The best results are highlighted in bold.
+			}\\
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of communities obtained on the Biryulevo dataset and the value of the seven largest of them for each algorithm.}%
+	\label{tab:biryulevoCommunityNumber}% label всегда желательно идти после caption
+%	\begin{adjustbox}{width=1\textwidth}
+%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Count & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+			\hline
+			DLPA & 1159 & 741 & 205 & 171 & 115 & 111 & 108 & 105 \\
+			DirLouv & 243 & 691 & 583 & 494 & 486 & 463 & 459 & 381 \\
+			Infomap & 202 & 9276 & 232 & 86 & 41 & 33 & 28 & 26 \\
+			OSLOM & 642 & 2637 & 1743 & 1425 & 847 & 763 & 737 & 619\\
+			GKM & 200 & 3300 & 2815 & 1812 & 815 & 496 & 313 & 90 \\
+			LeidMod & 238 & 716 & 464 & 458 & 451 & 416 & 388 & 356\\
+			LeidCPM & 315 & 627 & 613 & 226 & 226 & 214 & 208 & 208 \\
+			GANXiSd & 627 & 4881 & 190 & 146 & 129 & 113 & 103 & 101 \\
+			GANXiSo & 647 & 4956 & 638 & 255 & 166 & 146 & 139 & 83 \\
+			\bottomrule
+		\end{tabular}%
+%	\end{adjustbox}
+\end{table}
+
+The results for the Cologne case are shown in Tables~\cref{tab:cologneMetricsEvaluation} and~\cref{tab:cologneCommunityNumber}. At this dataset volume,~\cref{eqn:53} metric showed high computational complexity, so it was no longer used.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Results of evaluations by metrics on the Cologne dataset.}%
+	\label{tab:cologneMetricsEvaluation}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& DirMod & ClusCoe & ComFit & NEDind & Conduc & Contrac & Expans\\
+			\hline
+			DLPA & -- & \textbf{0.070} & 2.299 & 0.723 & 0.521 & 0.815 & 1.378 \\
+			DirLouv & -- & 0.028 & 7.753 & 0.917 & 0.234 & 0.691 & 0.459 \\
+			Infomap & -- & 0.024 & 8.468 & \textbf{0.949} & \textbf{0.201} & 0.653 & \textbf{0.344}\\
+			OSLOM & -- & 0.034 & 3.380 & 0.495 & 0.963 & 0.098 & 1.249 \\
+			GKM & -- & 0.013 & \textbf{28.498} & 0.422 & 0.934 & 0.209 & 2.600 \\
+			LeidMod & -- & 0.028 & 7.764 & 0.916 & 0.233 & 0.693 & 0.459 \\
+			LeidCPM & -- & 0.033 & 4.379 & 0.689 & 0.397 & 0.793 & 1.030 \\
+			GANXiSd & -- & 0.031 & 3.057 & 0.693 & 0.501 & 0.807 & 1.798 \\
+			GANXiSo & -- & 0.042 & 3.551 & 0.670 & 0.526 & \textbf{0.829} & 2.290 \\
+			\bottomrule
+			\multicolumn{8}{@{}p{\textwidth}}{%
+				\hspace*{2.5em}% абзацный отступ - требование ГОСТ 2.105
+				Note. The best results are highlighted in bold.
+			}\\
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of communities obtained on the Cologne dataset and the value of the seven largest of them for each algorithm.}%
+	\label{tab:cologneCommunityNumber}% label всегда желательно идти после caption
+%	\begin{adjustbox}{width=1\textwidth}
+%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Count & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+			\hline
+			DLPA & 2479 & 20,669 & 425 & 277 & 249 & 198 & 173 & 168 \\
+			DirLouv & 735 & 4356 & 4105 & 4091 & 3604 & 3447 & 1933 & 1886  \\
+			Infomap & 673 & 27,016 & 3726 & 1145 & 590 & 465 & 445 & 338 \\
+			OSLOM & 1690 & 10,823 & 7336 & 3058 & 1881 & 1519 & 1466 & 921 \\
+			GKM & 200 & 11,474 & 7737 & 4353 & 2971 & 2947 & 1859 & 1119  \\
+			LeidMod & 734 & 4453 & 3882 & 3540 & 3212 & 3181 & 2686 & 1739 \\
+			LeidCPM & 1221 & 2395 & 672 & 625 & 414 & 405 & 362 & 355 \\
+			GANXiSd & 1864 & 24,911 & 128 & 110 & 108 & 94 & 89 & 80 \\
+			GANXiSo & 1964 & 25,365 & 458 & 210 & 162 & 128 & 110 & 83 \\
+			\bottomrule
+		\end{tabular}%
+%	\end{adjustbox}
+\end{table}
+
+For the mid-range dataset, the algorithms have shown the following results:
+
+\begin{itemize}
+	\item Infomap showed a more even selection of communities than on the Biryulevo dataset, nevertheless retaining the emphasis on the largest of them;
+	\item GANXiS continued to highlight one large community, and the emphasis on this community grew;
+	\item As in the case of the Biryulevo dataset, generalized K-means has combined minor discussions into one large group;
+	Directed Louvain performed well again, continuing to hold on to second or third place;
+	\item Unlike for the first dataset, the sizes of communities after the Leiden algorithm differ depending on the metric (CPM or modularity). The first option showed a large number of fairly small communities, while the second showed a smaller number of moderately large communities;
+	\item DLPA on the Cologne dataset showed the risk of going into “overflow” of one community, not giving any other one chances to grow while, again, having twice as many	communities as other algorithms;
+	\item OSLOM distinguished communities of not the best quality even in comparison with	GANXiS.
+\end{itemize}
+
+The results for the large dataset (Tables~\cref{tab:fergusonMetricsEvaluation} and~\cref{tab:fergusonCommunityNumber}) may be described the following way:
+
+\begin{itemize}
+	\item Infomap once again got four best metrics results, receiving, though, one large community;
+	\item GANXiS kept the trend shown on small and medium datasets;
+	\item The generalized K-Means algorithm has shown its inapplicability to sufficiently perform on large graphs, since both the computational cost and the memory cost made it impossible to use this algorithm;
+	\item Directed Louvain retains its position relative to other algorithms;
+	\item The Leiden algorithm kept the trend shown on the medium-sized dataset;
+	\item DLPA identified more equal-sized communities than on the medium dataset, which demonstrates variability of the algorithm performance depending on the size of initial data;
+	\item OSLOM got results worse than on medium dataset on every, except metric (8).
+\end{itemize}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Results of evaluations by metrics on the Ferguson dataset.}%
+	\label{tab:fergusonMetricsEvaluation}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& DirMod & ClusCoe & ComFit & NEDind & Conduc & Contrac & Expans\\
+			\hline
+			DLPA & -- & \textbf{0.085} & 1.522 & 0.640 & 0.599 & \textbf{0.847} & 2.735 \\
+			DirLouv & -- & 0.027 & 6.318 & 0.949 & 0.208 & 0.666 & 0.371 \\
+			Infomap & -- & 0.026 & \textbf{6.476} & \textbf{0.959} & \textbf{0.199} & 0.655 & \textbf{0.340}\\
+			OSLOM & -- & 0.034 & 2.426 & 0.493 & 0.964 & 0.096 & 1.305 \\
+			GKM & -- & -- & -- & -- & -- & -- & -- \\
+			LeidMod & -- & 0.027 & 6.244 & 0.945 & 0.212 & 0.670 & 0.380 \\
+			LeidCPM & -- & 0.035 & 4.494 & 0.740 & 0.345 & 0.782 & 1.062 \\
+			GANXiSd & -- & 0.031 & 3.303 & 0.772 & 0.422 & 0.773 & 1.260 \\
+			GANXiSo & -- & 0.034 & 4.064 & 0.779 & 0.397 & 0.756 & 1.294 \\
+			\bottomrule
+			\multicolumn{8}{@{}p{\textwidth}}{%
+				\hspace*{2.5em}% абзацный отступ - требование ГОСТ 2.105
+				Note. The best results are highlighted in bold.
+			}\\
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of communities obtained on the Ferguson dataset and the value of the seven largest of them for each algorithm.}%
+	\label{tab:fergusonCommunityNumber}% label всегда желательно идти после caption
+%	\begin{adjustbox}{width=1\textwidth}
+%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Count & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+			\hline
+			DLPA & 18,389 & 3059 & 1224 & 1044 & 913 & 877 & 708 & 662 \\
+			DirLouv & 4429 & 16,029 & 13,916 & 13,391 & 12,936 & 8827 & 4334 & 4053 \\
+			Infomap & 4321 & 106,521 & 15,617 & 1651 & 1012 & 506 & 409 & 353\\
+			OSLOM & 11,546 & 16,417 & 15,372 & 10,438 & 8874 & 6587 & 4081 & 3074 \\
+			GKM & -- & -- & -- & -- & -- & -- & -- & -- \\
+			LeidMod & 4481 & 15,804 & 12,715 & 12,212 & 11,385 & 9162 & 4355 & 4260 \\
+			LeidCPM & 6226 & 1001 & 729 & 704 & 648 & 572 & 554 & 531 \\
+			GANXiSd & 8472 & 98,344 & 211 & 184 & 159 & 104 & 100 & 97 \\
+			GANXiSo & 7489 & 111,798 & 184 & 159 & 155 & 102 & 95 & 84\\
+			\bottomrule
+		\end{tabular}%
+%	\end{adjustbox}
+\end{table}
+
+The results for the extra-large dataset (Tables~\cref{tab:charlieHebdoMetricsEvaluation} and~\cref{tab:charlieHebdoMetricsEvaluation}) are the following:
+
+\begin{itemize}
+	\item Infomap showed a better division into same-size communities, retaining the emphasis on the largest of them;
+	\item It revealed that the GANXiS algorithm is not applicable to extra-large networks;
+	\item As in the case of the large dataset, generalized K-means is not applicable to the networks of this size;
+	\item The directed Louvain continued to evenly allocate communities;
+	\item Leiden shown dramatically grown difference between the size of CPM and modularity metric-based communities;
+	\item DLPA on an extra-large dataset has allocated a lot of small, smaller than before, communities;
+	\item OSLOM has got even worse results than on the large dataset on every metric.
+	
+\end{itemize}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Results of evaluations by metrics on the Charlie Hebdo dataset.}%
+	\label{tab:charlieHebdoMetricsEvaluation}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& DirMod & ClusCoe & ComFit & NEDind & Conduc & Contrac & Expans\\
+			\hline
+			DLPA & -- & \textbf{0.027} & 1.375 & 0.672 & 0.514 & \textbf{0.764} & 1.550 \\
+			DirLouv & -- & 0.012 & 4.395 & 0.953 & 0.163 & 0.604 & 0.256 \\
+			Infomap & -- & 0.012 & 4.381 & 0.942 & 0.166 & 0.608 & 0.268 \\
+			OSLOM & -- & 0.015 & 1.730 & 0.479 & 0.979 & 0.054 & 1.239 \\
+			GKM & -- & -- & -- & -- & -- & -- & -- \\
+			LeidMod & -- & 0.011 & \textbf{4.408} & \textbf{0.955} & \textbf{0.162} & 0.054 & 1.239 \\
+			LeidCPM & -- & 0.016 & 3.351 & 0.758 & 0.276 & 0.713 & 0.663 \\
+			GANXiSd & -- & -- & -- & -- & -- & -- & --  \\
+			GANXiSo & -- & -- & -- & -- & -- & -- & --  \\
+			\bottomrule
+			\multicolumn{8}{@{}p{\textwidth}}{%
+				\hspace*{2.5em}% абзацный отступ - требование ГОСТ 2.105
+				Note. The best results are highlighted in bold.
+			}\\
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of communities obtained on the Charlie Hebdo dataset and the value of the seven largest of them for each algorithm.}%
+	\label{tab:charlieHebdoCommunityNumber}% label всегда желательно идти после caption
+%	\begin{adjustbox}{width=1\textwidth}
+%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Count & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+			\hline
+			DLPA & 84,409 & 1244 & 882 & 726 & 662 & 576 & 529 & 488  \\
+			DirLouv & 26,415 & 68,217 & 45,678 & 44,734 & 40,369 & 26,807 & 22,583 & 18,774 \\
+			Infomap & 26,497 & 164,839 & 33,635 & 32,111 & 25,038 & 20,098 & 17,226 & 14,033 \\
+			OSLOM & 67,296 & 34,960 & 27,735 & 26,061 & 17,319 & 10,912 & 7614 & 6962 \\
+			GKM & -- & -- & -- & -- & -- & -- & -- & -- \\
+			LeidMod & 26,335 & 56,201 & 39,371 & 33,976 & 27,120 & 25,745 & 20,270 & 17,705 \\
+			LeidCPM & 34,647 & 949 & 719 & 626 & 607 & 565 & 531 & 521 \\
+			GANXiSd & -- & -- & -- & -- & -- & -- & -- & -- \\
+			GANXiSo & -- & -- & -- & -- & -- & -- & -- & -- \\
+			\bottomrule
+		\end{tabular}%
+%	\end{adjustbox}
+\end{table}
+
+\subsubsection{6. Discussion and Conclusions}
+
+The experiments conducted have shown the relative mathematical efficiency of the selected methods for detecting user communities in the discussions of Twitter (the mi- croblogging service with elements of a social network) when the discussions are presented in the form of directed graphs of different sizes. Table~\cref{tab:modelSummaryEvaluation} clearly demonstrates that the Infomap algorithm can be called the best; however, due to the property of highlighting one large society, it can rather be used as a preparatory stage for the subsequent clustering by another algorithm, or the repeated application of Infomap. After Infomap comes the Leiden algorithm, which has shown the best results after Infomap, and does not have the ability to single out one large community. Therefore, these two algorithms can be used in conjunction. If it is necessary to isolate overlapping communities based on test results, the GANXiS algorithm should be used.
+
+\begin{longtblr}[
+	caption = {Results of evaluations by metrics on the Charlie Hebdo dataset.},
+	label = {tab:modelSummaryEvaluation},
+	remark{\hspace*{2.5em}Note} = {The best results for each case/algorithm are highlighted in bold.},
+	]{
+		colspec = {XXXXX}, 
+		width = 1.0\linewidth,
+		rowhead = 1,
+	} 
+			\toprule
+			& Bir & Col & Fer & ChE \\
+			\hline
+			\SetCell[c=5]{c}DirMod \\
+			\hline
+			DLPA & 0.486 & -- & -- & -- \\
+			DirLouv & 0.574 & -- & -- & --\\
+			Infomap & 0.088 & -- & -- & --\\
+			OSLOM & -- & -- & --  & --\\
+			GKM & -- & -- & -- & --\\
+			LeidMod & 0.39 & -- & -- & -- \\
+			LeidCPM & \textbf{0.584} & -- & -- & --\\
+			GANXiSd & 0.406 & -- & -- & -- \\
+			GANXiSo & -- & -- & -- & -- \\
+			\hline
+			\SetCell[c=5]{c}ClusCoe \\
+			\hline
+			DLPA & \textbf{0.056} & \textbf{0.07} & \textbf{0.085} & \textbf{0.027} \\
+			DirLouv & 0.039 & 0.028 & 0.027 & 0.012 \\
+			Infomap & 0.034 & 0.024 & 0.026 & 0.012 \\
+			OSLOM & 0.035 & 0.034 & 0.034 & 0.015\\
+			GKM & 0.0099 & -- & -- & --\\
+			LeidMod & 0.039 & 0.028 & 0.027 & 0.011 \\
+			LeidCPM & 0.04 & 0.033 & 0.035 & 0.016 \\
+			GANXiSd & 0.04 & 0.031 & 0.031 & -- \\
+			GANXiSo & 0.049 & 0.042 & 0.034 & -- \\
+			\hline
+			\SetCell[c=5]{c}ComFit \\
+			\hline
+			DLPA & 1.373 & 2.299 & 1.522 & 1.375 \\
+			DirLouv & 6.548 & 7.753 & 6.318 & 4.395 \\
+			Infomap & 7.877 & 8.468 & \textbf{6.476} & 4.381\\
+			OSLO & 2.479 & 3.38 & 2.426 & 1.73 \\
+			GKM & \textbf{7.956} & \textbf{28.498} & -- & --\\
+			LeidMod & 6.686 & 7.764 & 6.244 & \textbf{4.408} \\
+			LeidCPM & 5.052 & 4.379 & 4.494 & 3.351 \\
+			GANXiSd & 2.538 & 3.057 & 3.303 & -- \\
+			GANXiSo & 3.295 & 3.551 & 4.064 & -- \\
+			\hline
+			\SetCell[c=5]{c}NEDind \\
+			\hline
+			DLPA & 0.605 & 0.723 & 0.64 & 0.672 \\
+			DirLouv & 0.793 & 0.917 & 0.949 & 0.953 \\
+			Infomap & \textbf{0.94} & \textbf{0.949} & \textbf{0.959} & 0.942 \\
+			OSLO & 0.501 & 0.495 & 0.493 & 0.479 \\
+			GKM & 0.423 & 0.422 & -- & --\\
+			LeidMod & 0.806 & 0.916 & 0.945 & \textbf{0.955}  \\
+			LeidCPM & 0.67 &6 0.689 & 0.74 & 0.758  \\
+			GANXiSd & 0.661 & 0.693 & 0.772 & -- \\
+			GANXiSo & 0.643 & 0.67 & 0.799 & -- \\
+			\hline
+			\SetCell[c=5]{c}Conduc \\
+			\hline
+			DLPA & 0.625 & 0.521 & 0.599 & 0.514 \\
+			DirLouv & 0.286 & 0.234 & 0.208 & 0.163 \\
+			Infomap & \textbf{0.209} & \textbf{0.201} & \textbf{0.199} & 0.166 \\
+			OSLO & 0.967 & 0.963 & 0.964 & 0.979 \\
+			GKM & 0.95 & 0.934 & -- & --\\
+			LeidMod & 0.278 & 0.233 & 0.212 & \textbf{0.162} \\
+			LeidCPM & 0.365 & 0.397 & 0.345 & 0.276  \\
+			GANXiSd & 0.526 & 0.501 & 0.422 & -- \\
+			GANXiSo & 0.55 & 0.526 & 0.397 & -- \\
+			\hline
+			\SetCell[c=5]{c}Contrac \\
+			\hline
+			DLPA & \textbf{0.849} & 0.815 & \textbf{0.847} & \textbf{0.764} \\
+			DirLouv & 0.766 & 0.691 & 0.666 & 0.604  \\
+			Infomap & 0.685 & 0.653 & 0.655 & 0.608  \\
+			OSLO & 0.08 &7 0.098 & 0.096 & 0.054  \\
+			GKM & 0.19 & 0.209 & -- & --\\
+			LeidMod & 0.761 & 0.693 & 0.67 & 0.603 \\
+			LeidCPM & 0.828 & 0.793 & 0.782 & 0.713   \\
+			GANXiSd & 0.841 & 0.807 & 0.773 & -- \\
+			GANXiSo & 0.848 & \textbf{0.829} & 0.756 & -- \\
+			\hline
+			\SetCell[c=5]{c}Expans \\
+			\hline
+			DLPA & 2.361 & 1.378 & 2.735 & 1.55\\
+			DirLouv & 0.715 & 0.459 & 0.371 & 0.256\\
+			Infomap & \textbf{0.375} & \textbf{0.344} & \textbf{0.34} & 0.268   \\
+			OSLO & 1.403 & 1.249 & 1.305 & 1.239   \\
+			GKM & 2.161 & 2.6 & -- & --\\
+			LeidMod & 0.686 & 0.459 & 0.38 & \textbf{0.253}  \\
+			LeidCPM & 1.001 & 1.030 & 1.062 & 0.663  \\
+			GANXiSd & 1.681 & 1.798 & 1.26 & -- \\
+			GANXiSo & 2.282 & 2.290 & 1.294 & -- \\
+			\bottomrule
+%		\end{tabular}%
+%	\end{adjustbox}
+\end{longtblr}
+
+Table~\cref{tab:communitiesObtained} shows that the generalized K-means and GANXiS algorithms are not suitable for large-scale Twitter data. Infomap and Leiden (again), just as Direct Louvain, show very similar results as to the number of the detected communities, and the numbers are lower. Here, we need to repeat that, without a clear sociological task, we could not set the ground truth to which to compare the test results; the number of the detected communities (higher or lower) is better depending on the research goal. In general, the low number of robust communities is optimal. This is why we see these three algorithms as coming closer to possible ground truth in social research. Yet, it is also necessary to state that algorithmic results do not correspond to the logic of social studies designated in Section 2.2, as the methods come to either delineation of one large community or a much larger number of smaller communities detected. Of the three aforementioned algorithms with the best (lowest) number of communities, Infomap finds the largest groups, which might be considered the best result.
+
+\begin{table}[ht]%
+	\centering
+	\caption{The number of communities obtained as compared by algorithm and the seven largest communities, summary table.}%
+	\label{tab:communitiesObtained}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ c  c  c  c  c  c  c  c  c  c  }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Algorithm & Case & Count & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+			\hline
+			\multirow{4}{*}{DLPA} & Bir & 1159 & 741 & 205 & 171 & 115 & 111 & 108 & 105 \\
+			& Col & 2479 & 20,669 & 425 & 277 & 249 & 198 & 173 & 168 \\
+			& Fer & 18,389 & 3059 & 1224 & 1044 & 913 & 877 & 708 & 662\\
+			& ChE & 84,409 & 1244 & 882 & 726 & 662 & 576 & 529 & 488 \\
+			\hline
+			\multirow{4}{*}{DirLouv} & Bir & 243 & 691 & 583 & 494 & 486 & 463 & 459 & 381 \\
+			& Col & 735 & 4356 & 4105 & 4091 & 3604 & 3447 & 1933 & 1886 \\
+			& Fer & 4429 & 16,029 & 13,916 & 13,391 & 12,936 & 8827 & 4334 & 4053 \\
+			& ChE & 26,415 & 68,217 & 45,678 & 44,734 & 40,369 & 26,807 & 22,583 & 18,774 \\
+			\hline
+			\multirow{4}{*}{Infomap} & Bir & 202 & 9276 & 232 & 86 & 41 & 33 & 28 & 26 \\
+			& Col & 673 & 27,016 & 3726 & 1145 & 590 & 465 & 445 & 338 \\
+			& Fer & 4321 & 106,521 & 15,617 & 1651 & 1012 & 506 & 409 & 353 \\
+			& ChE & 26,497 & 164,839 & 33,635 & 32,111 & 25,038 & 20,098 & 17,226 & 14,033 \\
+			\hline
+			\multirow{4}{*}{OSLOM} & Bir & 642 & 2637 & 1743 & 1425 & 847 & 763 & 737 & 619 \\
+			& Col & 1690 & 10,823 & 7336 & 3058 & 1881 & 1519 & 1466 & 921 \\
+			& Fer & 11,546 & 16,417 & 15,372 & 10,438 & 8874 & 6587 & 4081 & 3074 \\
+			& ChE & 67,296 & 34,960 & 27,735 & 26,061 & 17,319 & 10,912 & 7614 & 6962 \\
+			\hline
+			\multirow{4}{*}{GKM} & Bir & 200 & 3300 & 2815 & 1812 & 815 & 496 & 313 & 90 \\
+			& Col & 200 & 11,474 & 7737 & 4353 & 2971 & 2947 & 1859 & 1119 \\
+			& Fer & --& --& --& --& --& --& --& --\\
+			& ChE & --& --& --& --& --& --& --& --\\
+			\hline
+			\multirow{4}{*}{LeidMod} & Bir & 238 & 716 & 464 & 458 & 451 & 416 & 388 & 356\\
+			& Col & 734 & 4453 & 3882 & 3540 & 3212 & 3181 & 2686 & 1739\\
+			& Fer & 4481 & 15,804 & 12,715 & 12,212 & 11,385 & 9162 & 4355 & 4260  \\
+			& ChE & 26,335 & 56,201 & 39,371 & 33,976 & 27,120 & 25,745 & 20,270 & 17,705 \\
+			\hline
+			\multirow{4}{*}{LeidCPM} & Bir & 315 & 627 & 613 & 226 & 226 & 214 & 208 & 208 \\
+			& Col & 1221 & 2395 & 672 & 625 & 414 & 405 & 362 & 355 \\
+			& Fer & 6226 & 1001 & 729 & 704 & 648 & 572 & 554 & 531 \\
+			& ChE & 34,647 & 949 & 719 & 626 & 607 & 565 & 531 & 521 \\
+			\hline
+			\multirow{4}{*}{GANXiSd} & Bir & 627 & 4881 & 190 & 146 & 129 & 113 & 103 & 101 \\
+			& Col & 1864 & 24,911 & 128 & 110 & 108 & 94 & 89 & 80 \\
+			& Fer & 8472 & 98,344 & 211 & 184 & 159 & 104 & 100 & 97 \\
+			& ChE & --& --& --& --& --& --& --& --\\
+			\hline
+			\multirow{4}{*}{GANXiSo} & Bir & 647 & 4956 & 638 & 146 & 139 & 83 & 255 & 166 \\
+			& Col & 1964 & 25,365 & 458 & 128 & 110 & 83 & 210 & 162 \\
+			& Fer & 7489 & 111,798 & 184 & 102 & 95 & 84 & 159 & 155 \\
+			& ChE & --& --& --& --& --& --& --& --\\
+			\bottomrule
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+Yet, it would be too bold to call such a result satisfactory in sociological terms. Socio- logically, the use of the tested algorithms poses a general question on their applicability for current social science tasks, as well as the following questions:
+
+\begin{itemize}
+	\item How does the structure of hidden communities relate to the expected social, cultural, and/or political cleavages in the discussion?
+	\item How can algorithmic detection of hidden communities come closer to detecting communities of views, as linked to communities of formal connections?	
+\end{itemize}
+
+Earlier, we had partly answered this question \cite{BodrunovaBlekanov} by using a complicated multi-step methodology of group views detection. However, the use of a combination of Infomap (to find the discussion core) and Leiden (to find modules within the core) might be a shorter way to find the communities based on social traits or views. This creates implications for further research that will show whether the formal community structure corresponds to the substantial divisions in the discourses.
+
+Comparing our results to other works also shows the following. Despite the fact that, in our work, we did not test the algorithms on synthetic data, our performance on real data was better than that in \cite{VanLierdeDelvenneVanDooren} on synthetic data. However, since ground-truth testing also has its drawbacks on real data, further analysis of the clustering results is planned in future tests. Additionally, in the nearest future, we plan the following expansion of our work:
+
+\begin{enumerate}
+	\item Conduct semantic analysis of the quality of the results obtained using experts or NLP methods;
+	\item Expand the work results by adding agglomerative clustering and Markov stopping moment for optimal clustering \cite{BodrunovaOrekhovBlekanov}.
+\end{enumerate}
+
 \subsection{Comparing influencers: activity vs. connectivity measures in defining key actors in twitter \textit{ad hoc} discussions on migrants in Germany and Russia}\label{subsec:ch2/sec4/sub3}
 
 \subsubsection{1. Introduction}
