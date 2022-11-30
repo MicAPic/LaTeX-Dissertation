@@ -26,7 +26,7 @@ Abstractive summarization is a technique that allows for extracting condensed me
 
 \subsubsection{2.4.6}
 
-With the emergence of discussion platforms like Twitter, the hopes rose that computer-mediated public sphere would become more even in access to discussion than mass-mediatized public sphere of the late 20th century. Scholars have argued that it will eventually form an 'opinion crossroads' where conflicts would be discussed by all the parties involved. But today, existing research provides mixed evidence on whether ordinary users, rather than mainstream media and institutional actors, can become influencers in discussions on current issues, e.g. relations between host and migrant communities. We focus on the Twitter discussion about an inter-ethnic conflict in Moscow's Biryuliovo district in 2013 and aim at defining who were its real influencers by reconstructing the discussion's web graph, as well as analyzing and juxtaposing its metrics to figures indicating user activity. Our results show that, despite hyperactivity of media accounts, they were largely absent as deliberative influencers, but the place of influencers was occupied by politicized (nationalist and liberal) accounts, rather by eyewitness reporters or public figures.
+Agendas in online media have become a scholarly focus nearly two decades ago, leading to shifting conceptualizations of what we see as agenda. Thus, agendas and agenda shifts \textit{inside} online discussions have shown its potential to influence offline deliberation, aggregate support, fuel protest, passing through and/or bypassing traditional media’s gatekeeping. Real-time (or nearly-real-time) learning about quick agenda movement inside globalized public debate might be particularly important for international organizations like UN or EU. However, we today lack both knowledge on how agendas move in such discussions and instruments on such analysis. In particular, we are next-to-unaware of to what extent globally relevant themes get contextualized within language-based discussion segments, as well as to what extent the latter depend on each other and lag behind each other in developing agendas and public opinion on quickly evolving issues or conflicts. In this paper, we propose a method of agenda detection based on neural-network text summarization and compare summaries of tweet packages across three languages within the Twitter hashtag \#jesuischarlie. We show that sentiment detection may allow for quality assessment of the text summaries, as compared to aggregated sentiment to the original tweets. We show that, outside France, agendas were more interpretational, abstract, and non-contextualized. The pattern of news changing to ‘issue outburt’ was simultaneous in dense discussion segments and lagged behind in a sparser one. We also show that, globally, main issues of the discussion may be spotted within the first hour.
 
 \subsubsection{2.4.7}
 
@@ -1087,6 +1087,242 @@ Despite the differences in samples, we have managed to show that comparing influ
 Though direct comparisons were not always possible by our methodology, we have found more similarities in the two cases than we had expected. Thus, in both countries, the situation may be described as opposition ‘liberal media vs. nationalist users’, and the absence of both authorities and NGOs is striking. Media do become influencers, but in terms of authority (or ‘marketing’ approach) rather than in deliberative terms, as they do not get high betweenness centrality and thus may have difficulties in performing the roles of shapers of information flows. In both countries, the discussion was highly opinionated and emotionally heated even within several weeks after the events, and seemingly higher neutrality of the Russian users was compensated by their overall politicization and rebuttal modus.
 
 Thus, as to the question of whether and how ‘opinion crossroads’ are forming, there is evidence that, in general, left-right or in-system/oppositional views are well represented by media within the discussions. But virtual absence of pro-migrant institutions and opposition of liberal media to pro-nationalist ‘ordinary users’ shows that, in both countries, the discussion is far from being balanced, rational, and inclusive.
+
+\subsection{Public Opinion Dynamics in Online Discussions: Cumulative Commenting and Micro-level Spirals of Silence}\label{subsec:ch2/sec4/sub5}
+
+\subsubsection{1. Introduction}
+
+Social media have become a place where the bulk of grassroots political discussion takes place. Social networking sites, online platforms, and messengers have become a focus of scholarly attention in their relation to public opinion formation and spread, which, in its turn, directly affects the quality of offline democratic deliberation.
+
+The models that described opinion formation in the era of traditional media have been applied to online discussions, with varying degree of proof and support. Thus, the idea of opinion leaders \cite{KatzLazarsfeld} has been re-interpreted to describe the practices of influencers \cite{Gillin,BakshyHofmanMason,BodrunovaLitvinenkoBlekanov2017}, and the older idea of echo chambers \cite{Key} has transformed into filter bubbles \cite{Bruns2019}.
+
+Along with this, today’s public spheres are, in general, described as dissonant \cite{Pfetsch} and discontinued \cite{SmoliarovaBodrunovaBlekanov2020}. The dynamics of formation of dominant opinions have been conceptualized in several theoretical models, among them, most famously, in the idea of spiral of silence \cite{NoelleNeuman1974}. In this conceptualization, under pressure of fear to be excluded, supporters of one candidate become gradually silenced by the supporters of the other one, and the latter are capable of doing this just by expressing their opinion more massively.
+
+However, when applied to the dissonant and disruptive online discussions of today where cumulation of support is often accompanied by communicative aggression \cite{Sidorov,BodrunovaLitvinenkoBlekanov2021}, Noelle-Neumann’s concept and similar conceptualizations needs to be reconsidered and re-tested. This is especially because there is growing evidence that online discussions are the place where silent majority flourishes \cite{MustafarajFinnWhitlock,ChenLiYao,McKeeverMcKeeverHolton,MaiShanBai}.
+
+Today, instead of dialogue and polylogue in the forms of opinion exchange, we witness cumulative modes of discussion prevail \cite{BodrunovaLitvinenkoBlekanov2021}. To re-conceptualize the ways public communication exists and develops in online milieus, we suggest the idea of \textit{cumulative deliberation} on which we elaborate below (see Sect. 2). Our previous works, as well as many works before ours, have shown that cumulation may be regarded as a universal mechanism of public opinion growth and polarization \cite{BodrunovaBlekanovSmoliarova}. E.g., in the form of echo chambering, it works on many levels in globalized discussions, such as language, hashtagging, and sentiment \cite{BodrunovaBlekanovKukarkinCH}. We have also demonstrated that, on Russian oppositional YouTube, users hardly form what might be called ‘a discussion’; they, rather, express themselves \textit{urbi et orbi} without entering any dialogue with particular users, despite their high polarization in political terms and an extremely high level of aggressive and hate speech discovered \cite{BodrunovaLitvinenkoBlekanov2021}.
+
+The current paper further fosters the idea of discovering patterns of cumulative deliberation in oppositional discourse and, this time, uses a year-long dataset from Belarusian oppositional YouTube of 2018. We have collected comments left by users under the videos of six salient Bealrusian oppositional accounts (one of which, Nexta, has become world-renowned during the Belarusian protest of 2020). We have identified users who linked these accounts by posing to at least five of them, and have analysed this core of commenting for the features important for the deliberative process, namely orientation to dialogue \cite{Ksiazek}, aggression \cite{BodrunovaLitvinenkoBlekanov2021,KsiazekPeerZivic}, and political criticism. In the latter we have taken in mind the difference between uncritical, policy-critical, and leadership critical publics, as it was suggested and explained for authoritarian societies \cite{Toepfl}.
+
+In particular, we focus on two research questions. First, we ask whether (and how exactly) the deliberative features mentioned above accumulate in the discussion and affect its dynamics in the core of the discussion (which is, in the Belarusian case, the cross-commenter conglomerate) on various time spans. Second, we look at whether the deliberative feature of the discussion core affect the bulk of the discussion. This paper is only a trial that shows the necessity of further exploration of cumulative patterns of online discussions and points out to possible bigger cumulative effects that deserve exploration and explanation.
+
+The remainder of the paper is organized as follows. Section 2 elaborates on cumulative deliberation as a concept and suggests how dynamics of the discussions might be affected by cumulative patterns of opinion formation. Section 3 poses the research questions. Section 4 describes sampling, data collection, dataset limitations, and methods of data assessment. Section 5 provides the results; Sect. 6 discusses them and concludes the paper.
+
+\subsubsection{2. Cumulative Foundations and Deliberative Features of Online Opinion Formation}
+
+\paragraph{2.1 Cumulative Patterns in Online Opinion Formation}
+As already stated above, the idea of cumulation as a basic principle of how online public opinion forms has come from two streams of literature.
+
+\paragraph{Cumulative Effects in Online Opinion Formation.} The first one focuses upon patterns	of winning the public debate -- that is, majority/minority formation in public opinion and electoral research. In political sociology, the works that have demonstrated that people may change opinion just knowing or supposing what others might think have been numerous \cite{NowakSzamrejLatane}, and they have posed a question of whether opinion change is a result of persuasive external arguments, including mediated ones.
+
+However, despite their evident high impact upon the rational choice debate, relatively few important works linked individual/public opinion shifts to communication and deliberation patterns on aggregated levels. Well-known are, e.g., the works on ‘spiral of silence’ by Elizabeth Noelle-Neumann \cite{NoelleNeuman1974} or Latané’s social impact theory that emerged, i.a., from studying interaction patterns \cite{NowakSzamrejLatane,Latane}. But it was not before the advent of social media that the scholars have received a chance to study the multi-level communicative interactions.
+
+There is one significant factor that distinguishes the pre-Internet era from today’s communication. In online communication, the iceberg of what could previously remain an oral utterance exchange and disappear forever after being pronounced, remains written and accessible by the newcomers who join the communicative milieu later in time. Potentially, this casts impact upon the newcomers and their personal, seconds-long opinion formation, in accordance with the social impact theory; this remains highly understudied. At the same time, there is a substantially bigger corpus of works upon various discussion-level effects of opinion cumulation, such as echo chambering and filter bubbles studies or research on influencers who become such by cumulation of user support. (Of these studies, we will focus on user comments studies -- see below).
+
+Thus, cumulative effects in communication have long been demanding generalization
+and systematization -- or at least a proper acknowledgement of the role of cumulation in
+opinion formation online.
+
+\paragraph{Dissonant Public Spheres: Getting Rid of Excessive Normativity.} The second stream of literature is that on public sphere as a normative space of (arguably) consensusoriented discussion of conflictual issues in public domain, as well as on deliberation as a special form of public communication, an imagined round-table process of collection and adjustment of individual, group, and institutionalized opinions that leads to decision on a given issue. For several decades, public sphere studies have almost exclusively, either adhering or critically, oriented to the works by Juergen Habermas.
+
+The Habermasian view on deliberation is known for its high normativity, as communicative actions need to be rational, consensus-oriented, and civil in order to count for public decision-making. Despite the overwhelming amount of academic criticism from both left and right parts of the political spectrum, as well as the shifts in Habermas’s own conceptualization of public sphere and deliberation, the normative notion of orientation to consensus (or to struggle, in the leftist view \cite{Mouffe}) and high \textit{deliberative quality} of public communication was not challenged.
+
+Again, it was not before the advent of blogs and social networking sites that the scholars questioned the belief that people come into a discussion either ‘to agree or to argue’ \cite{YardiBoyd} -- that is, with a certain deliberative goal. Today, this notion has been shaken by description of online public spheres as dissonant -- that is, not aiming to consonance and consensus; public spheres where myriads of actors express themselves simultaneously \cite{Pfetsch}. There are also works that describe public spheres as discontinued, whose actors constantly change and re-aggregate \cite{SmoliarovaBodrunovaBlekanov2020}, and, in general, disrupted \cite{BennettPfetsch}.
+
+Moreover, recent research suggests that users might participate in dialogical forms of communication much more rarely than deliberation theory suggests \cite{BodrunovaLitvinenkoBlekanov2021}, and that their motivation is neither to agree nor to argue in order to come to a conclusion, but more to express themselves, solidarize with an earlier opinion or negate it without having in mind any longer-term effects. Yet, even such communicative activity, ‘irrelevant, aggressive, and stupid’ \cite[p.~659]{SchultesDornerLehner}, seemingly aimless in deliberative terms and dismissed as slacktivism \cite{Morozov} and ‘sofa warrior’ behavior, acquires importance if seen from the cumulative-effects viewpoint.
+
+The plea for finding new grounds for assessment of public spheres influenced by massive micro-level communication, united with the view upon cumulation as an overarching pattern of how opinion aggregates and dissipates online, has led us to the concept of \textit{cumulative deliberation}. This concept is, in essence, an alternative vision on public deliberation that covers by one umbrella many cumulative effects scattered around academic works on older and newer media and opinion formation via them. Cumulative deliberation allows for a closer-to-reality look at how people talk online, as it lets avoid the excessive normativity and merit the smallest forms of online user activity: each individual comment, like, share, or mention matters for cumulative deliberation. It also aims at discovering patterns of opinion aggregation on various levels and explaining/predicting critical thresholds in cumulative communication. And the patterns of opinion cumulation, not only user intentions, should be subjected to critical assessment within the democratic perspective of public communication.
+
+\paragraph{2.2 User Comments on YouTube and Other Social Media: The Issue of Deliberative Quality of Communicative Micro-action}
+
+Thus, user commenting seen as deliberative activity may be put into the cumulative deliberation perspective -- that is, cumulative patterns and their effects in user commenting need to be detected and assessed, without putting the blame to users for not being rational or purposeful. Previous research shows that users’ comment ‘exchange is socially and not deliberatively motivated’, and, in reading comments, ‘entertainment dimension -- a dimension that is not usually considered to be linked to deliberation processes -- is the more stable one’ \cite[p.~798]{SpringerEngelmannPfaffinger}. This points out to the necessity for the academe to move towards accepting these motivations as normal and assessing the cumulative effects of such online posting.
+
+Close enough to this notion, computational social scientists have tried to detect statistical effects in comment threads and discussion graph structure, such as various types of distributions like lognormal \cite{GomezKappenKaltenbrunner}, negative binomial \cite{TsagkiasWeerkampDeRijke}, Zipf’s law \cite{KumarMahdianMcGlohon}, or power law \cite{BodrunovaBlekanov}. However, cumulative effects may be of a more nuanced nature, as they combine statistical features of communication flows and contents of user utterances (for a short review on early works that include content features into statistical modelling of commenting dynamics, see \cite{WangYeHuberman}). Even successful modelling of discussion growth \cite{WangYeHuberman} often sees comments as discreet items, not cumulative conglomerates, and fails to encompass deliberative features of comments (sometimes focusing on one selected). On the other hand, communication scholars who focus on deliberative quality of commenting \cite{Rowe} are less attentive to various formal levels on which cumulation might shape the discussion, as well as to statistical features of discussions linked to platform affordances and human capacities that define posting and reading.
+
+In our current research, we do not aim at creating overarching models of user commenting; we just want to demonstrate easily discoverable impact of deliberative features of user posts upon various structural levels and temporal fragments of online discussions. In previous studies, several user-dependent features of comments and their deliberative potential have been discussed. In a more systematic view, assessment of democratic qual- ity of deliberation online moves from evaluating the constellation of major institutional discussants to single user and features of their statements.
+
+\paragraph{Orientation to Dialogue.} Addressing the other is an inevitable pre-requisite for any sort of dialogue, public or private. Interactivity has been conceptualized as capable of ‘contribut[ing] to shaping a democratically valuable and vivid interpersonal discourse on topics of public interest’ \cite[p.~1112]{ZiegeleBreinerQuiring}; see also \cite{BoczkowskiMitchelstein,Freelon,RuizDomingoMico}. However, user comments do not necessarily have this feature. Thus, an important division has been introduced between user-to-content (e.g., news video) and user-to-user orientation in commenting \cite{KsiazekPeerZivic}, and user-to-content comments, as a rule, do not involve other users to interaction.
+
+While we praise this important distinction, we prefer to see formal interactivity (often marked by user mentions) as just a part of wider orientation to dialogue. Thus, our earlier study \cite{BodrunovaLitvinenkoBlekanov2021} shows that, on Russian-speaking YouTube, ‘discussion’ in the form of dia- logue hardly takes place at all, despite the political topicality of the assessed videos, and formal and substantial markers of dialogue may not correspond. E.g., even when users formally reply to other users’ comments, they construct the phrases the way that does not invite their correspondents to answer; they just solidarize with the expressed opinion or share their own experience that, in most cases, supports the view in the primary post. Or, vice versa, a comment may be openly dialogical in substance (interrogative, sarcastic, or denialist) without any formal interactivity features. In normative view, dialogue features should oppose.
+
+\paragraph{Aggression.} When a dialogue does take place, it may easily take an anti-normative direction, as users attach each other aggressively, rather than interact in civil manner. Studies of user sentiment, emotions, affect, and aggression in social media content are overwhelming in number. Of emotional substance of comments, various types of aggressive speech are the sharpest; this, i.a., includes hate speech, obscene and tabooed lexicons, politically motivated offence, calls for violence, cyberbullying, humiliation, and harsh shaming. However, we have demonstrated \cite{BodrunovaLitvinenkoBlekanov2021,BodrunovaNigmatullinaBlekanov} that communicative aggression may play constructive roles in online discussions, such as influencing its dynamics and performing individual- and group-level psychological functions.
+
+Today, surprisingly few works focus on how aggressive and emotional speech relates to opinion aggregation and fueling discussions. This is especially true for languages like Russian and Belarusian where obscene lexicon has grown into a highly developed sub-language.
+
+\paragraph{Criticism.} Aggression needs to be distinguished from criticism, another pragmatic dimension of user speech. Critical assessment of reality has for centuries been acknowledged as a pre-requisite for substantial debate on nearly any issue. Political criticism may be directed to individual/group ideological opponents, as well as to the state, public bodies, persons, and policies. Recently, three types of publics have been defined for authoritarian public spheres, based on what is subjected to criticism \cite{Toepfl}, namely uncritical, policy-critical, and leadership-critical publics. Criticism to policies is expected to be milder, more discussion-oriented, and perhaps a bit more toothless, as it follows from the paper. Criticism towards the authorities brings more dangers to the speaker and, thus, demands passing a certain psychological threshold. This might imply that leadership-critical users could use aggressive speech and be less willing to take part in meaningful discussion. Both critical stances, however, may foster cumulative effects in discussions, as earlier critical comments may help diminish participation thresholds for users who comment later, and thus create avalanche effects.
+
+Taken together, these three deliberative features may work on various levels of online discussion architectonics, from single comments to platform-based publics. We will look at their potential to foster cumulative effects in online communication on Belarusian YouTube.
+
+\subsubsection{3. Research Questions}
+Having said that, we have formulated the research questions for our study.
+
+\paragraph{RQ1. Are the three deliberative features relate to each other in the discussion, and how?}
+
+\paragraph{RQ2. Do the three deliberative features influence the discussion dynamics, and on what levels and time spans?}
+
+\paragraph{RQ3. Are there any distinctive patterns of cumulative deliberation that we can point to, and on what levels and time spans?}
+
+We do not pose any exact hypotheses, as our study is exploratory; below, we will summarize our findings according to the RQs stated above.
+
+\subsubsection{4. Data Collection and Methods}
+
+\paragraph{4.1 Case Description: Belarusian Oppositional YouTube}
+
+To address the research questions, we have used the dataset of comments published within the year of 2018 to six YouTube accounts from Belarus, all of them politically oppositional, most salient on Belarusian political YouTube in 2018--2019.
+
+This choice is explainable in many respects. First, Belarus remains one of most understudied media landscapes of Europe; as a recognized autocracy, it represents a case for analysis of authoritarian public sphere. Second, the dataset is not hashtag-based, which allows for avoiding the dissipative and affective effects \cite{Papacharissi} in how it develops; the dataset represents a ‘chronic’ discourse on the oppositional YouTube. Its oppositional orientation allows for comparing the results with our earlier work on Russia \cite{BodrunovaLitvinenkoBlekanov2021}; the pre-set political standing of channels sets the conditions for potentially conflictual and polarized opinion exchange. Al the same time, the volume of discussion is by an order of magnitude smaller than in Russia and the most studied Western countries, due to lower levels of YouTube consumption and smaller populace in general; thus, a year-long dataset remains feasible for both automated and manual research. In this respect, Belarusian YouTube is sort of an ‘ideal gas’ of studying online political communication in autocracies. To this, we add that, to avoid geographical echo chambering, we have focused not only on the accounts based in Minsk but also on those produced in other Belarusian regions. The accounts are Belsat (Belarusian oppositional satellite TV channel sponsored from abroad), Nexta (by 2021, a world-famous Belarusian blogger and protest facilitator), Garantiy NET (‘No guarantee’, Gomel; by 2021, the videos of 2018 are deleted), Narodny Reporter (‘Popular reporter’, Brest region), The Belarusian Experimental Field (positioned as all-Belarusian), and Rudabelskaya pakazuha (‘Window dressing in Rudabelka’, Gomel region).
+
+It is worth mentioning that, in 2020, Belarus has lived through a months-long political protest unprecedented in the newest Belarusian history. The data of a year and a half before the protests erupted demonstrate the mood of Belarusians and are relatively highly politicized.
+
+\paragraph{4.2 Data Collection and the Dataset}
+
+YouTube crawling was performed by the web crawler created and patented by our research group \cite{BlekanovSergeevMartynenko}. The overall number of user comments in the dataset is 120,412 posted by 3000+ users.
+
+\paragraph{4.3 Research Procedures and Methods Used}
+
+The logic of our research demanded several steps of working upon the dataset.
+
+\paragraph{Defining the Discussion Core.} After preliminary studying of comment structure and their appearance on actual YouTube pages, we have divided the dataset into the core and periphery. The core users were those who performed an important deliberative function of cross-account commenting, thus transforming the accounts and the discussion into one discursive field. Reconstructing the web graph of the discussion by the YifanHu Gephi algorithm, we have identified users who posted in at least five of six accounts (76 users with 8,610 comments). Answering the RQs was linked to both the discussion core itself and to relations between the core and the periphery of the discussion.
+
+\paragraph{Forming Sub-Datasets.} We have identified the levels on which we search for cumulative patterns. We have used seven levels/time spans formed from the bulk data. The logic of it is to ‘zoom in’ from the whole discussion to the level of one particular day (step-by-step via other time spans), one video, and one user. The sub-datasets used for this paper include the following (see Table~\cref{tab:projectSubdatasets}).
+
+\begin{table}[ht]%
+	\centering
+	\caption{Sub-datasets of the project.}%
+	\label{tab:projectSubdatasets}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ l  l  l  l  l }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			\# & Time span & \makecell[l]{Unit of analysis\\/ Granger test increment} & Type of data & N of comments \\
+			\hline
+			(1) & Year & Any & \makecell[l]{The whole discussion\\bulk (used to detect\\the core and form\\other datasets)} & 120,412 \\
+			(2) & Year & Week & \makecell[l]{The whole discussio\\core} & 8,610 \\
+			(3) &  \makecell[l]{5 weeks, February 26\\to April 1} & 24 h & The most rapidly growing discussion segment around a key event &  \makecell[l]{(3a) 1,164 -- core vs\\(3b) 17,222 -- bulk} \\
+			(4) &  \makecell[l]{Week, March 26\\to April 1} & 6 h &  \makecell[l]{The most commented\\week around a key\\event} & 287 \\
+			(5) & Day, March 26 & 1 h &  \makecell[l]{The day next to the\\key event} &  \makecell[l]{(5a) 113 -- core vs. (5b) 1,269 -- bulk} \\
+			(6) & Year & Year &  \makecell[l]{Comment\\conglomerates by each\\cross-commenter} & 8,610 \\
+			(7) & Year & Year &  \makecell[l]{Comments under a\\particular video of\\March 25} & 127 \\
+			\bottomrule
+			\multicolumn{5}{@{}p{\textwidth}}{%
+				\hspace*{2.5em}% абзацный отступ - требование ГОСТ 2.105
+				\textit{Note}. The sub-datasets (3a), (4), (5a) are formed out of the sub-dataset (2) and, thus, were coded within the coding process for the sub-dataset (2).
+			}\\
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+Zooming in was performed after detecting the most actively growing segment of the year-long discussion. This segment was 5 weeks from February 26 to April 1, 2018, structured around an event of high importance to the opposition, namely the celebration of 100 years of the so-called 1918 Belarusian Republic (March 25, most active commenting taking part on March 26).
+
+\paragraph{Coding Deliberative Features of Comments.} The contents of the sub-datasets (2) including (3a), (4), and (5a), as well as (6) and (7), were coded for the three deliberative features described above, that is, orientation to dialogue (‘dialogue’ from now on), aggression, and criticism.
+
+For the latter, we have introduced additional variables after preliminary reading of the data and following Toepfl’s argument \cite{Toepfl}. Thus, three more coding variables were added: criticism towards authorities/security services (corresponding to ‘leadership-critical public’), and self-criticism. We have discovered this phenomenon of Belarusians criticizing themselves and self-blaming for the political situation in the country and have coded this as a separate variable. Thus, ‘criticism’ was coded as comprising the three types of critique found in the comments.
+
+The coding was performed by two coders (Cohen’s kappa = 0,81), both speaking native Russian and Belarusian, as the discussion was bilingual.
+
+\paragraph{Testing the Dependencies.} For testing the inter-relation between the variables, descriptive statistics (Cramer’s \(V\)) were used. For demonstration of discursive divergence of the cross-commenters, k-means clustering with silhouette quality metric was applied. For assessment of the possible impact of the deliberative features to discussion dynamics, Granger testing was used.
+
+\subsubsection{5. Results}
+
+\paragraph{RQ1.} \textit{Inter-relation between the deliberative features and their impact to discussion structure.} After we have coded the data, it became evident that dialogue, aggression, and criticism were inter-related in our data in specific ways that might relate to cumulation of support or criticism during the discussion.
+
+From the first correlation tests we have seen that, counter-intuitively, aggression is linked not to criticism but to dialogue, and, moreover, this inter-relation intensifies on the most intense commented days (see Tables~\cref{tab:commentInterRelationYearly} and~\cref{tab:commentInterRelationWeekly} for year-long and day-long spans, respectively). Dialogue and aggression correlate strong enough, while none of criticism types correlates with dialogue or aggression, and criticism to power and self.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Inter-relation between deliberative features in the comments of cross-commenters on the year-long span (Cramer’s V, N = 8,610).}%
+	\label{tab:commentInterRelationYearly}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ l  l  l  l  l  l  l }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Deliberative feature & Dialogue & Aggresion & Criticism & Criticism power & Criticism policy & Criticism self \\
+			\hline
+			Dialogue & 1.000 & & & & & \\
+			Aggresion & 0.289*** & 1.000 & & & & \\
+			Criticism & \(-0.177\)*** & \(-0.074\)*** & 1.000 & & & \\
+			CriticismPower & \(-0.151\) & \(-0.014\) & n/a & 1.000 & & \\
+			CriticismPolicy & \(-0.048\)*** & \(-0.052\)*** & n/a & \(-0.107\)* & 1.000 & \\
+			CriticismSelf & \(-0.043\)*** & \(-0.076\)*** & n/a & \(-0.156\)*** & \(-0.054\)*** & 1.000 \\
+			\bottomrule
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Inter-relationbetweendeliberativefeaturesinthecommentsofcross-commentersona weekly span, March 26 to April 1 (Cramer’s \(V\), \(N = 287\))*.}%
+	\label{tab:commentInterRelationWeekly}% label всегда желательно идти после caption
+	\begin{adjustbox}{width=1\textwidth}
+		\small
+		\begin{tabular}{ l  l  l  l  l  l }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Deliberative feature & Dialogue & Aggresion & Criticism & Criticism power & Criticism self \\
+			\hline
+			Dialogue & 1.000 & & & & \\
+			Aggresion & 0.470*** & 1.000 & & & \\
+			Criticism & \(-0.347\)*** & \(-0.243\)*** & 1.000 & & \\
+			CriticismPower & \(-0.299\)*** & \(-0.205\) & n/a & 1.000 & \\
+			CriticismSelf & \(-0.153\)* & \(-0.095\) & n/a & \(-0.143\)* & 1.000 \\
+			\bottomrule
+			\multicolumn{6}{@{}p{\textwidth}}{%
+				\hspace*{2.5em}% абзацный отступ - требование ГОСТ 2.105
+				*\textit{Note}. The correlations between criticism to policy and other variables was not tested due to scarcity of data.
+			}\\
+		\end{tabular}%
+	\end{adjustbox}
+\end{table}
+
+Based on this finding and on the insights from the coding process, we have tested whether the discovered correlations matter on the user level -- that is, whether there are distinct discursive clusters that would diverge, e.g., the ‘dialogical and aggressive’ users and critical users. For this, we have used \(k\)-means clustering and silhouette as a quality metric (see earlier accounts on this method used for social media data in \cite{BodrunovaBlekanovKukarkin2018}).
+
+Indeed, we have discovered that two clusters form well enough (\(S > 0,6\); see Fig.~\cref{fig:twoClusterDivergence}); however, the two clusters diverged only on aggression \((p = 0.000)\) and dialogue \((p = 0.001)\), not on criticism \((p = 0.3)\). The best clustering option (of over two dozen probed, from 2 to 5 clusters, from 3 to 5 variables) is presented on Fig.~\cref{fig:threeClusterDivergence}, it has three clusters and is based on the three initial variables (for all variables, \(p < 0.0002\)). On Fig.~\cref{fig:threeClusterDivergence}, the aggressive-dialogical Cluster 3 is formed by 4 users only, with the rest of the users distributing nearly equally between two ‘calm’ clusters with varying level of criticism. However, if we use another sorting option (with observations taken as fixed intervals), their number grows to 15.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{twoClusterDivergence}
+	}
+	\caption{Plot of means for two-cluster divergence of cross-commenters.}\label{fig:twoClusterDivergence}
+\end{figure} 
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{threeClusterDivergence}
+	}
+	\caption{Plot of means for three-cluster divergence of cross-commenters.}\label{fig:threeClusterDivergence}
+\end{figure} 
+
+This supports what we have seen during coding. There are two modes used by cross- commenters of our dataset. Mostly, users self-express ‘urbi et orbi’ or, more rarely, address their comments to the authors of the discussed videos. There were nine users among 76 who never addressed anyone and just commented by expressing themselves; for 42 of 76 users (55\%), dialogue-oriented comments were fewer than 10\%. Such users seem to form a personal ‘opinion bubble’ which they stretch across the YouTube channels they comment in. The dialogue appears to ‘belong’ to other users that enter aggressive interrogations with other users (whom they often dismiss as trolls), and these micro-skirmishes evolve into microscopic ‘spirals of silencing’ one of the opponents.
+
+Another interesting, even if intuitively understandable, finding is that self-criticism is inversely proportional to criticism to authorities, as well as to policy criticism (despite the fact that all options could be coded for one comment). However, unlike criticism on the whole, self-criticism does not help users diverge. We have tested self-criticism in various combinations of variables for 2, 3, and 4 clusters, and self-criticism was never significant. Thus, this modus is spread all over the discussion core, but in small proportions which are not enough to influence individual user strategies; only 12 of 76 users (circa 16\%) have not expressed self-criticism in their comments.
+
+\paragraph{RQ2.} \textit{Impact of the deliberative features to the discussion dynamics.} To assess whether the deliberative features cast impact upon the discussion dynamics, we have tested the relations between the overall number of posts and the number of posts with deliberative features for various time spans (see Table~\cref{tab:projectSubdatasets}). After our findings for the Russian YouTube of 2019 [11] where we have seen that aggression highly influences discussion dynamics, as well as vice versa, we expected this to be also true for the Belarusian YouTube.
+
+However, of all the Granger tests we have conducted for weekly, daily, 6-h, and hourly spans, only two cases detected dependencies. Thus, by Granger tests, dynamics of self-criticism shaped the dynamics of the discussion core in 6-h increment, both for the overall number of posts (6.3*, \textit{p = 0.021}) and for the posts with self-critical ones excluded (5.64*, \textit{p = 0.03}). In its turn, criticism in the discussion core affects the number of comments in the whole dataset within one day (1-h increment). This may point out to a cumulative pattern of core-to-periphery influencing: when criticism in the core discussion grows or diminishes, intensity of the whole discussion changes accordingly. This, of course, needs more testing to detect stricter patterns of influence; however, for the discussion under scrutiny, we see that the macro-levels (yearly and monthly spans) are too loose in terms of number of posts to create meaningful patterns of cumulation, while, within hours, the discussion fluctuates depending on how critical it is.
+
+Another interesting finding, perhaps, is that neither the overall number of comments casts impact upon the number of comments with distinct deliberative features, which is counter-intuitive. We think that this effect is related to the fact that the discussion is too loose in terms of number of posts in time. In non-dense discussions, each week and day start anew: what was said before, even immediately before, neither spurs nor slows down the pace of dispersed user commenting. This is also supported by how the number of comments in the core and the whole discussion inter-relate: their correlation is very high (R Pearson 0.880***), but Granger test does not show any mutual impact (which was expected, at least in terms of impact of the whole discussion upon its core).
+
+This, combined with the knowledge of low orientation to dialogue, creates a picture of dispersed, self-expression-oriented, and non-deliberative \textit{cumulative commenting}. Despite formally present user-to-user comments, they do not involve users into opinion argumentation and (dis)agreement. What they do is perhaps lowering entry thresholds for those who would like to express their dissent towards authorities and the country.
+
+\paragraph{RQ3.} \textit{Qualitative assessment of the results.} Thus, what we have seen as cumulative patterns are the following:
+\begin{enumerate}
+	\item The personal bubbles of opinion expression. Such users do not enter any dialogue with other commenters; when put into the position of influencing, they may spread their influence to others who reply them in various YouTube accounts.
+	
+	\item Micro-spirals of silencing. The aggressive-dialogical users enter discussion episodes and silence their opponents in skirmish-like communication. Due to this, a bigger ‘spiral of support’ forms and grows under particular videos.
+	
+	\item Micro-impact of criticism expressed by users. While the level of aggression was low enough not to cast any significant impact upon the dynamic of user talk, criticism took its place and cast impact within 1-h and 6-h time spans.
+	
+	\item Cumulative commenting. This might as well describe what happens on the macro-level of the discussion bulk. Cumulative commenting happens when comments are relatively rare and dispersed, previous talk does not shape the current one even within several days, and dialogue does not form. However, opinion (in this case, clearly oppositional, critical towards the authorities, and self-critical to a large extent) forms anyway, which points out to the cumulative effects of how we perceive comments online.
+\end{enumerate}
+
+\subsubsection{6. Discussion and Conclusion}
+
+In the discussion on Belarusian oppositional YouTube of 2018, we have discovered two modes of expression that were mutually exclusive -- namely, the aggressive-dialogical and (self-)critical ones. This was true on both the level of a single post and user deliberative strategy. We have seen that these discursive strategies play a role in formation of cumulative patterns within the discussion, forming personal opinion bubbles and micro-spirals of silencing. Both strategies deserve further exploration, as they, e.g., contradict conventional view on filter bubbles as formed by many users. Opinion bubbles of the users that stand in the middle of discussions may involve other users (who respond to their comments) into their orbits, thus forming hardly detectable but clearly important influence spreading patterns. Proving this goes beyond the immediate goal of this paper, but definitely deserves exploring.
+
+We have also shown that Toepfl’s theory \cite{Toepfl} needs to be amplified by the notion of self-critical public. Criticism and self-criticism have become the only deliberative features of the discussion under our scrutiny that, at least to some extent, shaped the overall / core discussion dynamics.
+
+We have spotted patterns of cumulative nature that work each on its own level of the discussion. Thus, micro-spirals of silencing happen within small interactions, and thanks to this a bigger ‘spiral of support’ forms easier under individual videos; personal opinion bubbles exist on the user level; multiple deliberative posts affect the immediate development of the discussion; and cumulative commenting is how it looks in general.
+
+Unlike in Russia \cite{BodrunovaLitvinenkoBlekanov2021}, aggression, due to its non-saliency, did not play a meaningful role in discussion dynamics. This points out to cultural differences in how authoritarian public spheres work, even in countries as culturally close as Russia and Belarus.
 
 \section{Анализ пользовательских дискуссий}\label{sec:ch2/sec5}
 
