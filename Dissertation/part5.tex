@@ -2690,6 +2690,285 @@ French speakers.
 
 Our findings on the influencers are in line with the previous research, but what we add is a possible rethinking of the level of echo chamber formation in multi-lingual discussions. To assess how the discussion is structured in terms of sentiment, one needs to look both at one language and the overall discussion. Also, we have shown that positive and negative affective hashtags do differ in sentiment, and negative hashtags, indeed, tend to bear more negative sentiment.
 
+\subsection{A global public sphere of compassion? \#JeSuisCharlie and \#JeNeSuisPasCharlie on Twitter and their language boundaries}\label{subsec:ch5/sec3/sub4}
+
+\subsubsection{Introduction}
+
+Within the last decade, hashtag-based publics and various aspects of the discussions produced by them have created a rapidly growing field of interdisciplinary research linking public opinion and public sphere studies to social network analysis. This analysis, in its big part, has focused on whether the online discussions are more horizontal and all-involving than traditional mass-mediated communication, with inherent hopes that people go online more to argue than to agree \cite{YardiBoyd2010} and that ‘Habermas is on Twitter’ \cite{BrunsHighfeld2016}. These metaphors were expressions of expectations of an ‘opinion crossroads’ that would, \textit{i. a.}, form on a global scale. But, with time, the research has shown that the so-called echo chambering \cite{Sunstein2002,ColleoniRozzaArvidsson} based on user homophily of varying nature prevents all-involving discussions from formation in many cases.
+
+The most natural barrier for a global ‘opinion crossroads’ is language difference, and several studies have explored the language structure of Twitter itself as well as that of individual hashtagged discussions. These studies mostly focused on whether structural features of user ego-networks and discussion graphs are somehow bound or determined by languages used by discussion participants. Findings by these studies reviewed below show significant misbalances in language representation on Twitter on the whole as well as in individual discussions; also, they indicate special roles of multilingual accounts in bridging the discussion nebulae.
+
+But these studies are still scarce, and they do not provide for the difference between various types of hashtags, as well as do not pose the question of globality of the discussions under scrutiny. To address these gaps, we use one of the first transnational discussions on inter-ethnic conflicts, namely the \textit{Charlie Hebdo} massacre in Paris in January 2015. The discussion has reached global Twitter trending topics (as marked by several trend analytics agencies) and exposed a conflict of civilizational level; at the same time, it was ‘national’ in terms of context, actors involved, and the language of hashtags themselves. Thus, the \textit{Charlie Hebdo} case allows for assessing the limitations of a globally newsworthy hashtagged discussion the biggest part of which is expected to be on the language other than English. Also, importantly, this conflict has created a pattern for expressing solidarity online (‘\textit{je suis Charlie}’) that has been re-appearing for dozens of similar conflicts in 2015--2018, as well as a rebuttal pattern (‘\textit{je ne suis pas Charlie}’). It would be intuitive to suggest that the audiences who used \#JeSuisCharlie and \#JeNeSuisPasCharlie would differ in their relation to the conflict -- and, thus, that they would use different languages (e. g. French and Arabic). Or, one may suggest that the compassion hashtag that was the one that reached global Twitter trends was global in terms of language spread, while rebuttal hashtag was more in-European, as it touched the context of other cases of human rights vs. traditional Muslim values and customs (\textit{Jyllands-Posten} cartoons, wearing burqa and burqini, building of mosques etc.).
+
+To do this, we have collected the discussion outbursts in the immediate aftermath of the attack to the editorial office of the French magazine and have analyzed them in terms of languages present in the discussion. To do that, we have used automated Twitter crawling, web graph reconstruction and social network analysis to collect the discussion bulk and define influential users, as well as coding of tweets and graph visualization to reproduce the language structure of the two discussions.
+
+The remainder of the paper is organized as follows. In Section 2, we review today’s approaches to analyzing global public sphere, its conflictual aspects, and its representation on social media. In Section 3, we shortly describe the case and develop the research questions and hypotheses. Section 4 is dedicated to reconstructing our methodology; Section 5 describes the results and discusses them against the ‘echo chamber’ and ‘spiral of silence’ concepts \cite{NoelleNeumann,Sunstein2002}.
+
+\subsubsection{The global public sphere on Twitter}
+
+\paragraph{The concept of global public sphere in communication studies.} Since the 1990s, globalization of social relations, the rapidly rising interconnectedness of communication infrastructure, growth of transnational political institutions, and a wave of criticism to the rising roles and lowering control over international organizations also called for studies of global(ized) public opinion \cite{Sparks2001,Sparks2005}. The scholarly discussion on whether the global public sphere is already present to some extent or whether its existence is at all possible is rooted in the dialectical nature of globalization \cite{Beck2015,Sparks2003}. Till today, the scholarly community is divided into those who recognize the rise of the global public sphere and those who deny it \cite{Fraser2014}. One of the supporters of the concept was Manuel Castells who stated that ‘there [was] a public sphere in the international arena’ between global civil society, states, and global non-state actors, as well as ‘multinational business, world religions, cultural creators, public intellectuals, and self-defined global cosmopolitans’ \cite[p.~80]{Castells2008}, thus linking the global public sphere to the existence of global (or international) civil society and the rising number of ad hoc forms of global governance and communication. Several important works have also shown that transnational social movements have contributed to the establishment of the global public sphere \cite{GuidryKennedyZald,Smith2007,Castells2008,CottleLester}.
+
+In communication studies, the early global/transnational public sphere theory focused mostly on globalization of news and media, as media of transnational reach and traditional nature were seen as ‘the necessary material framework for any global public sphere that might exist or emerge’ \cite[p.~76]{Sparks2001}. While media content still remains more nation-oriented than globalized \cite{Hafez,Hafez2007,Berglez,WilkeHeimprechtCohen}, several studies revealed homogenization of journalistic practices and media production patterns as well as that of reactions of media audiences to global issues \cite{Cottle2011,Du,CurranEsserHallin}, which fueled expectations for further media convergence and intermedia agenda setting on the global scale. Ingrid Volkmer who developed the concept in the 2000s suggested that a ‘particular globalized communication’ has emerged instead of fully global communication \cite[p.~58]{Volkmer}. At the same time, she believes that globalized media flows now enabled ‘space-based nexus, providing new discourse spheres’ \cite[p.~61]{Volkmer}. For her, transborder information flow is an integral part of trade and migration that developed parallel to the technological and social progress. Among the premises for the global public sphere of ‘network-like organizational nature’, she sees ‘worldwide ‘translocal’ political space… and… new transnational infrastructure of the news media [that] also establishes new journalistic alliances, transnational cooperation, and increasingly includes new ‘players’ network-like organizational nature \cite[p.~12--13]{Volkmer2003}. Fisk \cite{Fisk} has added to the understanding of the concept by pointing out to two criteria: 1) formation of multinational forums of a variety of kinds; 2) discussions and decisions on the global level leading to the establishment of global public goods. Thus, understandably, as soon as social media emerged on transnational communicative arenas, they added much to the discussion on the globalized public sphere.
+
+\paragraph{Critique of the global public sphere: low accountability, representation inequality, and language dispersal.} Criticism towards the globalizing public sphere was directed mostly to three aspects: 1) low accountability of transnational institutions \cite[p.~34]{Sparks2005}; 2) inequality of representation of interests that did not lead to global consensus \cite{Sparks2001,Fuchs2014}; 3) inequality of reach, as western-focused, English-speaking and reaching a very small share of elitist global population \cite{Docherty}, even CNN and BCC failed in creation of a global public sphere \cite{Sparks1998,Sparks2003}.
+
+In the latter, a paradoxical picture emerged: both the dominance of English as a communication means and the lack of common language grounds for the globality of public sphere were criticized, hindering both legitimacy and efficacy of public discussions. As Nancy Fraser famously put it, ‘[i]nsofar as transnational publics conduct their communications in English, which favors global elites and Anglophone postcolonials at the expense of others, how can the opinion they generate be viewed as legitimate?’ \cite[p.~18]{Fraser2014}. Also, sharing the language does not necessarily make a discussion belong to the global public sphere. Thus, diaspora and activist media represent the most interconnected communication across borders, but they do not represent the global public sphere due to their exclusive nature \cite{Sparks2005,Volkmer}.
+
+\paragraph{The networked global public sphere.} The growth of communication infrastructure has not only expanded national information flows to the transnational level. The nature of communication itself started to change from top-down to networked. In the 2000s, many leading scholars argued that Internet enabled public deliberation at the global scale \cite{Bohman}, and, thus, it was expected to create a transnational public sphere \cite{WodakWright}. The three dimensions of public sphere -- representational, structural, and interactional \cite{Dahlgren2005} -- all started to pass through a major change \cite{BatorskiGrzywinska}.
+
+But the empirical findings have so far been pessimistic on whether IT succeeded in creating a free and equal space for communication \cite{CammaertsAudenhove,Papacharissi2008}. At this stage, the inequalities characteristic of the earlier époques have reproduced (even if changed), and new disparities emerged. As Castells noted, communicative networks possess their own power to exclude, as they ‘connect everything that is valuable… [and] bypass and exclude anything or anyone that does not add value to the network and/or disorganizes the efficient processing of the network’s programs’ \cite[p.~81]{Castells2008}, thus bringing the pressure of exclusion to the level of the whole network. Also, even before the worldwide march of online social networks, Cammaerts and Audenhove \cite{CammaertsAudenhove} have provided evidence that ‘public sphericules’ \cite{Gitlin} encapsulating co-minded people reproduce in transnational communication on global issues.
+
+Social networking sites have brought a new era to the global public sphere studies, as, with their global reach and universal access, they helped rise hopes for more inclusive and overarching public discussions beyond mainstream media \cite{Fuchs2014}. Studies linking social networks to the idea of globality of public discussions were initially interested in discovering the potential of horizontal ties as well as in the ability of networks to pull together distant geographical locations. In these studies, geographical distance between users intertwined with several other factors, including national boundaries and language differences \cite{TakhteyevGruzdWellman}. But here, unlike in previous research on traditional media, language partly turns from an obstacle to a helper when scholars discover the role of cross-language users -- both on global blogging platforms like Global Voices \cite{Hale} and in the blogosphere on the whole \cite{HerringPaolilloRamosVielba,EtlingKellyFaris}, as bloggers posting in two languages bridge not only topic-based communities but also national segments of the global blogospheres.
+
+\paragraph{Twitter and the global public sphere.} By the beginning of the 2010s, Twitter became a major scholarly focus in global public sphere studies, as, among other factors, it enabled the quickest possible dissemination of information across geographic distances and languages \cite{LotanGraeffAnanny,HongAhmedGurumurthy}. Despite the varying relative importance of Twitter in different national communicative landscapes, in the 2010s Twitter research has focused on both quantitative and qualitative parameters of the democratic quality of the discussions, with user involvement as the major aspect of quality assessment. Quantitatively, it was understood as the discussion density (‘people talk to each other, not only express views’), horizontality (‘everyone talks to everyone’), and bridging distant spaces. Qualitatively, scholars analyzed emotional involvement of the users \cite{Papacharissi} and polarization of their views.
+
+But rarely the question was posed of how global the discussions actually were. Or, it was posed in an indirect manner. Thus, several works have studied whether physical distance between offline user locations mattered for their interconnectivity, and they found out that, despite the global reach of the platform, people were still connected locally on Twitter \cite{YardiBoyd}\cite[p.~7]{TakhteyevGruzdWellman}. Additionally, previous research has had critical difficulties in studying global diversity on Twitter because of the small share of geotagged tweets \cite{MalikLambaNakos,LeetaruWangCao}. For methods linked to Twitter geography, see reviews in \cite{LeetaruWangCao,HanCook,AdnanLongley,KinsellaMurdockOHare,HongAhmedGurumurthy}.
+
+Due to this limitation, language structure of Twitter was another parameter that was used to assess the globality of both the geographical reach and transborder character of the discussions. Here, one needs to note that, by the estimates of the early 2010s, almost 49\% of tweets were posted in languages other than English \cite{HongConvertinoChi}; but this also meant that English should be playing a major role on Twitter, and the bigger reach, the bigger role of English should be expected. Very similar results were received by Bastos and colleagues who showed on the example of \#occupy that, within 62 mln tweets, 51\% were in English \cite[p.~165]{BastosPuschmannTravitzki}. Another large-scale survey of Twitter, ‘The Twitter of Babel’ \cite{MocanuBaronchelliPerra}, compared the percentage of English use on Twitter in 20 countries versus the vernacular language use, illustrating the weight that English played on Twitter could not, indeed, be overestimated. Also, several works have addressed the issue of bilingual brokers and how the discussions flew across language communities \cite{HongConvertinoChi}.
+
+Later, Eleta and Golbeck \cite{EletaGolbeck} defined three types of bilingual networks among Twitter users. In case of separated language groups on Twitter, a few gatekeeper accounts may connect two separated language groups, while a bigger language bridge occurs in case when two language groups of similar size are tightly connected. If a dominant group can be revealed, then one of the languages becomes peripheral \cite{EletaGolbeck}. According to their findings, the cross-language edge ratio, that is, the number of edges linking two nodes of different languages against the total number of edges in the graph, ‘could reflect the potential for information dissemination across language borders’ \cite{EletaGolbeck}. Other studies have also shown that language is not always a barrier. ‘The network of retweets and mentions is heavily structured by language with most users retweeting and mentioning only users authoring content in the same language as themselves. Nonetheless, users authoring content in multiple languages play a unique bridging role that is not duplicated by other users in the network’ \cite{Hale2014}.
+
+\paragraph{\textit{Ad hoc} Twitter discussions and language globality.} Twitter discussions have different network structure depending on whether a discussion is issue- or event-based. Discussion outbursts on breaking news and burning issues may be described as ad hoc discussions [Bodrunova et al., 2017]. They are based on ‘\textit{ad hoc}’, or ‘issue’, publics \cite{Habermas,BrunsBurgess,Papacharissi}, form spontaneously, unlike the so-called calculated publics \cite{BrunsBurgess}, and have a special network structure as measured by degree centrality \cite{BodrunovaBlekanov}. Ad hoc discussions, as their degree distribution shows, tend to be more horizontal, since the difference between influential users (‘influencers’) and ordinary participants seems to be lower than on Twitter on average. This means that more members of the discussion talk to each other, and the discussion is denser. Thus, it is important to know whether such discussions have a global potential.
+
+Studies on issue-based transnational discussions have revealed that language may be the main factor of user segregation \cite{ChenTuZheng}; language echo chambers are characteristic both for Twitter on the whole and for hastagged discussions \cite{BastosPuschmannTravitzki}. Also, the dynamics of language use shows that, even if in its initial phase a hashtagged discussion it may be multilingual indeed, the English language starts to dominate in its second part due to the attention of international media and entrance of the English-language retweeting audience. In such cases, importantly, top users act ‘as vital links between the spheres’ \cite[p.~21]{PoellDarmoni}. But another side of English/local language contestation lies in the plane of user connectivity. Thus, for the Chinese/English discussion on the trial on a Chinese high-level politician Bo Xilai, the proportion of comments on shared media content was much bigger for the tweets in Chinese, while the English-language tweets tended to disseminate media content without being commented \cite{MenchenTrevinoMao}
+.
+But, as we see, significant gaps still exist in the research on language within ad hoc discussions. Thus, the scholarly attention has been focused on either Twitter on the whole or on longer-term hashtags indicative of issues and campaigns, while breaking news remained a minor research focus. Also, almost no attention has been paid to the differing nature of the hashtags: ‘neutral’ and ‘compassionate’ hashtags may differ in language structure, as global audiences might spread the information while national audiences might tend more to expressing emotions. In terms of method, the major limitations are several. First, the aforementioned scarcity of geotagged data does not allow juxtaposing language use and user location. Second, unlike for other aspects of Twitter research, for cross-lingual studies of massive Twitter datasets machine learning is rarely applicable and manual work is often needed. Third, most popular hashtags are overwhelmingly English-language; this pre-sets the user language belonging, naturally shifting it (and the following research on major hashtags) towards the Anglo-American segment of Twitter.
+
+Our research partly addresses these gaps and limitations.
+
+\subsubsection{The \textit{Charlie Hebdo} massacre on Twitter and research upon it}
+
+\paragraph{The \textit{Charlie Hebdo} discussion: globality unquestioned.} To research upon the language globality of ad hoc Twitter discussions, we have chosen the discussion on the killings in the editorial office of the French satirical journal \textit{Charlie Hebdo} and beyond it. The \textit{Charlie Hebdo} killings and the search for the killers that followed took place on January 7 to 9, 2015, and in public mind it became one of the first cases of the range of inter-ethnic (Islamic) terrorist attacks in Europe of the 2010s. But, unlike in later cases, it polarized the European audience: the case re-rose the issue of freedom of press vs. hurting religious feelings than manifested openly in the Jyllands- posten scandal and in smaller cases across Europe. Also, the case has established a pattern of social compassion and solidarity (\#jesuis…), as well as the rebuttal pattern (\#jenesuiusnas…).
+
+On Twitter, this division became revealed. The most important hashtags were \#CharlieHebdo, \#JeSuisCharlie, \#JeNeSuisPasCharlie, and \#JeSuisAhmed \cite{AnKwakMejova}; this reflected the polarity of views.
+
+The conflict has already received a significant amount of attention from the international scholarship, just as the Twitter discussion and the aspects related its quality in public sphere terms. Thus, Giglietto and Lee \cite{GigliettoLee} have conceptualized \#JeSuisCharlie and \#JeNeSuisPasCharlie as a public sphere and a counter-public sphere. In an important study, An and colleagues \cite{AnKwakMejova} analyzed spatial distribution of the tweets and showed that divisions in the discussion reflected Huntington’s clash of civilizations; also, they underlined the role of language context in retweeting patterns. Ratinaud and Smyrnaios \cite{RatinaudSmyrnaios} find that the discussion was structured along the lines of political alignment of the users. In a later paper, Giglietto and Lee \cite{GigliettoLee2017} focused on \#JeNeSuisPasCharlie and the discursive strategies around it, while Rosas \cite{Rosas} reflected upon the user’s emotional framing of the context, and all of them pointed out to opinion cleavages in the discussion structure. Some research has also been dedicated to social media and the protest in the aftermath of the conflict \cite{LarsonNaglerRonen,MayerTiberj,Salovaara}.
+
+In almost all of these papers, the \textit{Charlie Hebdo} discussion is considered global, without questioning the globality of its actual reach. This was one of the reasons why we focused on this case, as we could text to what extent this claim was true. The second reason was that it showed clear opinion divisions, and we could set the comparative perspective. Third, the inter-civilizational nature of the conflict implied that we could expect the discussion to partly be in non-European (mostly Arabic) languages. Fourth, its main hashtags were in French, not in English, but anyway they made it to the world top of Twitter. Four our analysis, we have chosen \#JeSuisCharlie and \#JeNeSuisPasCharlie as counter-discourses. We are interested in assessing the language aspects of these hashtagged \textit{ad hoc} discussions.
+
+\paragraph{The research questions and hypotheses.} In our research, we would like to address the gaps that we have identified in the previous research on globality of ad hoc Twitter discussions. Thus, we will be assessing the language distribution within the ‘polar’ hashtags \#JeSuisCharlie and \#JeNeSuisPasCharlie, focusing on the discussion reach, clusterization patterns (‘echo chambers’), and the linguistic preferences and roles of unilingual/multilingual top users.
+
+\paragraph{RQ1. Were the two hashtags global indeed? How wide, in terms of use of different languages, was the reach? What was their language constellation?}
+Despite in most research the two hashtags are perceived as global, we can expect the first one to spread to much wider audiences than the second one. \#JeSuisCharlie was based on a universal value of compassion as well as on support of traditional values linked to respect of religious beliefs, while the issue behind \#JeNeSuisPasChairlie (the limits of freedom of expression) was relevant mostly to Euro-Atlantics.
+
+Previous research shows that Twitter is structured approximately 50/50 for English/ other languages; but this was true for Twitter on the whole and English-language hashtags. Having this all in mind, we expect significant difference between the two hashtags in their language composition, and French to be dominant in both cases.
+
+Also, the two hashtags will differ in terms of representation of the conflict sides. In particular, \#JeSuisCharlie will involve more Arab-speaking users than \#JeNeSuisPasChairlie, while the latter will be more European.
+
+\textit{H1a.} The French language will be dominant for both hashtags; English will follow.
+
+\textit{H1b.} In the tweets written in other than French and English, the language composition of the two hashtags will differ. While \#JeNeSuisPasCharlie will consist of languages of European origin (like Spanish or Dutch), the language structure of \#JeSuisCharlie will correspond more to the ‘cilivizational’ picture, with Arabic, East Asian (Indian, Chinese, Japanese), and post-Soviet languages having significant shares (5 to 10\% for each of these world regions). African languages will be under-represented due to low Internet penetration; Latin American languages (Spanish, Portuguese, Italian) will contribute to the ‘European’ part of the language structure, thus boosting it additionally.
+
+\textit{H1c.} \#JeSuisCharlie will have a substantial number of Arab-speaking users in both top users and ordinary participants, while \#JeNeSuisPasCharlie will not.
+
+\paragraph{RQ2. Is global public sphere a ‘language crossroads’? In other words, are the echo chambers inside the discussion web graphs language-based or do they form by other discussion features?}
+Since previous research shows that language plays a significant role in echo chambering, we expect language to be the factor behind the nebula in both web graphs. But at the same time we expect \#JeSuisCharlie to mirror the ‘civilizational’ structure, while \#JeNeSuisPasCharlie to have European-language-based echo chambers.
+
+\textit{H2a.} In both cases, the echo chambers discovered in the discussion web graphs will mirror the language structure of the discussion.
+
+\textit{H2b.} The echo chambers of \#JeSuisCharlie will mirror the ‘civilizational’ structure, while \#JeNeSuisPasCharlie will have European-language-based echo chambers.
+
+\paragraph{RQ3. Are multilingual users important for the discussion? Does speaking more languages make a user more influential within the discussion network?}
+Previous research suggests that multilingual users bridge the discussion echo chambers. This may lead to an idea that the more languages a user speaks, the higher his/her position within the network becomes.
+
+\textit{H3a.} For both discussions, the more languages a user speaks, the higher his/her position within the network is.
+
+\textit{H3b.} It is multilingual users who are the main discussion bridges in both discussions.
+
+\subsubsection{The research methodology and conduct of research}
+
+\paragraph{Data collection.} To answer the research questions, we have collected all the tweets published publicly under the hashtags \#JeSuisCharlie and \#JeNeSuisPasCharlie (by separate crawls) within January 7 to 9, 2015. These three days encompassed the active phase of the conflict, till the first killings to the extinction of the attackers. We were interested in this phase: as previous research suggests, it could be relatively less mediatized (and, thus, shifted towards English). As the data collected showed, the first three days provided substantial datasets for both hashtags. For data collection, automated vocabulary-based web crawling was used. We have used the web crawler developed earlier by the research group \cite{BlekanovSergeevMartynenko} and adjusted for the needs of this research.
+
+The collected datasets proved to be very different in size and had to be further sampled. Overall collections of tweets included:
+
+\begin{itemize}
+	\item for \#JeSuisCharlie: tweets -- 420,080; users who published them -- 266,904; users who posted and interacted with the posted tweets (by likes, retweets, or comments) -- 719,503, the overall number of tweets and interactions -- 3,808,564;
+	\item for \#JeNeSuisPasCharlie: tweets -- 7,698;users who published them -- 5,466; users who posted and interacted with the posted tweets (by likes, retweets, or comments) -- 17,872; the overall number of tweets and interactions -- 68,945.
+\end{itemize}
+
+These full datasets were used to reconstruct the overall web graphs for the two hashtags. But to color them with language markers, we needed to sample the users for coding.
+
+\paragraph{The sampling strategy.} Thus, our sampling had several steps.
+
+First, we had to divide the users for each hashtag into top and ordinary ones. To select the important users (influencers), we have used the tactics developed by the research group for earlier research \cite{BodrunovaLitvinenkoBlekanov2016,BodrunovaBlekanovMaksimov}. To select the influencers, we calculated nine parameters for each user who posted. Four of the parameters were absolute figures -- the number of tweets posted, as well as likes, retweets, and comments received. The five others were graph centralities and, thus, were relative (i. e. dependent of the whole discussion network) -- these were in-degree, out-degree, degree, betweenness, and pagerank centralities. For each hashtag, top users by each parameter were taken into consideration. We defined the top user threshold for each parameter individually, aiming at \(\sim100\) users per parameter for \#JeSuisCharlie and 5 to 10 users per parameter for \#JeNeSuisPasCharlie. Of the top lists, duplicates were eliminated; the final lists of influencers included: for \#JeSuisCharlie -- 459 users, for \#JeNeSuisPasCharlie -- 91 user.
+
+Second, ordinary users had to be sampled -- in a way that would preserve representativity and at the same time make our coding feasible and substantial. Thus, we focused on the discussion core and had to cut the ‘long tail’, that is, all the users who posted the amount of tweets unreasonable for coding (like one or two), as their selection of language for posting might have been random. After analyzing the graphs of the distribution of number of tweets, for \#JeSuisCharlie, we decided to cut all the users with 1 to 4 tweets posted, and for \#JeNeSuisPasCharlie, all those who tweeted just once or twice. This resulted into 9,090 users for \#JeSuisCharlie and 339 users for \#JeNeSuisPasCharlie. For the latter hashtag, all 339 users were coded; but the dataset for \#JeSuisCharlie had to be further cut for the feasibility reasons.
+
+Thus, third, of 9,090 users most of whom posted 5 and 6 tweets, we randomly sampled 1500 users (over 15\%).
+
+Fourth, bots and bot-like users who repeated 60\% or more of their content were eliminated. Also, we eliminated fully irrelevant posting and users of non-definable content (hashtags and/or links only). Both top and ordinary user lists were cleaned.
+
+The final datasets for coding, thus, contained:
+\begin{itemize}
+	\item for \#JeSuisCharlie: 402 influencers, 1441 ordinary user;
+	\item for \#JeNeSuisPasCharlie: 85 influencers, 339 ordinary users.
+\end{itemize}
+
+\paragraph{Coding.} All the users sampled were coded marking the number of tweets in language 1, language 2, and other languages; thus, users posting on one, two, and three or more languages were defined. The languages were identified for each user; in case of rare languages, Google and Yandex language identifiers were used.
+
+\paragraph{Web graph reconstruction.} To reconstruct the web graphs, the working group uses Gephi API algorithms openly available online, should they meet the following criteria: linear-logarithmic working speed; possibility of visualization of graphs with the number of nodes over 20,000; possibility of working with weighted and non-weighted, as well as with directed and non-directed graphs. Of the available algorithms, two were chosen: Yifan Hu \cite{Hu} and OpenOrd \cite{MartinBrownKlavans}. Besides the technical graphs reconstructed for measuring user metrics, we also constructed the graphs to answer the research questions (see below), based on our coding data. For these graphs, the ‘long tail’ users were eliminated.
+
+\paragraph{Analysis of the coded data.} To answer RQ3, we have used descriptive statistics
+(Cramer’s V metric) to test the correlations between the language use and user status within the network. Otherwise, the results are based on summarizing the coding results and qualitative assessment of the web graphs.
+
+\subsubsection{Results and discussion}
+
+For the RQ1, we calculated the percentage of languages for both hashtags. The language distribution is represented: for \#JeSuisCharlie -- on Figure~\cref{fig:jeSuisCharlieLanguages} (a -- influencers, b -- ordinary users); for \#JeNeSuisPasCharlie -- on Figure~\cref{fig:jeNeSuisPasLanguages} (a -- influencers, b -- ordinary users). We have also juxtaposed the language structure of the influencers and the ordinary users for \#JeSuisCharlie (see Figure~\cref{fig:jeSuisCharlieLanguageSegments}) and \#JeNeSuisPasCharlie (see Figure~\cref{fig:jeNeSuisPasCharlieLanguageSegments}).
+
+\begin{figure}[ht]
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeSuisCharlieLanguagesInfluencers} \\ a) for influencers
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeSuisCharlieLanguagesOrdinaryUsers} \\ b) for ordinary users
+	\end{minipage}
+	\caption{Representation of languages in the coded dataset of \#JeSuisCharlie}
+	\label{fig:jeSuisCharlieLanguages}
+\end{figure}
+
+\begin{figure}[ht]
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeNeSuisPasCharlieLanguagesInfluencers} \\ a) for influencers
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeNeSuisPasCharlieLanguagesOrdinaryUsers} \\ b) for ordinary users
+	\end{minipage}
+	\caption{Representation of languages in the coded dataset of \#JeNeSuisPasCharlie}
+	\label{fig:jeNeSuisPasLanguages}
+\end{figure}
+
+As our data show, H1a is supported. French is the leading language of both discussions, and English follows. But it is also worth noting that another segment, bilingual French/English users, is third in volume (except for ordinary users of \#JeNeSuisPasCharlie where it is fourth). Other languages also ‘gravitate’ towards them, as users post and repost the tweets in French and English, both sharing the news and addressing the French- and English-language communities. The overall amount of tweets in English, though, is a bit lower than on Twitter on average, as it reaches maximum 43\% and is \(\sim\)39--40\% on average. This may be an indicator that, in the first phase of a conflict beyond the English-language countries, national languages take relative lead, thus ‘localizing’ the discussion.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.6]{jeSuisCharlieLanguageSegments}
+	}
+	\caption{Language segments in \#JeSuisCharlie: influencers vs. ordinary users, in \%}\label{fig:jeSuisCharlieLanguageSegments}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.6]{jeNeSuisPasCharlieLanguageSegments}
+	}
+	\caption{Language segments in \#JeNeSuisPasCharlie: influencers vs. ordinary users, in \%}\label{fig:jeNeSuisPasCharlieLanguageSegments}
+\end{figure}
+
+But as to H1b that suggested the varying language structure of the discussions, as well as H1c on Arab-speaking users, both need to be completely rejected. Thus, language-based reach of the discussions is virtually the same, with only several individual tweets coming from Middle East and Asia for both hashtags; the Arab part in \#JeSuisCharlie is non-existent, contrary to expectations. Also, the pre-supposed ‘civilizational’ structure of \#JeSuisCharlie has not been found; instead, European languages other than French and English form the only significant cluster beyond the two main languages.
+
+The global reach, even if minimal, still shows up in how many languages did pop up in our data. In the \#JeSuisCharlie dataset, we have discovered 30 languages beyond English and French (with two others found in the overall dataset via quick preliminary reading of the tweet collection). Among the ordinary users, the European languages were dominant; namely, these were Spanish (66), Italian (54), Dutch (46), and German (41). Then, with a significant gap, there followed Greek (7), Portuguese (6), Swedish and Catalan (5 each). Danish (2) and Albanian, Bosnian, Norwegian, Polish, Slovene, Croatian, Czech, and Finnish (all 1) also show up, just as Russian (3) and Ukrainian (1). The Asian segment includes Indonesian (5), Chinese (3), Japanese (2), Marathi (1), and Mongolian (1). Influencers were almost exclusively using West European languages (Spanish (31), Italian (22), Dutch (10) and German (8)), with only 9 users posting in Turkish (5), Japanese (2), Kurdish (1) and Russian (1). Of course if we compare this spread to offline discussions, the hashtagged one on Twitter allows for a much wider participation than one could ever have offline. Also, careful reading of the tweets showed that not only the USA and the UK users posted in English but also Canadians, Australians, and Irish, among others; Brazilians were salient in Portuguese just as well. But even if so, there is no way of speaking about the ‘civilizational’ representation within \#JeSuisCharlie. We, thus, seriously doubt that \#JeSuisCharlie has gathered a global public sphere of solidarity and compassion, as it was stated in previous research.
+
+For \#JeNeSuisPasCharlie, the world is even somewhat smaller: beyond French and English, the influencers post in Spanish (4), German, Dutch, and Basque (1 each), as well as in Malay and Japanese (1 each), while ordinary users post, entirely or partly, in Spanish (27), Italian (9), Portuguese (8), Russian (4), German, Turkish (3 each), Arab, Japanese (2 each), Albanian, Basque, Dutch, Greek, Croatian, and Czech (1 each).
+
+Thus, from our viewpoint, even if the discussions involved countries from Japan to Canada, they still remained major Euro-Atlantic echo chambers in itself, thus bringing the idea of user polarization and echo chambering to the transnational (even if not global) level.
+
+For RQ2, we have reconstructed the web graphs using the two algorithms mentioned above.
+
+The graphs for \#JeSuisCharlie (discussion structure and language structure) are represented on Figure~\cref{fig:jeSuisCharlieYifanHu} (by Yifan Hu) and Figure~\cref{fig:jeSuisCharlieOpenOrd} (by OpenOrd). The equivalent representation for \#JeNeSuisPasCharlie is shown on Figure~\cref{fig:jeNeSuisPasCharlieYifanHu} and Figure~\cref{fig:jeNeSuisPasCharlieOpenOrd}.
+
+\begin{figure}[ht]
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeSuisCharlieYifanHuDiscussion} \\ a) the discussion structure
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeSuisCharlieYifanHuLanguage} \\ b) language structure
+	\end{minipage}
+	\caption{Representation of \#JeSuisCharlie (users with 5+ posts) by Yifan Hu algorithm}
+	\label{fig:jeSuisCharlieYifanHu}
+\end{figure}
+
+\begin{figure}[ht]
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeSuisCharlieOpenOrdDiscussion} \\ a) the discussion structure
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeSuisCharlieOpenOrdLanguage} \\ b) language structure
+	\end{minipage}
+	\caption{Representation of \#JeSuisCharlie (users with 5+ posts) by OpenOrd algorithm}
+	\label{fig:jeSuisCharlieOpenOrd}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[ht]
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeNeSuisPasCharlieYifanHuDiscussion} \\ a) the discussion structure
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeNeSuisPasCharlieYifanHuLanguage} \\ b) language structure
+	\end{minipage}
+	\caption{Representation of \#JeNeSuisPasCharlie (users with 3+ posts) by Yifan Hu algorithm}
+	\label{fig:jeNeSuisPasCharlieYifanHu}
+\end{figure}
+
+\begin{figure}[ht]
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeNeSuisPasCharlieOpenOrdDiscussion} \\ a) the discussion structure
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b][][b]{0.49\linewidth}\centering
+		\includegraphics[width=0.75\linewidth]{jeNeSuisPasCharlieOpenOrdLanguage} \\ b) language structure
+	\end{minipage}
+	\caption{Representation of \#JeNeSuisPasCharlie (users with 3+ posts) by OpenOrd algorithm}
+	\label{fig:jeNeSuisPasCharlieOpenOrd}
+\end{figure}
+
+H2a (about the discussion structure mirrored by the language structure) is definitely proven for \#JeSuisCharlie. Thus, we see three distinct nebulae on Figure~\cref{fig:jeSuisCharlieYifanHu}(a); they correspond to the language segments on Figure~\cref{fig:jeSuisCharlieYifanHu}(b), being French, English, and ‘other European’; also, a group of French/English users stays in between the French and the English. For \#JeNeSuisPasCharlie, though, the picture is different. We see that, on Figure~\cref{fig:jeNeSuisPasCharlieYifanHu}(a), in the overall discussion there are no distinct nebulae that would speak of user clusterization. But Figure~\cref{fig:jeNeSuisPasCharlieYifanHu}(b) resembles Figure\cref{fig:jeSuisCharlieYifanHu}(b) -- it shows language clusters similar to those for \#JeSuisCharlie.
+
+To show that the discovered language-based nebulae are not a research artifact, we have calculated the percentage of edges between and inside language groups (see Table~\cref{tab:interUserConnectionsBetweenLanguageGroups}). These results show that the clusters we have discovered are not random. For \#JeSuisCharlie, the inter-group edges constitute only 6,17\%; compared to this, three nebulae (French, English, and French/English) have much higher number of in-group edges (52,13\%, 16,68\%, and 16,93\%, respectively) than 6,17\%; other language groups, including other European languages, show much lower percentages of in-group links than 6,17\%. The difference does not leave space for doubts on the nature of the nebulae. The situation with \#JeNeSuisPasCharlie is similar in one respect but a bit different in another. The three language nebulae show up again, with 26,16\% for French, 22,41\% for English, and 18,84\% for French/English, while other language groups drop below 3\%. But the graph itself is denser than that of \#JeSuisCharlie, as here the edges between groups mount to 25,98\%. This may be a hint to the overall nature of the discussion, which reminds a public counter-sphere. But here we need to mention that both graphs were constructed based on the amount of users with 5+ and 3+ tweets, respectively; if we were using the full graphs, the number of edges between groups is expected to drop.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Percentage of inter-user connections between and inside language groups, \#JeSuisCharlie and \#JeNeSuisPasCharlie}%
+	\label{tab:interUserConnectionsBetweenLanguageGroups}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			\multirow{2}{*}{\makecell{Language group/connection\\between groups}} & \multicolumn{2}{c}{The case} \\
+			\cline{2-3}
+			& \#JeSuisCharlie & \#JeNeSuisPasCharlie \\
+			\hline
+			Edges between groups & \textbf{6,17\%} & \textbf{25,98\%}\\
+			French & \textbf{52,13\%} & \textbf{26,16\%} \\
+			English & \textbf{16,68\%} & \textbf{22,41\%}\\
+			Other Europe & 3,43\% & 2,68\% \\
+			Middle East and Asia & 0,09\% & 0,27\% \\
+			French / English & \textbf{16,93\%} & \textbf{18,84\%} \\
+			French / other & 1,05\% & 0,63\% \\
+			English / other & 0,92\% & 1,25\% \\
+			Two languages, other & 0,06\% & -- \\
+			Three languages & 2,55\% & 1,79\% \\
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+Altogether, these findings indicate that, first, language detection on Twitter may be used to detect the inner structure of discussions even when on the overall graph the nebulae are not evident.
+
+Second, the nebulae show that H2b has to be rejected for \#JeSuisCharlie. In accordance with what is stated above, the absence of the ‘civilizational’ reach naturally leads to absence of ‘civilizational’ clusterization. Not only \#JeNeSuisPasCharlie but also its bigger counterpart is heavily clustered by the use of European-origin languages -- French, English, French-English, and ‘other European’, of which Spanish plays the biggest role. Thus, in general, we see neither ‘inter-civilizational’ nor inter-European ‘language crossroads’ on Twitter, which is in line with the previous findings on Twitter clusterization but against our expectations on civilizational representation.
+
+But at the same time the answers to our RQ3 provide interesting insights into the nature of inter-cluster connections. In the discussions, we have identified three types of users in terms of language use: unilingual, bilingual, and multilingual (posting in three and more languages). Previous research suggests that users’ bilingualism leads to their ‘discussion bridge’ roles. Thus, it was logical to suggest that, the more languages a user speaks, the better his/her position in the discussion graph (s)he belongs to.
+
+To measure the correlation between the number of languages used in a user’s tweets (one, two, or three or more) and the user metrics, Spearman’s rho was utilized. The results show that language does influence a user’s position within the network, but in a somewhat weaker way than expected.
+
+First, in both discussions, language is related to user activity metrics, more than to connectivity metrics. Thus, the more languages a user utilized, the more tweets he/ she posted (0,270** for \#JeNeSuisPasCharlie and 0,080** for \#JeSuisCharlie), and, importantly, the more users a user interacted with (0,134** for \#JeNeSuisPasCharlie and 0,051** for \#JeSuisCharlie). The correlations are very weak, but anyway significant.
+
+Second, for both discussions, a user’s betweenness centrality is, expectedly, linked to his/her language use (0,138** for \#JeNeSuisPasCharlie and 0,066** for \#JeSuisCharlie). Thus, multi-language users seem to play a role in linking the discussion nebulae.
+
+Third, the difference between the two discussions lies in the fact that, for the smaller discussion, not only all the correlations are higher but also in-degree and degree centralities (stating, in effect, the number of users who interacted with a given user) do correlate with the language use, while for the bigger discussion these correlations remain insignificant. That is, for \#JeNeSuisPasCharlie, language use seems to have weak but significant impact upon the discussion density.
+
+Out of these results, we would expect that our H3b on multi-lingual ‘discussion bridges’ would be proven; but the visual assessment of the web graphs corrects our expectations. Thus, for both cases, it is bilingual, not three-lingual, users who are among the main discussion nodes. Moreover, it is English/French and, to a smaller extent, English/other-language users who are the main discussion bridges. Out of this, we can conclude: use of multiple languages influences discussion density for smaller discussions and helps individual users to reach influencer positions, but the key to this is not maximization of the number of languages but the use of English plus the main language(s) of the case. This conclusion, despite quite obvious, further elaborates the previous findings on the role of multi-language users in ad hoc discussions.
+
+\paragraph{Discussion.} We have addressed the issue of the global reach of conflictual public discussions of Twitter, seeing this platform as a discursive milieu where the hopes for a global public sphere could come close to true. But, as our results show, in today’s Twitter, even the discussions involving over 30 national languages remain echo chambers on at least two levels. The first one is national, as the main nebulae in the discussion are linked to the main discussion languages. And, second, the discussions themselves, even if hashtagged not in English but in French, remain almost 100\% Euro-Atlantic and, thus, represent neither the conflict sides nor the ‘clash of civilizations’. For these discussions, the truly global public sphere is still non-existent -- while English does play a role of the discussion bridge.
+
+From the theoretical viewpoint, these conclusions pose further questions as well as add to our understanding of echo chambering as a socio-communicational process. Thus, the idea of the spiral of silence by Noelle-Neumann \cite{NoelleNeumann} works transnationally, and ‘the spiral’ is formed not only by the opinion divergence but also by more natural factors like language. Also, the role of the English language needs to be further explored, since, as mentioned right above, it bridges the discussion nebulae but also creates a discussion-wide nebula pushing out non-English-speaking users to the discussion periphery.
+
+Of course one case study is not enough to make universal conclusions; our work only makes a limited contribution to the field of study of global discourses. But we have shown that emotional hashtags on the same topic have very similar language and echo chamber structure, contrary to expectations, and this contributes to our knowledge of how ad hoc discussions work on the global scale.
+
 \subsection{Constructive Aggression? Multiple Roles of Aggressive Content in Political Discourse on Russian YouTube}\label{subsec:ch5/sec3/sub5}
 
 \subsubsection{1 Introduction}
