@@ -74,9 +74,13 @@ Abstract Today, aggressive verbal behavior is generally perceived as a threat to
 
 \subsubsection{5.4.1}
 
-Abstractive summarization is a technique that allows for extracting condensed meanings from long texts, with a variety of potential practical applications. Nonetheless, today’s abstractive summarization research is limited to testing the models on various types of data, which brings only marginal improvements and does not lead to massive practical employment of the method. In particular, abstractive summarization is not used for social media research, where it would be very useful for opinion and topic mining due to the complications that social media data create for other methods of textual analysis. Of all social media, Reddit is most frequently used for testing new neural models of text summarization on large-scale datasets in English, without further testing on real-world smaller-size data in various languages or from various other platforms. Moreover, for social media, summarizing pools of texts (one-author posts, comment threads, discussion cascades, etc.) may bring crucial results relevant for social studies, which have not yet been tested. However, the existing methods of abstractive summarization are not fine-tuned for social media data and have next-to-never been applied to data from platforms beyond Reddit, nor for comments or non-English user texts. We address these research gaps by fine-tuning the newest Transformer-based neural network models LongFormer and T5 and testing them against BART, and on real-world data from Reddit, with improvements of up to 2\%. Then, we apply the best model (fine-tuned T5) to pools of comments from Reddit and assess the similarity of post and comment summarizations. Further, to overcome the 500-token limitation of T5 for analyzing social media pools that are usually bigger, we apply LongFormer Large and T5 Large to pools of tweets from a large-scale discussion on the Charlie Hebdo massacre in three languages and prove that pool summarizations may be used for detecting micro-shifts in agendas of networked discussions. Our results show, however, that additional learning is definitely needed for German and French, as the results for these languages are non-satisfactory, and more fine-tuning is needed even in English for Twitter data. Thus, we show that a ‘one-for-all’ neural-network summarization model is still impossible to reach, while fine-tuning for platform affordances works well. We also show that fine-tuned T5 works best for small-scale social media data, but LongFormer is helpful for larger-scale pool summarizations.
+Social networking platforms have become a major source of data for most textual machine learning models. Applications of encodings in earlier language models, as well as advancements in model reusage, have opened new possibilities for case studies with limited or unsupervised data. In this paper, the authors test whether semantic similarity of large-scale data from three platforms allow for applying the same transfer-learning language models on data from various social media. For this, the authors perform a comparative case study to outline linguistic differences and measure similarity for deep neural encodings for the case data. In particular, semantic similarity is evaluated using traditional text similarity metrics, structure metrics of the corpora, and RUBERT encodings that provide general semantic characteristics of the text data in three datasets. We show that the platforms are similar in semantic terms well enough for the transfer learning models to be applied, by both linguistic metrics and semantic encodings. We also demonstrate, however, that, despite the average text length, Twitter is more similar to Reddit than to Telegram by linguistic metrics, which hints to the idea of ‘platformization’ of social media speech. We conclude by stating the speech factors that may lead to platform dissimilarity.
 
 \subsubsection{5.4.2}
+
+Abstractive summarization is a technique that allows for extracting condensed meanings from long texts, with a variety of potential practical applications. Nonetheless, today’s abstractive summarization research is limited to testing the models on various types of data, which brings only marginal improvements and does not lead to massive practical employment of the method. In particular, abstractive summarization is not used for social media research, where it would be very useful for opinion and topic mining due to the complications that social media data create for other methods of textual analysis. Of all social media, Reddit is most frequently used for testing new neural models of text summarization on large-scale datasets in English, without further testing on real-world smaller-size data in various languages or from various other platforms. Moreover, for social media, summarizing pools of texts (one-author posts, comment threads, discussion cascades, etc.) may bring crucial results relevant for social studies, which have not yet been tested. However, the existing methods of abstractive summarization are not fine-tuned for social media data and have next-to-never been applied to data from platforms beyond Reddit, nor for comments or non-English user texts. We address these research gaps by fine-tuning the newest Transformer-based neural network models LongFormer and T5 and testing them against BART, and on real-world data from Reddit, with improvements of up to 2\%. Then, we apply the best model (fine-tuned T5) to pools of comments from Reddit and assess the similarity of post and comment summarizations. Further, to overcome the 500-token limitation of T5 for analyzing social media pools that are usually bigger, we apply LongFormer Large and T5 Large to pools of tweets from a large-scale discussion on the Charlie Hebdo massacre in three languages and prove that pool summarizations may be used for detecting micro-shifts in agendas of networked discussions. Our results show, however, that additional learning is definitely needed for German and French, as the results for these languages are non-satisfactory, and more fine-tuning is needed even in English for Twitter data. Thus, we show that a ‘one-for-all’ neural-network summarization model is still impossible to reach, while fine-tuning for platform affordances works well. We also show that fine-tuned T5 works best for small-scale social media data, but LongFormer is helpful for larger-scale pool summarizations.
+
+\subsubsection{5.4.3}
 
 Agendas in online media have become a scholarly focus nearly two decades ago, leading to shifting conceptualizations of what we see as agenda. Thus, agendas and agenda shifts inside online discussions have shown its potential to influence offline deliberation, aggregate support, fuel protest, passing through and/or bypassing traditional media’s gatekeeping. Real-time (or nearly-real-time) learning about quick agenda movement inside globalized public debate might be particularly important for international organizations like UN or EU. However, we today lack both knowledge on how agendas move in such discussions and instruments on such analysis. In particular, we are next-to-unaware of to what extent globally relevant themes get contextualized within language-based discussion segments, as well as to what extent the latter depend on each other and lag behind each other in developing agendas and public opinion on quickly evolving issues or conflicts. In this paper, we propose a method of agenda detection based on neural-network text summarization and compare summaries of tweet packages across three languages within the Twitter hashtag \#jesuischarlie. We show that sentiment detection may allow for quality assessment of the text summaries, as compared to aggregated sentiment to the original tweets. We show that, outside France, agendas were more interpretational, abstract, and non-contextualized. The pattern of news changing to ‘issue outburt’ was simultaneous in dense discussion segments and lagged behind in a sparser one. We also show that, globally, main issues of the discussion may be spotted within the first hour.
 
@@ -3224,7 +3228,217 @@ Our research shows that fighting aggressive speech on global social media platfo
 
 \section{Методы суммаризации}\label{sec:ch5/sect4}
 
-\subsection{Transformer-Based Abstractive Summarization for Reddit and Twitter: Single Posts vs. Comment Pools in Three Languages}\label{subsec:ch5/sec4/sub1}
+\subsection{Data encoding for social media: Comparing Twitter, Reddit, and Telegram}\label{subsec:ch5/sec4/sub1}
+
+\subsubsection{1 Introduction}
+
+Social media play an important role in the discussions of major economic, political, and social events whether in the form of user messages or articles published by major news agencies and experts. There are a variety of platforms where opinions and discussions are common. Proper data collection and analysis is important for recognizing the socially beneficial and negative features, e.g., information spreading (helpful in informing people on emergencies such as epidemics) or spreading of fake news, among others.
+
+The spread of social media has been also conceptualized as the ‘platform society’ \cite{VanDijkPoellDeWall} where user interactions, as well as the results of discussions, depend on The spread of social media has been also conceptualized as the ‘platform society’ \cite{VanDijkPoellDeWall} where user interactions, as well as the results of discussions, depend on platform affordances. One of the questions still unexplored is whether platform-based speech itself changes depending on the platform on which it appears. In particular, we ask whether the semantic ‘profiles’ of the platforms differ. Automated social media research may be divided into two types: structural analysis of user discussions and content analysis. There are a variety of studies related to the structural features such as hidden community detection or influencers detection \cite{BlekanovBodrunovaAkhmetov} that try to relate discourse features to structural aspects of discussions \cite{BodrunovaBlekanovSmoliarova}. However, the opposite is not always true: studies related to content typically do not utilize structural features, focusing instead on the content itself. For instance, tasks such as sentiment analysis, topic modelling, or summarization, in most cases, assess user messages without taking into account the affordances of and speech habits specific social media platforms, while parlance on different platforms may vary significantly -- which remains understudied.
+
+In addition, data collection and data mining research has proven to be one of the major driving forces in creating robust and interpretable natural language processing models. Studies on social media are especially useful, as social networking platforms encompass a major portion of all text content on the internet. However, the question remains whether the models trained and fine-tuned for one platform may be easily used for another platform, as there are no enough studies on semantic discrepancies between social media platforms on the platform level.
+
+Comparing different social media platforms for their semantic similarity both between themselves and with traditional machine learning datasets can help economize substantially on the resources spent on machine learning and may be done in a variety of ways. General statistical approaches (length estimation, timelines of posts and comments etc.), complexity measures (a variety of linguistic measures, aimed at assessing the potential difficulty of text), and temporal features (engagement characteristics, spread of information etc.) can be used to provide a detailed comparison between different platforms. In this paper, we focus on one specific aspect of comparative modelling of user speech --platform-wide semantic similarity -- via assessment of linguistic features and deep learning language models.
+
+In particular, testing the linguistic similarities of posts and comments from different social media platforms may allow for assessing the limitations of today’s most advanced transfer learning. Transfer learning \cite{ZhuangQi} is a core principle of most modern language models. It allows researchers to reuse previously trained models for new sets of data by fine-tuning them. This procedure saves time, computational resources and, most importantly, requires much less training data to be used, by utilizing models trained on bigger datasets. Initial training, in this case, captures the semantic structure of the language or languages in question. Further training is required only for better domain understanding. A problem common for this approach is limited availability of datasets suitable for training models for specific social media platforms. For example, sentiment analysis data is readily available for Twitter data; supervised summarization data is common for Reddit data; etc. It is not uncommon to use a model trained for a specific social media platform for a task related to another platform \cite{BlekanovTarasovBodrunova}, but the semantic discrepancy between platforms is not taken into consideration, as there is no method to assess it yet.
+
+In this study, we start approaching the elaboration of such a methodology. We aim at measuring the large-scale platform-wide semantic differences between social networks for the purpose of statistical and language modelling applications, to find linguistic and statistical relations between posts and comments from different social media platforms in different languages. This combined approach utilizes neural encodings used for general language modelling with additional linguistic information providing more specific data characteristics in the absence of available fine-tuning data.
+
+The remainder of this paper is organized in the following way: Section 2 provides a review on social media comparison methodologies previously used to measure the differences in structure of platforms. Section 3 provides the methodology including the metrics. Section 4 provides the results and discusses their implications.
+
+\subsubsection{2 Previous research}
+
+Previous platform-wide comparisons of social networking sites focused on structural aspects of user discussions, such as user connection networks, and, therefore, utilized primarily graph theory approaches \cite{GuzmanDeckroRobbins}. We, though, will focus on content, more precisely on semantic similarity of platforms and the textual features that may lower it.
+Text comparison studies encompass two main approaches: comparisons of text corpora (‘corpus analysis’) and similarity detection for individual texts. Corpus analysis includes such tasks as readability assessment, statistical analysis etc. Text similarity assessment is a method commonly used for plagiarism detection, general authorship detection \cite{KoppelSchlerArgamon}, web search, and storage optimization \cite{Sitio}. 
+
+Our approach tries to solve the problem (not tackled in prior social media research) of detecting the general semantic differences between platforms, as measured by potential impact of transfer learning model reuse for different social media platforms. We combine the ideas from text similarity studies with corpus analysis, in order to test the large-scale textual similarity of the platforms.
+
+\subsubsection{3 Experiment}
+
+\paragraph{3.1 Data} A case study was performed to detect the differences between posts and comments from various social media platforms in two languages, namely Russian and English. The datasets were collected from three platforms for 2020 and 2021:
+
+\begin{itemize}
+	\item Twitter: Posts and comments in Russian and English, 165,102 texts in total.
+	\item Reddit: Post titles combined with post contents (if available) and comments, collected from r/worldnews and r/covid19, 195,747 texts in total.
+	\item Telegram: Messages in Russian and English, 209,733 texts in total.
+\end{itemize}
+
+For this preliminary analysis, a specific case has been chosen to study thematically identical sets of data. COVID-19 has been chosen as a topic for this comparison, as studies on this topic and data became prevalent in recent years.
+
+\paragraph{3.2 Metrics} 
+\textit{3.2.1 Linguistic measures} A few general linguistic measures, readability specific measures \cite{BlinovaTarasov} and statistical measures were chosen to compare texts in these datasets:
+\begin{itemize}
+	\item Number of sentences (N\_s), number of characters (N\_c) -- shorter average texts are harder to use for most traditional models (such as topic modeling tasks) and texts which are too long can be difficult to use in deep learning language models.
+	
+	\item Hapax \cite{FaltynekMatlach} -- common metric in corpus analysis, indicates the amount of words only occurring once within a specific context (user message in this case). High proportions of these words may indicate a very specific language and as such may pose a difficulty for sequence to sequence tasks such as summarization.
+	
+	\item Number of special characters such as hashtags and reply indicators (not including punctuation)- significant amounts of special characters may negatively impact models and as such require more preprocessing.
+	
+	\item Punctuation -- same as above, but less specific to different social networks.
+	
+	\item Named entities -- usually highly specific for topics and languages.
+	
+	\item ASL -- average sentence length, pose the same problems as other length measures.
+	
+	\item ASW -- average word length in syllables, pose the same problems as other length.
+	
+	\item FRE \cite{SiCallan} -- one of the most widely used readability measures, rates the text from 0 to 100 in terms of ease of understanding for specific texts. Formula for English language:
+	\[
+	\textit{FRE} = 206.835 - 1.015\times× \textit{ASL} - 84.6 \times \textit{ASW}
+	\]
+	Formula for Russian language:
+	\[
+	\textit{FRE} = 0.5 \times \textit{ASL} + 8.4 \times \textit{ASW} - 15.59
+	\]
+	\item SMOG -- metric, shown to be outperforming FRE in specific instances \cite{MeadeSmith}. Estimates the readability score based on years of education needed to understand a specific text. Formula for English language:
+	\[
+	\textit{SMOG} = 1.043 \times \sqrt{30 / \textit{NS} \times \textit{PW}} + 3.1291
+	\]
+	Formula for russian language:
+	\[
+	\textit{SMOG} = 1.1 \times \sqrt{64.6 / \textit{NS} \times \textit{PW}} + 0.05,
+	\]
+	where NS is the number of sentences and PW is the number of polysyllable words (3 or more syllables).
+	
+	\item Long words proportion (LongW) -- words containing more than 3 syllables
+	
+	\item Short words proportion (ShortW) - number of words with less than 3 characters 
+	
+	\item Functional words -- structural words, not related to content (particles, pronouns etc.).
+	
+	\item Verbs, nouns etc -- proportions of particular part of speech words in text.
+	
+	\item Profane words proportion -- calculated using data from profanity-filter python library.
+	
+	\item Emojis -- number of emojis for text, especially important for sentiment models.
+\end{itemize}
+
+Chosen set of metrics provides a quality representation of text content from social media and allows for comparison of data across two languages.
+
+\textit{3.2.2 Semantic neural encodings} Language models were used in a variety of different text analysis tasks. This made it possible to achieve state-of-the-art results for translation, summarization, question answering, and other applications. BERT \cite{TenneyDasPavlick} achieves this by utilizing bidirectional encodings. Moreover, it was one of the first models to implement transfer learning as described in the introduction. This idea is particularly useful, as it can capture latent encodings for texts without the need for supervised data. RUBERT \cite{KuratovArkhipov} is a BERT version trained on Wikipedia and news articles in Russian.
+
+In the next section we combine these semantic neural encodings and traditional statistical and linguistic metrics to find the extent of semantic similarity between data from different social networks.
+
+\paragraph{3.3 Experimental results} The metrics described in 3.2 have been used to encode the texts obtained from the three social media platforms. Table~\cref{tab:collectedDataMeanAndSD} shows the average values across each individual dataset with their respective standard deviations.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Mean and Standard Deviation for collected data}%
+	\label{tab:collectedDataMeanAndSD}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Metric & \multicolumn{2}{c}{Twitter} & \multicolumn{2}{c}{Telegram} & \multicolumn{2}{c}{Reddit}\\
+			\cline{2-7}
+			& Mean & SD & Mean & SD & Mean & SD \\
+			\hline
+			N\_c & 200.09 & 81.583	& 126.67 & 93.383 & 205.064 & 311.09 \\
+			N\_s & 2.44 & 1.384 & 2.051 & 3.118 & 2.746 & 3.191\\
+			Hapax & 0.768 & 0.134 & 0.881 & 0.18 & 0.75 & 0.212\\
+			FRE & 92.7 & 99.112 & 39.59 & 81.32 & 64.279 & 98.366\\
+			Hashtags & 4.134 & 3.962 & 0.046 & 0.431 & 0.042 & 0.476\\
+			Prop Nouns & 5.337 & 4.627 & 2.227 & 8.136 & 1.066 & 2.883\\
+			ASL & 16.969 & 10.306 & 7.785 & 10.034 & 13.565 & 8.719\\
+			ASW & 5.277 & 1.261 & 1.542 & 4.778 & 1.522 & 1.157\\
+			SMOG & 4.804 & 5.284 & 2.854 & 3.652 & 7.3 & 3.413\\
+			Punct & 4.949 & 3.969 & 2.701 & 8.601 & 4.9 & 8.377\\
+			LongW & 0.053 & 0.075 & 0.061 & 0.203 & 0.062 & 0.086\\
+			FuncW & 0.078 & 0.096 & 0.054 & 0.106 & 0.203 & 0.105\\
+			Verb & 0.057 & 0.077 & 0.053 & 0.105 & 0.198 & 0.092\\
+			Noun & 0.275 & 0.144 & 0.430 & 0.409 & 0.188 & 0.128\\
+			ShortW & 0.327 & 0.092 & 0.2 & 0.214 & 0.337 & 0.143\\
+			Profane & 0.001 & 0.003 & 0.001 & 0.011 & 0.005 & 0.028\\
+			Emojis & 0.344 & 1.280 & 0.354 & 2.267 & 0.015 & 0.218\\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+Table~\cref{tab:semanticSimilarityMetrics} shows the similarity between the datasets using the average values of vectors and cosine distance metric commonly used in the tasks related to text similarity assessment.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Semantic similarity of the datasets, as measured by linguistic metrics}%
+	\label{tab:semanticSimilarityMetrics}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Twitter & Telegram & Reddit\\
+			\hline
+			Twitter & -- & 0.741 & 0.982\\
+			Telegram & 0.741 & -- & 0.606\\
+			Reddit & 0.982 & 0.606 & --\\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+Additionally, each dataset was encoded using the RUBERT model, pretrained for Russian and English languages. Table~\cref{tab:semanticSimilarityRUBERT} shows the cosine similarity using the averages of these encodings for each dataset.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Semantic similarity of the datasets, as measured by RUBERT encodings}%
+	\label{tab:semanticSimilarityRUBERT}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Twitter & Telegram & Reddit\\
+			\hline
+			Twitter & -- & 0.711 & 0.692\\
+			Telegram & 0.711 & -- & 0.92\\
+			Reddit & 0.692 & 0.92 & -- \\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+Table~\cref{tab:semanticSimilarityCombined} shows the cosine similarity for each dataset using both the metric vectors and the semantic neural encodings with normalization.
+
+\begin{table}[ht]%
+	\centering
+	\caption{Semantic similarity of the datasets, as measured by the combined and normalized metrics and RUBERT encodings}%
+	\label{tab:semanticSimilarityCombined}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Twitter & Telegram & Reddit\\
+			\hline
+			Twitter & -- & 0.719 & 0.716\\
+			Telegram & 0.719 & -- & 0.9 \\
+			Reddit & 0.716 & 0.9 & --\\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+A classification model was built to test the efficiency of the proposed metrics. XGBoost \cite{ChenGuestrin} was chosen as a fast and reliable classification model.
+
+In this case, the classification target is a social media platform identifier. Basic feature tuning was performed using the HyperOpt library. The resulting model has achieved the accuracy of 94.8\%, with the feature absolute importance figures shown on Figure~\cref{fig:xgBoostFeatureImportance}. Here, feature importance can serve as a measure of the most characteristic parameters, which are more likely to indicate that a text message belongs to a specific platform.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.35]{xgBoostFeatureImportance}
+	}
+	\caption{Feature importance, as measured by the XGBoost classification algorithm}\label{fig:xgBoostFeatureImportance}
+\end{figure}
+
+\subsubsection{4 Conclusions and future work}
+
+From the obtained results, we can make several conclusions.
+
+First of all, the experiment has shown that different social media platforms can be quite similar in terms of linguistic appearance, as measured by both linguistic metrics and semantic neural encodings (using RUBERT). Thus, all the platforms look similar enough in semantic terms for transfer learning models to be applied to them without significant fine-tuning, which means that economizing on resources for transfer learning should be feasibly achievable. In particular, these similarities can be of value when transferring sentiment models (widely available for Twitter) and summarization models (common for Reddit) between these platforms.
+
+At the same time, however, the results suggest that the platforms still differ to some extent, and the patterns of their dissimilarity by linguistic metrics and semantic neural encodings do not coincide. Thus, by linguistic metrics, Reddit is very similar to Twitter while being less similar to Telegram, which goes against the expected average text length on these platforms and hints to other platform features to be playing a role in speech divergence. Thus, the classification tests have shown that the number of hashtags, the proportion of short words, and readability metrics are different for specific platforms and are used by the classifier to distinguish between them. 
+
+On one hand, high impact of hashtag use indicates that, potentially, with good enough pre-processing, language models can be successfully transferred between platforms. This idea of heavy pre-processing coincides with methodologies and results shown in the paper introducing the Universal Sentence Encoder model \cite{CerYangKong}. On the other hand, word length and readability that also have much to do with platform dissimilarity in our data, tell that platform affordances may foster the creation of ‘platformized’ speech which may hinder proper use of transfer learning language models and needs to be taken into consideration.
+
+Future work involves studying more approaches to text modelling with more linguistic parameters, more language models, and varied datasets, including juxtaposing the results for social media platforms with other types of textual data. We will focus on the textual features that lead to both similarity and differentiation of social media platforms for transfer learning.
+
+\subsection{Transformer-Based Abstractive Summarization for Reddit and Twitter: Single Posts vs. Comment Pools in Three Languages}\label{subsec:ch5/sec4/sub2}
 
 \subsubsection{1 Introduction}
 
@@ -3424,6 +3638,7 @@ Figure~\cref{fig:rougeMetricsFineTuning} demonstrates core metrics, obtained dur
 			& average & 20,781 & 20,896 & 20,865\\
 			ROUGE-L & minimum & 20,501 & 20,735 & 20,821\\
 			& maximum & 20,853 & \textbf{20,977} & 20,896\\
+			\bottomrule
 		\end{tabular}%
 %	\end{adjustbox}
 \end{table}
@@ -3652,7 +3867,7 @@ Second, combination of models also looks very promising for opinion mining as ad
 
 Third, an as yet practically unexplored line for future studies is developing datasets and training models for other social media platforms. The question that may be posed is to what extent the platforms differ in results when applied to real-world tasks; the scarce available evidence shows that we might expect varying levels of how platforms \(+\) models fit to different sociological tasks \cite{PriyaSequeiraChandra}. As stated above, our own attempts to apply the T5 and LongFormer text summarizations to Twitter datasets of varying volumes and languages \cite{BodrunovaBlekanovTarasov} have shown that the models need much more additional fine-tuning, for both the languages and the affordances-based limitations of the collected data.
 
-\subsection{Global Agendas: Detection of Agenda Shifts in Cross-National Discussions Using Neural-Network Text Summarization for Twitter}\label{subsec:ch5/sec4/sub2}
+\subsection{Global Agendas: Detection of Agenda Shifts in Cross-National Discussions Using Neural-Network Text Summarization for Twitter}\label{subsec:ch5/sec4/sub3}
 
 \subsubsection{1. Introduction}
 
