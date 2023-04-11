@@ -84,6 +84,10 @@ Abstractive summarization is a technique that allows for extracting condensed me
 
 Agendas in online media have become a scholarly focus nearly two decades ago, leading to shifting conceptualizations of what we see as agenda. Thus, agendas and agenda shifts inside online discussions have shown its potential to influence offline deliberation, aggregate support, fuel protest, passing through and/or bypassing traditional media’s gatekeeping. Real-time (or nearly-real-time) learning about quick agenda movement inside globalized public debate might be particularly important for international organizations like UN or EU. However, we today lack both knowledge on how agendas move in such discussions and instruments on such analysis. In particular, we are next-to-unaware of to what extent globally relevant themes get contextualized within language-based discussion segments, as well as to what extent the latter depend on each other and lag behind each other in developing agendas and public opinion on quickly evolving issues or conflicts. In this paper, we propose a method of agenda detection based on neural-network text summarization and compare summaries of tweet packages across three languages within the Twitter hashtag \#jesuischarlie. We show that sentiment detection may allow for quality assessment of the text summaries, as compared to aggregated sentiment to the original tweets. We show that, outside France, agendas were more interpretational, abstract, and non-contextualized. The pattern of news changing to ‘issue outburt’ was simultaneous in dense discussion segments and lagged behind in a sparser one. We also show that, globally, main issues of the discussion may be spotted within the first hour.
 
+\subsubsection{5.4.4}
+
+In the recent years, a lot of methods have been proposed for detection of topicality of user discussions. Recently, the scholars have suggested approaches to tracing topicality evolution, including dynamic topic modeling. However, these approaches are overwhelmingly limited by representation of topics via lists of top words, which only hint to possible contents of topics and does not allow for real mapping of opinion cumulation\cite{Bodrunova2022}. We suggest a methodology for discussion mapping that combines neural-network-based encoding of user posts, HDBSCAN-based topic modeling, and abstractive summarization to map large-scale online discussions and trace bifurcation points in opinion cumulation. We test the proposed method on a mid-range dataset on climate change from Reddit and show how discussions may be summarized in a feasible and easily accessible way. Among the rest, we show that the bifurcation points in topicality are often followed by growth of a given topic, which may in future allow for predicting discussion outbursts.
+
 \section{Анализ Web-графов}\label{sec:ch5/sect1}
 
 \subsection{Beyond left and right: Real-world political polarization in twitter discussions on inter-ethnic conflicts}\label{subsec:ch5/sec1/sub1}
@@ -4192,6 +4196,112 @@ The two other RQs are based on our additional coding of the summarizations (see 
 In this paper, we have tried to show how the agendas within one globalized discussion on Twitter shift and differ. We have seen that there is a pattern of changing news to stable issues that may stretch in time; that topicality shifts take minutes. We have seen that public agendas are \textit{interpretational} and abstract everywhere except for the place of the event, while in the country of the event agendas are much more news-oriented and contextualized. We show that interpretation first outbursts and then takes a stable pace with some stable topics and interpretations repeating, thus pointing out to cumulative effects in socially-mediated discourse. Such stable topics may be detected within hours in the global segment of the discussion and do not change much within days, and the global (Eng-lang) discussion might be an indicator of what shows up in other languages.
 
 Methodologically, the paper has demonstrated serious shortcomings of the t5 model for German and French, including uninterpretable summaries, broken endings, and mismatches with tweet substance. Also, we have seen that sentiment is not a very good instrument for assessing the model quality, as summaries may capture the factual side of the tweets but not sentiment. This demands both searching for more adequate quality metrics and for improving the quality of text summarization models.
+
+\subsection{Mapping Opinion Cumulation: Topic Modeling-based Dynamic Summarization of User Discussions on Social Networks}\label{subsec:ch5/sec4/sub4}
+
+\subsubsection{Introduction}
+As for today, topicality of online discussions, as well as opinion cumulation in them, has been a focus of scholarly attention for several decades. In the recent years, the scholars have moved to simple enough topic detection to more complicated and flexible models for dynamic assessment of discussion topicality. Finalized representations of topics may be misleading, as they create a feeling that topics start at the very beginning of discussions and stably last till its last moment, which is virtually never the case in real life. Moreover, opinion cumulation in time may play significant roles in public deliberation, especially when it reaches spillover levels, and it is crucial to know when in time discussions split and diversify, as well as intensify or die out. 
+
+In response to this pressing need, many works have tried to trace discussion topicality in time. However, these attempts suffer from several significant research gaps. One is that the discovered topics are represented either by top words (that only hint on possible contents of a given topic) or by the most relevant full posts (which may be too long and/or too many and, thus, unfeasible to read within real-world time pressures). The second shortcoming is that topics are presented as evolving in time but not branching or ramifying. Third, the relations between topicality/opinion bifurcations and discussion intensity are obscure. Taken together, they so far prevent creation of a discussion mapping tool that would provide for easily readable and close-to-reality maps of user discussions that would adequately demonstrate accumulation or dissolution of opinion clusters, topics, or agendas. 
+
+To tackle this gap, we have tested a multi-step methodology that allows for producing a discussion map with feasible summaries of topics and sub-topics, thus creating a tree-like representation of user-discussions. For that, we employ a combination of neural-network and probabilistic instruments, namely Transformer-based text encodings, HDBSCAN-based topic clustering, and \\ LongT5-based abstractive summarization. We test the proposed method of discussion mapping on a middle-range dataset on climate change collected from Reddit in May to November 2022. As this is still work in progress, we test the necessary steps in their most feasible options; however, our method may be well refined and customized for other research goals.
+
+The remainder of the paper is organized as follows. In Section 2, we describe the core of our approach and the research pipeline. Section 3 conveys our experiment and discusses the methodological steps in detail, including encoding, clustering, and summarization. In conclusion, we provide interpretation of the received results, including some non-expected ones.
+
+\subsubsection{Proposed methodology}
+\paragraph{Core Principles}
+As it was stated before, the goal of this study lies in testing the methodology capable of representing topicality-based shifts in user discussions and, thus, of mapping the development of user discussions in time in a way that would allow for judging on topicality and/or opinion shifts and bifurcations. We propose two core components necessary for semantic opinion shift detection and presenting the results in a comprehensive and readable way.  
+
+First, to detect the initial points of discussion and possible opinion shifts, a topic modeling-based approach has been chosen. The general idea behind topic modeling lies in dividing the set of user messages into topical groups described via their corresponding top words. Traditional topic models such as LDA work as word-level bag-of-words-based representations. Newly developed methods of neural Transformer-based language models\cite{VaswaniShazeerParmar} in conjunction with robust clustering approaches have created a framework for novel topic models capable of deep understanding of text content. Initially proposed along with the Top2vec\cite{Angelov} model, this approach was later expanded in the BERTopic\cite{Grootendorst} model. It utilizes neural encoding, clustering methods, intermediate dimension reduction, and TF-IDF-based keyword selection. The latter can be used to obtain dynamic topic representations. Detailed description of the method will be presented in Section 3.
+
+Second, to present the results in a clearly readable format, we propose the use of an abstractive summarization model. This approach allows to generate concise representations of long user writings, describing the key points of a given text\cite{GuptaGupta}. 
+
+Altogether, this may provide the researchers and industry professionals with a tree-like map of any discussion, where discovered discussion segments of similar topicality get summarized for much quicker assessment. Bifurcation points inside the discussion may be detected via dynamic topics modeling, and individual discussion branches and sub-branches may get summarized in a way comfortable for the reader. Summarizations may comprise whole discussion segments from one bifurcation point to another (‘sub-topics’), as we demonstrate below, or may be done more frequently or be customized depending on a researcher’s final goal. Such an approach may allow for more cohesive and contextualized text representations, to become a viable alternative to the basic keyword/top-word representations of meaning found in topic models.
+
+\paragraph{Model description}
+Utilizing the previously described two-stage approach, we propose a method of dynamic mapping of topicality/opinion in online discussions. 
+The method consists of the following steps:
+\begin{enumerate}
+	\item Encoding of user posts using a Transformer-based model, in order to obtain more standardized text representations.
+	\item Dimension reduction of post encodings (from 384 to 50 vectors), in order to obtain contextualized encodings.
+	\item Topic modeling – that is, clustering the posts using the vectors from the previous step. 
+	\item Obtaining topic representations for fixed-size small-time intervals. Here, we use a TF-IDF-based approach to obtain distributions of words for each topic with static IDF values and time-dependent TF values. 
+	\item Timeline segmentation for each topic. We calculate the level of similarity of top words of each small time frame to the top-word list against the previous time interval. If, at some point, the vocabulary of a given time frame diverges significantly from the previous one, we consider the topic to have changed enough. By that, an isolated discussion branch is detected. Such a branch still relates to a particular ‘big’ topic discovered in step 3 but gemmates from the main discussion trunk, becoming one of the two or three major discussion sub-topics.
+	\item Abstractive summarization for each isolated discussion segment (sub-topic) in each topic. Again, here, we would like to underline that summarizations may be customized in accordance with the researcher’s goals.
+\end{enumerate}
+
+Fig.~\cref{fig:dynamicDiscussionModelingMethod} shows a graphic representation of the modeling process.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{dynamicDiscussionModelingMethod}
+	}
+	\caption{The proposed method of dynamic discussion modeling}\label{fig:dynamicDiscussionModelingMethod}
+\end{figure}
+
+In this pipeline, a clustering-based topic model is used for pooling the initial messages into time- and topic-specific groups. Abstractive summarization serves the role of an output layer, providing concise text snippets that include major foci of meaning for each message group. This dynamic summarization-based approach allows for a novel way of mapping the development of a user discussion via its easily readable and concise representation. 
+
+Besides the very idea of mapping discussions via combining detection of sub-topics and their summarization, the main advantage of our approach over earlier dynamic topic modeling approaches lies in the application of deep encodings for user texts. This allows the model to capture contextual meaning of words, providing message encodings with deeper semantic structure. This method allows for creating highly interpretive dynamic summarizations of the user discussions for further expert analysis.
+
+\subsubsection{Experimental setup and results}
+\paragraph{Dataset}
+The method was tested on a dataset collected from Reddit. The dataset focuses on climate change and comprises a period of seven months of active discussion (May to November 2022). For the purposes of testing, this particular topic was chosen due to a major climate change conference (CCC2022) being held during that time period. After technical pre-processing, the final dataset consisted of 54,565 user posts. Fig.~\cref{fig:climateChangeSubreddits} shows the subreddits that contributed most to our dataset.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=1.0]{climateChangeSubreddits}
+	}
+	\caption{The subreddits with the highest number of posts on climate change}\label{fig:climateChangeSubreddits}
+\end{figure}
+
+\paragraph{Encoding and dimension reduction}
+The sentence encoder all-MiniLM-L6-v2 was chosen as an encoding model\cite{ReimersGurevych}. The model was trained on a variety of different datasets, including a dataset of Reddit comments\cite{HendersonBudzianowskiCasanueva}. In this study, we use the model to obtain contextualized encodings for post content and headings. As such, each post is mapped to a 384-dimensional dense vector. The resulting vectors were reduced to 50 components using the UMAP library\cite{McInnesHealyMelville}. 
+
+\paragraph{Clustering}
+HDBSCAN\cite{McInnesHealyAstels} was used to extract topics. This model has been used, as it is capable of quickly defining the number of clusters in a non-supervised way, without their pre-testing or multiple trials, as in classic topic modeling. For even more refined clustering, we advise to use the method of By using HDBSCAN, 50+ topics were discovered, but most of them were unstable and contained white noise. Using the methodology provided by the BERTopic implementation, the number of topics was reduced to 10 for a more streamlined visualization. For more precise analysis of real-world cases, this step can (and must) be omitted, thus allowing for a full-fledged HDBSCAN utilization and detection of small enough sub-topics throughout a given discussion.
+
+Multiple visualization methods were used to show varied aspects of each topic. 
+
+Fig.~\cref{fig:topicAccumulationOverTime} shows the accumulating number of posts per topic. The graph shows whether the number of posts within a given topic grows in time, week by week. For each weekly interval, the displayed value is not the number of posts within it but the number of all posts up to this interval (that is, the values of the current and all previous ones are summed). 
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{topicAccumulationOverTime}
+	}
+	\caption{Topic accumulation over time}\label{fig:topicAccumulationOverTime}
+\end{figure}
+
+Fig.~\cref{fig:topicAccumulationOverTimeNormalised} is constructed similarly to Fig~\cref{fig:topicAccumulationOverTime}, but with additional normalization of each topic by the total number of posts in it. If the graph line reaches above the median (black line, \(y = x\)), it means that the number of posts grows respective to previous days, while reaching below the media means the topic is dying out. The graph shows cumulation dynamics of individual topics. Fig.~\cref{fig:topicAccumulationOverTimeNormalised} shows that some topics have grown in time, while some weakened.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{topicAccumulationOverTimeNormalised}
+	}
+	\caption{Topic accumulation over time, normalised for each topic}\label{fig:topicAccumulationOverTimeNormalised}
+\end{figure}
+
+\paragraph{Detection of sub-topics and their summarization}
+Further on, we have detected the structure of topics in terms of possible sub-topics and revealed the timing of topic bifurcations. For detecting the bifurcation points, we needed to trace the changes in top words dynamically, throughout the duration of the topic. To do that, we have split all the posts in a given topic into 50 time intervals of equal length. This number of intervals was pre-tested and empirically selected as optimal for our dataset, as it was enough to retrospectively assess the differences in top words, and growth of the number of intervals was much less feasible. For each interval, as stated in step 4 of our model description, a list of top words was obtained using a TF-IDF with time-dependent TF score. This procedure was realized the way offered by the BERTopic model. Thus, for each topic, 50 lists of 5 top words per interval were obtainted and then compared one to another in time. By that, we propose a way to automatically detect semantic shifts in user posts and pool the data based on these time intervals. A shift was detected if a significant enough number of words (more than 3) differed from the previous list of top words, with the changing words carrying onto the next segment to reduce the potential chance of detecting short term changes, focusing on a larger scale shifts. 
+
+A sub-topic, thus, lasted from one bifurcation point to the next one. However, as we were only testing the method, we did not detect many of such bifurcation points; in future, bigger detailisation is possible. The results of detection of sub-topics for all the 10 topics are presented on Fig.~\cref{fig:datasetSubTopics}.
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{datasetSubTopics}
+	}
+	\caption{Sub-topics in the dataset}\label{fig:datasetSubTopics}
+\end{figure}
+
+There are multiple ways of pooling posts for summarization. It can be done by splitting all posts by fixed-time intervals or accumulating groups of posts into chunks equal by the number of posts. However, this is not what could correspond to our task; we needed to summarize the discovered sub-topics, to demonstrate how the topicality transformed. Thus, we summarized all the posts in the discovered sub-topics -- that is, the posts that accumulated between two semantic shifts and formed a separate branch within a bigger topic.
+
+Respective to this, the posts in each ‘big’ topic were split into groups conditioned by the bifurcation points. To summarize the posts, LongT5 model\cite{GuoAinslieUthus} tuned on a books dataset for the task of summarization\cite{Pszemraj} was used. LongT5 is a modification of a T5\cite{RaffelShazeerRoberts} model capable of modeling on long sequences of texts, namely up to 16,384 tokens. In our case, this is a crucial advantage, as it provides a way to circumvent the common issue of non-feasibility of summarizing an entire set of long user posts. In previous research\cite{BlekanovTarasovBodrunova}, we have tested several ways to pool the posts; however, each method caused notable information loss. This approach, however, allows for summarizing much larger amounts of user posts, with the main downside being a lack of training and tuning data for any given specific case. We have tested whether a model, pretrained on unrelated data (the booksum dataset) can provide an adequate result when applied to a set of posts obtained from a social network. 
+
+The examples of summaries for the sub-topics depicted on Fig.~\cref{fig:datasetSubTopics} are presented in Appendix~\cref{app:B}. In the table in Appendix~\cref{app:B}, Column 1 represents the topic number. Column 2 lists the top words of topic/sub-topic. Column 3 indicates the time intervals for each sub-topic. Column 4 states the number of posts that were summarized. Column 5 provides the sub-topic summarizations, with all the posts in a sub-topic summarized. 
+
+\subsubsection{Discussion and conclusion}
+In our paper, we have presented a method for mapping user discussions. It includes text encoding, topic clustering, and abstractive summarization, altogether allowing for detection of meaningful bifurcation points in a given discussion and summarize sub-topics situated between the bifurcation points. The obtained summarizations, as our preliminary assessment shows, are of good enough quality and allow for representing of the buzz in a given discussion, despite the machine trained on books still perceives the data from Reddit as books (or just one book). The summaries are easy and quick to read and allow for assessing how the shape of discussion changes.
+
+In future, with more fine-grained summarization within sub-topics, one would easier detect opinion cumulation if multiple, more frequent summaries provide for short descriptions of users’ agendas. Moreover, we have qualitatively assessed the graphs on Fig.~\cref{fig:topicAccumulationOverTimeNormalised} vs. the timing of bifurcation in topics on Fig.~\cref{fig:datasetSubTopics} and have come to a conclusion that the bifurcation points in topicality are often followed by growth of a given topic, which may in future allow for predicting discussion outbursts. As for now, the method proposed may be employed for detection of topicality shifts and detection of opinion cumulation.
 
 \FloatBarrier
 
