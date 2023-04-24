@@ -38,9 +38,13 @@ The linkages between intensity and topicality of online discussions, on one hand
 
 \subsubsection{5.2.6}
 
-Topic modeling is a method of automated definition of subtopics in a text corpus. Usage of topic modeling for short texts, e.g. tweets, is highly complicated due to their short length and grammatical restructuring, including broken word order, abbreviations, and contamination of different languages. In this paper, the authors use the BTM topic modelling algorithm (previously found to work best in comparison with two other topic models measured by automated coherence metrics Umass and NPMI) to test three topic quality metrics independent from topic coherence. Topic modelling is applied to three cases of ethnic conflict discussions on Twitter in three different main languages, namely the Charlie Hebdo shooting (France), the Ferguson unrest (the USA), and the anti-immigrant bashings in Biryulevo (Russia), thus combining a large multilingual, a large monolingual, and a mid-range monolingual type of discussion. We measure the quality of modeling by looking at topic interpretability, topic robustness, and topic saliency. The results of the experiment show that the three topic features may be interdependent (but not always are); the multilingual discussion performs better than the monolingual ones in terms of interdependence of the metrics and formation of ideal topics; and interpretability does not depend on multi-/monolingualism and the dataset volume.
+Topic models and their extensions are widely used to represent documents using generative probabilistic models. Many models were developed and applied to analyze the content of news articles, scientific papers, and other sources of textual data. However, these classic algorithms have severe problems when dealing with short texts, processing multilingual, and noisy data. These problems are most prevalent in the task of analyzing corpora collected from social networks. Authors consider different topic models for users’ discussion analysis in social networks. Authors evaluate topic modeling results of these approaches using a modified NPMI measure. The standard news20 dataset was used as a test collection as well as two user discussions on Twitter in both Russian and English. The experiment showed that a combination of ETM and pre-trained embeddings based on ELMO vastly outperforms traditional topic models such as BTM while analyzing short and unbalanced texts such as Twitter messages.
 
 \subsubsection{5.2.7}
+
+Topic modeling is a method of automated definition of subtopics in a text corpus. Usage of topic modeling for short texts, e.g. tweets, is highly complicated due to their short length and grammatical restructuring, including broken word order, abbreviations, and contamination of different languages. In this paper, the authors use the BTM topic modelling algorithm (previously found to work best in comparison with two other topic models measured by automated coherence metrics Umass and NPMI) to test three topic quality metrics independent from topic coherence. Topic modelling is applied to three cases of ethnic conflict discussions on Twitter in three different main languages, namely the Charlie Hebdo shooting (France), the Ferguson unrest (the USA), and the anti-immigrant bashings in Biryulevo (Russia), thus combining a large multilingual, a large monolingual, and a mid-range monolingual type of discussion. We measure the quality of modeling by looking at topic interpretability, topic robustness, and topic saliency. The results of the experiment show that the three topic features may be interdependent (but not always are); the multilingual discussion performs better than the monolingual ones in terms of interdependence of the metrics and formation of ideal topics; and interpretability does not depend on multi-/monolingualism and the dataset volume.
+
+\subsubsection{5.2.8}
 
 \paragraph{EN} In this paper, the authors consider two topic models LDA (Latent Dirichlet Allocation) and WNTM (Word Network Topic Model), which rely on statistical data on the co-occurrence of words within the text, to identify topics in the problem of analysing the corpus of short texts. An experiment is conducted in which a comparative analysis of these models is made on the well-known test collection News and a set of data consisting of messages from users of the social network Twitter with the hashtag Biryulyovo. The results of the experiment show that the WNTM model, specialized for working with short texts, is more effective than the base model (LDA) on all the data presented for all performance measurements used.
 
@@ -2237,7 +2241,172 @@ Several topics have gone beyond the saliency threshold (weight of a topic \((p)\
 
 We assume that the Granger causality test might provide more accurate results in cases like New Year’s Eve’s sexual assaults in Germany 2016 if the level of street activity is examined against the level of salience of the dominant topics. Significant changes in the level of salience (rapid appearance of a peak with the topic distribution, as observed for topic N38) might be a predictor for the forthcoming successful mobilization. For more conclusions, we will in future compare several case studies of the same nature, to see whether the patterns that we have discovered for Cologne repeats for other countries and cases within Germany.
 
-\subsection{Сравнительный анализ методов тематического моделирования в задаче анализа корпуса коротких текстов}\label{subsec:ch5/sec2/sub7}
+\subsection{Topic Models with Neural Variational Inference for Discussion Analysis in Social Networks}\label{subsec:ch5/sec2/sub6}
+
+\subsubsection{1 Introduction}
+
+Topic models and their extensions have been applied to many fields, such as marketing, sociology, political science, and the digital humanities \cite{BoydGraberMimnoNewman}. They analyze documents to learn meaningful patterns of words which can be useful in a wide array of natural language processing tasks such as information retrieval, hot words extraction, statistical inference, multilingual modeling, and linguistic understanding \cite{Zhai}.
+
+One of the most interesting applications of topic models is the task of identifying and analyzing user discussions in social networks. In this application, a topic model, given a corpus of user messages, can output a set of distributions (topics over documents and words over topics) \cite{Hofmann}. This can be helpful while identifying key points of discussions, performing summarization, and clusterization both as independent models and as parts of a larger system in conjunction with other models such as sentiment analysis \cite{BlekanovKukarkinMaksimov}, text generation models for summarization, and others. However, traditional topic models have some downsides while analyzing user discussions. The issues include poor short text processing, ineffective noisy data analysis, and inability to work with multilingual data. Traditional models can be used to solve these issues using specific auxiliary datasets such as graphs of co-occurrence networks \cite{PettersonBuntineNarayanamurthy} and different translation techniques \cite{VuliDeSmetTang}.
+
+However, these solutions introduce new variables that cause the solutions to require additional computing power and reduce the algorithm precision due to the translation process. Taking these complications into account, we are interested in comparing these traditional models with emerging solutions using neural networks for variational inference.
+
+\subsubsection{2 Models}
+
+There are multiple ways to address common issues of traditional topic models rang- ing from simple pre-processing techniques to fully developed methods designed specifically to be used for short and unbalanced texts.
+
+\paragraph{2.1 Biterm Topic Model and Word Network Topic Model} 
+Biterm topic model is an algorithm which applies the inference process very similar to that of LDA. The key difference of these algorithms is the direct usage of word co-occurrence patterns in the BTM which makes the original data much more diverse and produces a much better result when applied to short texts commonly found in social networks \cite{YanGuoLan}.
+
+Previous work with this model has shown its effectiveness compared to the baseline LDA model and another modification of its inference process -- Word Network Topic Model. WNTM employs another way of altering the original data by creating a fully connected word network moving away from document-word space to word-word \cite{ZuoZhaoXu}. Previous work \cite{BlekanovTarasovMaksimov} has shown that results obtained using BTM are more interpretable in terms of NPMI score and therefore it was chosen as a baseline model for analysis in the current paper.
+
+\paragraph{2.2 Neural Variational Document Model} 
+The standard approach of LDA model and its various improvements (such as BTM) is to model the underlying set of topics using mean-field variational inference to compute the variational parameters describing the underlying marginal likelihood for a document in collection \cite{MiaoGrefenstetteBlunsom}. The result of this algorithm is a set of distributions: words over topics and topics over the documents in the original dataset. On the other hand, the NVDM model introduces a neural network to parametrize the multinomial topic distribution. This results in a model which has the following generative process:
+\begin{equation}
+	\label{eqn:61}
+	\theta_{d} \sim G(\mu_0, \sigma_0^2), \textit{ for } d \in D
+\end{equation}
+\begin{equation}
+	\label{eqn:62}
+	z_{n} \sim \textit{Multi}(\theta_d), \textit{ for } n \in [1, N_d]
+\end{equation}
+\begin{equation}
+	\label{eqn:63}
+	w_{n} \sim \textit{Multi}(\beta_{z_n}), \textit{ for } n \in [1, N_d]
+\end{equation}
+
+It can be seen that the main point of difference of this architecture from a classic LDA approach is the choice of \(\sigma_d\) (distribution of topics in document \(d\)). LDA uses Dirichlet distribution with a symmetric sparse parameter alpha to model this distri- bution, while NVDM model implements a function \(G(\mu_0, \sigma_0^2)\) which is composed of a neural network \(\sigma = G(x)\) conditioned on a draw from an isotropic Gaussian \(x \sim N(\mu_0, \sigma_0^2)\).
+
+There are three proposed variants on the neural network architecture: Gaussian Softmax, Gaussian Stick Breaking, and Recurrent Stick Breaking. The latter is applied in this case to effectively model textual data.
+
+The Recurrent Stick Breaking Construction \cite{Sethuraman} uses the advantages of RNNs to effectively model sequences of textual data. This architecture has advantages over the traditional types of neural networks such as the ability to process inputs of any length (although in this case the maximum length is still bounded by the parametric model’s capacity), the ability to use information from many steps back, and robustness in terms of the memory consumption based on an input length.
+
+\paragraph{2.3 Embedded Topic Model} 
+ETM differs from the classic approaches like LDA and its newer more robust implementations and modifications such as BTM and NVDM in that it uses the embeddings to represent both words and topics. This allows the model to learn topic and word similarities without using any external data by directly modeling their representations. Prior to the discovery of such models, external graph data on word similarities was used to obtain this information. ETM uses CBOW a type of language model which given the list of surrounding words can output the missing word in a sequence based on their likelihood \cite{DiengRuizBlei}.
+
+The resulting model has the following architecture:
+\begin{equation}
+	\label{eqn:64}
+	\sigma_{d} \sim LN(0, I)
+\end{equation}
+\begin{equation}
+	\label{eqn:65}
+	z_{dn} \sim \textit{Cat}(\sigma_d)
+\end{equation}
+\begin{equation}
+	\label{eqn:66}
+	w_{dn} \sim \textit{softmax}(\rho^\theta \alpha_{z_{dn}})
+\end{equation}
+
+where \(LN\) denotes the logistic-normal distribution which can be obtained by applying the Softmax filter to the Gaussian distribution and thus transforming the variable into a simplex.
+
+There are two main use cases of this model: it can either learn the embeddings as part of its inference process simultaneously obtaining the embeddings of topics, or use an external, previously fitted embeddings, to obtain the result given an already existing embedding space. The latter allows the usage of words not present in the training data and can act in the same way as the graphs of word similarities. It improves the model’s lexical capacity by modeling synonyms and words closely related by meaning which is especially important in the case of social networks because of specificity and sparsity of the language used. Another advantage of this particular approach is the robustness in terms of stop words in the vocabulary. Other methods such as LDA require a thorough pre-processing and in the process introduce unwanted variables such as the lower bound cutoff for vocabulary. Meanwhile, embeddings bypass this issue by recognizing the place of the stopwords in embedding spaces and putting all of them in a separate topic.
+
+\paragraph{2.4 FastText and ELMO} 
+
+The original ETM paper provides another model based on topic embeddings -- a model utilizing pre-trained word embeddings. There are a variety of ways to learn these vector representations from classic context-independent methods such as word2vec, Glove, and FastText to context-aware state-of-the-art models such as XLnet, BERT, and ELMO.
+
+FastText is a model developed by Facebook which learns word embeddings by utilizing subword information. The model not only increases the performance compared to the baseline approaches such as word2vec, but also accommodates for the words not present in the training data. Model’s authors provide a variety of pre-trained models for different languages which helps to alleviate the data sparsity problem common for texts obtained from social networks \cite{BojanowskiGraveJoulin}.
+
+ELMo model is a three-layer neural network. The first layer is a character-level CNN. It is context independent, so each word always gets the same embedding, regardless of its context. The next part is a two-layer biLMs with character convolutions. A biLM layer consists of two concatenated LSTMs, the first of which predicts the word based on the sequence of previous words and the second LSTM predicts the word using the information on the next words in that sequence \cite{PetersNeumannIyyer}.
+
+In this case, it’s impossible to use context-aware models such as ELMO to their full potential due to the structural limitations of ETM in that it requires uncontextual word embeddings. However, due to the sparsity of the data used in this case averaging over word embeddings in different context can provide a meaningful improvement over standard models such as word2vec, FastText, and other context-independent methods.
+
+\subsubsection{3 Experiment}
+
+Described models are tested on two distinct datasets using different coherence measures. The results are plotted to find the best performing and most consistent topic model. Prevalent topics for this model are shown as a combination of words with highest probabilities in the topic-word distribution vector.
+
+\paragraph{3.1 Corpora} 
+
+Two different datasets are used to compare the results: two directly tied to the main task of this paper (analysis of user discussions in social networks) and another is the standard news20 dataset.
+
+The first dataset consists of user massages from Twitter social network. Data was collected based on the hashtags associated with the events of Ferguson unrest (2014). The corpus consists of 193,812 user messages with additional metainformation such as user names and timestamps. Data was collected during a following period of time: 22.08.2014--31.08.2014.
+
+The second dataset was collected from Twitter social network (time period: 01.10.2013--31.10.2013) and consists of 10 215 user messages by the riots Byrulevo in Russia.
+
+News20 was chosen as a benchmark dataset. It is a standard test collection used in a vast array of different NLP tasks. News20 is a collection of newsgroup posts which consists of 19 848 documents and contains 16 532 unique tokens (after pre-processing).
+
+Standard pre-processing procedures are employed to clean up the initial data such as removal of stop words and words with more than 80\% document frequency or less than 10 total frequency.
+
+\paragraph{3.2 Metrics} 
+
+Topic diversity is a measure of the unique word counts in the learned topics that is calculated by taking the percentage of unique words in the top 25 words of all topics. Diversity close to 0 indicates redundant topics, while diversity close to 1 indicates more varied topics.
+
+Normalized pointwise mutual information (NPMI) is another metric utilizing word co-occurrence patterns and can obtained using the following formula:
+\[
+\textit{NPMI}(w_i, w_j) = \sum_{j}^{N-1} \frac{\log{\frac{P(w_i, w_j)}{P(w_i)P(w_j)}}}{-\log{P(w_i, w_j)}} 
+\]
+
+\paragraph{3.3 Results}
+Coherence score and diversity were calculated as their combination not only shows general quality of topics but also displays variety between words. Their normalized product plotted for all of the present corpora and varying number of topics.
+
+The results are present in Figs.~\cref{fig:news20ModelQuality} and~\cref{fig:twiiterScoreData}. Tables~\cref{tab:news20PopluarTopics} and~\cref{tab:twitterPopluarTopics} contain the most popular topics for a model with the best coherence score and consistent diversity (above 0.6 in all cases, 0.9 if the number of topics is low).
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{news20ModelQuality}
+	}
+	\caption{Resulting model quality for News20 dataset}\label{fig:news20ModelQuality}
+\end{figure}
+
+\begin{figure}[ht]
+	\centerfloat{
+		\includegraphics[scale=0.5]{twiiterScoreData}
+	}
+	\caption{Score for Twitter discussions data}\label{fig:twiiterScoreData}
+\end{figure}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Popular topics obtained from ETM + ELMO model for News20 dataset}%
+	\label{tab:news20PopluarTopics}% label всегда желательно идти после caption
+%	\begin{adjustbox}{width=1\textwidth}
+%		\small
+		\begin{tabular}{ c  c  c  c  c  }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Topic 1 & Topic 2 & Topic 3 & Topic 4 & Topic 5 \\
+			\hline
+			Game & Article & People & Windows & God \\
+			Team & Writes & Government & Drive & People \\
+			Play & Posting & State & System & Jesus \\
+			Win & News & Gun & Software & Christian \\
+			Hockey & Reply & Control & Dos & World \\
+			\bottomrule
+		\end{tabular}%
+%	\end{adjustbox}
+\end{table}
+
+\begin{table}[ht]%
+	\centering
+	\caption{Popular topics obtained from ETM + ELMO model for Twitter discussions dataset}%
+	\label{tab:twitterPopluarTopics}% label всегда желательно идти после caption
+%	\begin{adjustbox}{width=1\textwidth}
+%		\small
+		\begin{tabular}{ c  c  c  c  c  }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			Topic 1 & Topic 2 & Topic 3 & Topic 4 & Topic 5 \\
+			\hline
+			People & News & Police & Movement & Black \\
+			Riot & Broadcast & Support & Support & White \\
+			Mayhem & Support & Authorities & Speak & Racism \\
+			Justice & Community & Arrest & Join & Jail \\
+			Movement & Media & Death & Change & Justice \\
+			\bottomrule
+		\end{tabular}%
+%	\end{adjustbox}
+\end{table}
+
+It can be seen that the difference between models is especially big for the Twitter data where ETM in combination with different embedding techniques greatly outperforms other models mainly due to the usage of pre-trained multilingual models.
+
+\subsubsection{4 Conclusion}
+
+The experiment shows that a combination of embedded topic model and pre-trained embeddings obtained using ELMO vastly outperforms traditional topic models, for example, BTM, in the task of analyzing short and unbalanced texts such as user messages on Twitter. Even if used without any customization it learns the most diverse and coherent topics.
+
+It is worth mentioning that word embeddings can be reused to optimize a software for user discussions analysis in social networks. In such software topic, modeling is just one part of the whole system.
+
+Future work mainly involves implementation of the model that can take full advantage of context-aware embeddings from models such as BERT and sentence-level encoders such as Universal Sentence Encoder.
+
+\subsection{Сравнительный анализ методов тематического моделирования в задаче анализа корпуса коротких текстов}\label{subsec:ch5/sec2/sub8}
 
 \paragraph{1. Введение.} В современном интернете короткие тексты становятся особенно популярны, в первую очередь в связи с нарастающей популярностью социальных сетей. Выявление тем в большом количестве подобных текстов становится одной из важнейших задач анализа данных, таких как характеризация контента, отслеживание событий, рекомендация по пользовательской активности, выявление влиятельных пользователей и другие, но имеет свои трудности, связанные в первую очередь с разреженностью данных. Ранние исследования задачи тематического моделирования коротких текстов в основном касались использования внешних знаний для улучшения представления текстовых данных. Например, Фан с соавторами \cite{HoriguchiPhanNguyen} использовали моделирование тем коротких текстов на основе традиционной тематической модели, эффективность которого проверялась на крупномасштабном наборе данных для классификации коротких текстов. В указанных работах предполагается, что использование данных, полученных из длинных текстов, помогает в обучении модели для коротких текстов. Однако эти методы эффективны только тогда, когда вспомогательные данные тесно связаны с исходными данными. В большинстве случаев поиск таких вспомогательных данных является сложной, а в некоторых случаях, и невыполнимой задачей. Другое предположение основано на использовании различных методов агрегации \cite{WrayLexingRishabh}. В случае исследования данных, полученных, например, из социальной сети Twitter, рассматривают такие варианты, как агрегация по авторам, времени публикации и хэштегам. Все усложненные варианты агрегации показывают улучшение результатов работы моделей, но при этом становятся менее обобщенными, так как не всегда есть возможность получить дополнительную информацию о данных. В данной работе в качестве моделей выявления тем в коротких текстах авторы рассматривают и проводят сравнительный анализ моделей LDA и WNTM, которые опираются только на статистические данные о совпадениях слов внутри корпуса.
 
