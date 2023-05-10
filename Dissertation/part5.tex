@@ -64,6 +64,10 @@ Studies of user sentiment on social networks like Twitter have formed a steadily
 
 \subsubsection{5.3.4}
 
+Sentiment analysis of users’ messages on social networks is a compellingtask in terms of both academic research and application of the research results toreal-world business analytics. One of the key problems of sentiment detection in real-world discussions on social media is their mixed languages and, thus, the demand formultilingual instruments. In this paper, we, first, shortly describe the existing researchon multilingual sentiment analysis. We suggest our own approach of data processingfor classification and an enhanced sentiment detection method based on the SVMalgorithm. To evaluate these methods, we apply them to marked-up noisy data fromad hoc discussions on social networks (in English, Russian, French, and Germanlanguage) and clean data from Twitter US Airline Sentiment collection and assessthe quality of sentiment detection by standard metrics. We show that our methodreaches highest values of F1-score (0.78 and 0.94) for noisy and clean datasets.
+
+\subsubsection{5.3.5}
+
 \paragraph{RU} В последнее десятилетие дискуссии в Интернете, маркированные хэштегами, и участвующие в них социальные группы породили новое и  быстро растущее поле междисциплинарных исследований. Оно связывает изучение общественного мнения, исследования публичной сферы и анализ социальных сетей. Но все эти исследования пока однозначно не ответили, «можно ли найти Хабермаса в Твиттере», -- в силу экспрессивности и недиалогичности коммуникации в социальных сетях, низкого потенциала тематических дискуссий по созданию «перекрестка мнений», а  также языковых границ, препятствующих кросскультурной дискуссии пользователей и  развитию глобальной публичной сферы.
 
 Данное исследование призвано оценить языково-пространственный аспект дискуссий под двумя «аффективными» и  взаимоисключающими хэштегами, отражающими ценностные позиции пользователей Твиттера, -- \#JeSuisCharlie и \#JeNeSuisPasCharlie. Мы оцениваем языковое распределение в коллекциях твитов и распространение хэштег-маркированных обсуждений за пределы французского языка. Для идентификации языковой структуры дискуссии используются автоматизированный веб-краулинг, ручное кодирование коллекций твитов, реконструкция веб-графов, их визуальный и сетевой анализ.
@@ -72,7 +76,7 @@ Studies of user sentiment on social networks like Twitter have formed a steadily
 
 \paragraph{EN} Within the last decade, hashtag-based publics and various aspects of the discussions produced by them have created a rapidly growing field of interdisciplinary research linking public opinion and public sphere studies to social network analysis. Despite this growth, there is still scarce evidence that ‘Habermas is on Twitter’, due to the affective and non-dialogue nature of expression in social networks, seemingly low capacity of ad hoc discussions to create ‘opinion crossroads’, and language boundaries that prevent, i. a., cross-cultural participation of users in a given discussion and, thus, do not let the global public sphere develop. Having this in mind, we explore the spatial dimension of two affective hashtag-based publics with mutually exclusive value-loaded positions -- \#JeSuisCharlie and \#JeNeSuisPasCharlie. We look at language distribution within the tweet collections and the expansion of the hashtagged discussion to the languages other than French. To trace the discussion outbursts, we use automated web crawling, manual coding of tweet collections, and web graph reconstruction and visual analysis. Our results suggest that, despite the differences in the volume of expression, the language structure of both hashtags was quite similar and formed echo chambers on the level of a hashtag as well as on sub-levels. Also, we see that bilingual but not multilingual users bridge the sub-level echo chambers. We argue that global compassion publics not only lift up the idea of echo chambers to a new level (since ‘national’ language-based echo chambers clearly show up on the discussion graphs) but also revive the concept of spiral of silence.
 
-\subsubsection{5.3.5}
+\subsubsection{5.3.6}
 
 Abstract Today, aggressive verbal behavior is generally perceived as a threat to integrity and democratic quality of public discussions, including those online. However, we argue that, in more restrictive political regimes, communicative aggression may play constructive roles in both discussion dynamics and empowerment of political groups. This might be especially true for restrictive political and legal environments like Russia, where obscene speech is prohibited by law in registered media and the political environment does not give much space for voicing discontent. Taking Russian YouTube as an example, we explore the roles of two under-researched types of communicative aggression -- obscene speech and politically motivated hate speech -- within the publics of video commenters. For that, we use the case of the Moscow protests of 2019 against non-admission of independent and oppositional candidates to run for the Moscow city parliament. The sample of over 77,000 comments for 13 videos of more than 100,000 views has undergone pre-processing and vocabulary-based detection of aggression. To assess the impact of hate speech upon the dynamics of the discussions, we have used Granger tests and assessment of discussion histograms; we have also assessed the selected groups of posts in an exploratory manner. Our findings demonstrate that communicative aggression helps to express immediate support and solidarity. It also contextualizes the criticism towards both the authorities and regime challengers, as well as demarcates the counter-public.
 
@@ -2929,7 +2933,113 @@ French speakers.
 
 Our findings on the influencers are in line with the previous research, but what we add is a possible rethinking of the level of echo chamber formation in multi-lingual discussions. To assess how the discussion is structured in terms of sentiment, one needs to look both at one language and the overall discussion. Also, we have shown that positive and negative affective hashtags do differ in sentiment, and negative hashtags, indeed, tend to bear more negative sentiment.
 
-\subsection{A global public sphere of compassion? \#JeSuisCharlie and \#JeNeSuisPasCharlie on Twitter and their language boundaries}\label{subsec:ch5/sec3/sub4}
+\subsection{Multilingual Sentiment Analysis for User Discussions on Social Networks: An Approach Based on a Modified SVM Algorithm}\label{subsec:ch5/sec3/sub4}
+
+\subsubsection{1 Introduction}
+
+The amount of textual information on the Internet is growing every day (according to Netcraft since 1995 \cite{Netcraft}, an exponential increase has been observed) and its analysis becomes more difficult. Text is the prevailing data format on the Web, as it is easy to generate and publish. With the development of Internet technologies, it became necessary to extract useful information from the text both for academic purposes and in order to extract material benefits \cite{GittoMancuso,Arvidsson} However, extracting information from a huge amount of data in the proper form is very difficult due to the fact that the text can have a completely different structure. It is extremely difficult to collect data in a single generalized format \cite{Anandan,Jonassen}. Manual data collection immediately seems impractical since millions of messages per second are being published in social networks nowadays. Therefore, in the first place, the problem of studying the automatic organization and categorization of information is solved \cite{Anandan}.
+
+There are different ways to use the collected text data. For example, studying the data of social networks (Twitter, Facebook, YouTube, etc.) or various information sites (digg.com, medium.com, etc.), you can find out the relationship between users \cite{XiangNevilleRogati}, their attitudes to events or products \cite{NiuZhuPang}, their political disposition \cite{BarberaRivero}, and so on, which in the end can be used to optimize the work of specific users with sites and services. However, over the past few years, due to the high activity of users on social networks (for example, the number of active users per month on Facebook is more than 2 billion, on Twitter -- more than 300 million) \cite{Statista} and due to the generation of large volumes of different types of content the most interesting task for researchers of various fields of knowledge is analysis of user discussions in social networks \cite{BodrunovaBlekanovKukarkin2018}.
+
+Usually, the task of analyzing user discussions comes down to solving a whole chain of separate technical and scientific problems. It primarily includes data collection, which is an interesting task for researchers in terms of creating and optimizing crawling algorithms \cite{PantSrinivasanMenczer,BosnjakOliveiraMartins}. Recently, it has become more and more difficult to create a universal collection algorithm, as companies tighten restrictions on possible attempts to automatically collect user data. The next task after collection may be the structuring and storage of the received raw data. It is necessary to be able to distinguish information by its structure for subsequent correct and simpler processing. Along with structuring, a separate place in the analysis of user discussions is occupied by the thematic classification of information, the so-called topic modeling \cite{BlekanovTarasovMaksimov}. This task is the task of classification or clustering from the field of data analysis. One of the stages along with topic modeling is the analysis of the tonality of the message or the author (his views and opinions). Sentiment analysis belongs to a separate class of tasks in the field of processing natural languages and is of particular interest to business.
+
+In this paper, the main emphasis is on the creation of combined approaches, including heuristics, knowledge base, and machine learning. Quality assessment is carried out using recall, precision, f1 and accuracy metrics, showing how the developed method works in conditions of noisy data in multiple languages and well-labeled data from standard test collections in comparison with the previously developed approach \cite{BlekanovKukarkinMaksimov}.
+
+\subsubsection{2 Current Research in Sentiment Analysis}
+
+There are different approaches to the analysis of textual information \cite{RaghuvanshiPatil}. First of all, you can collect simple statistics -- the number of reviews (comments), their length, the number of likes and dislikes, the product page traffic, and the number of relevant queries in popular search engines. Often a product has more than 100 comments, so processing them becomes more difficult and longer. Therefore, it is necessary to determine the number of reviews reviewed and how to choose them. Sometimes this sorting can be done manually.
+
+In the analysis of statements, the so-called “grounded theory” \cite{CharmazBelgrave} can be used. This approach implies collecting qualitative data, extracting repeated elements, and marked with codes, which in turn form the concepts and categories that make up the theory. The analysis of textual information can be combined with the analysis of visual, since comments and reviews can contain photos that carry a large amount of useful data. In such a study, it is necessary to work with computer vision, as well as the correct combination of the results of text and graphic analysis.
+
+Today, there are three main approaches to solve the problem of sentiment analysis:
+\begin{itemize}
+	\item an approach based on dictionaries of positive, neutral, and negative words \cite{CharmazBelgrave}; 
+	\item an approach using technologies and algorithms of classical machine supervised
+	learning \cite{PangBoVaithyanathan}; and
+	\item an approach using unsupervised learning algorithms \cite{HuTangGao}.
+\end{itemize}
+
+Moreover, modern approaches tend to use deep learning algorithms and technologies, artificial neural networks. The reason for this is the development of affordable computing technologies on GPUs.
+
+Let us first turn to language models based on recurrent artificial neural networks. An important advantage of recurrent architecture over statistical methods is the ability to represent more complex patterns in serial data \cite{Mikolov}. Another language model that uses the artificial neural network learning approach is the word2vec model \cite{MikolovChenCorrado}. Word2vec is a group of related models that are used to create so-called embeddings of the words. These models are two-layer neural networks that learn to reconstruct linguistic contexts of words. Word2vec takes a large body of text as input and creates a vector space, with each unique word in the body corresponding to a vector in space.
+
+Next very important step in sentiment analysis research as well as in natural lan- guage processing is applying transfer learning for such tasks \cite{JeremyRuder}. The authors of the latter paper propose a “universal language model fine-tuning method” (ULMFiT), which can be applied to any NLP task. Authors also suggest methods that are key to correctly configure the language model. The obtained approach significantly sur- passes previous approaches in six problems of text classification, reducing the error by 18--24\% for most datasets.
+
+In this paper, we will pay more attention to working with the data before direct classification, to show how different approaches can affect the results and what the choice of text pre-processing algorithms should depend on.
+
+\subsubsection{3 Proposed Sentiment Analysis Method}
+
+Classic machine learning SVM, one of the most common algorithms, is used as a classifier.
+
+The main difficulties arising while constructing the discussion classifier on Twitter social network are the string noise of data and possible intersection of classes. Initially, the data was partitioned into four classes: negative, neutral, positive, and mixed.
+
+Classification of mixed class is challenging, since when a message of a given class is displayed in the vector space of the entire building, it can appear in any part of the remaining three classes. To avoid this, an attempt was made to transfer the dimension of the source space to a space of dimension \(n + 1\), which did not produce a tangible result on the accuracy of the classifier. In this regard, the mixed message class was excluded from the training and test sample.
+
+Another significant problem of the classification is the high noise level of the source data. For example, if you look at some instances of the sample, you can see that they can only consist of the mention of a user and a link to an Internet resource. Such messages do not contain the user opinion in relation to the issue under discussion. In addition, many of the instances contain a large number of hashtags that are common between all discussion posts. This feature leads to a possible retraining of the model on such repeating data. This behavior can be observed in three of the four discussions. An exception is the discussion devoted to Ferguson (in English), the number of statements containing unique opinions of people there is much larger than in the other discussions in French, Russian, and German.
+To further improve the accuracy score of multilingual sentiment analysis for user discussion in social networks, the following steps were taken:
+
+\begin{itemize}
+	\item First, experiments showed that the exclusion of “stop words” from user messages leads to a decrease in the accuracy of the classifier. Therefore, all stop words are returned to the original dataset. This change made it possible to raise the classification accuracy by 4--5\%.
+	\item Secondly, the following message characteristics were introduced into the training set: the number of mentions of other users and the number of links used in messages. These counters made it possible to more accurately determine neutral messages, which often contain mentions and links.
+	\item Third, synonyms began to be used to combat noisy data. For each word from the user message, synonyms were selected from the lexical database wordnet. These synonyms, if possible, were selected taking into account the context of the message. The resulting synonyms were added to the text of the original message, and subsequently the classifier was trained on such extended messages. The most noticeable effect of this improvement was seen on the case of the Ferguson discussion, which once again suggests that this was initially the least noisy discussion. In order to recognize synonyms, a database compiled from the pages of the Russian-language Wikipedia was used.
+\end{itemize}
+
+These three steps describe the method we are using in this work.
+
+\subsubsection{4 Experiment}
+
+The experiment assessed the quality of the proposed methods of sentiment analysis on noisy data in Twitter user discussions (Charlie, Biryulyovo, Cologne, Ferguson) and standard test collection (Twitter US Airline Sentiment \cite{DataForEveryone}) using metrics: recall, precision, f1, and accuracy \cite{Powers}.
+
+\paragraph{4.1 Datasets} The results of different approaches are evaluated using f1-score and accuracy measure. Four famous events are analyzed as test collections:
+\begin{itemize}
+	\item the riots in Biryulyovo (Russia) in October 2013 (3,602 labeled user messages in Russian language with 1208 negative, 1329 neutral, and 1065 positive messages);
+	\item the riots in Ferguson (Ferguson unrest) (USA) in August 2014 (2,999 labeled user messages in English with 907 negative, 165 neutral, and 1927 positive messages);
+	\item shooting at the offices of the French satirical weekly newspaper Charlie Hebdo (4,200 labeled user messages in French with 1429 negative, 865 neutral, and 1906 positive messages); and
+	\item mass public harassment of females on New Year’s Eve in Cologne, Germany, January 2016 (5,770 labeled user messages in German with 2188 negative, 277 neutral, and 3305 positive messages).
+\end{itemize}
+
+All the information about these datasets and how they were obtained are in “Please Follow Us” paper \cite{BodrunovaLitvinenkoBlekanov}.
+
+To compare the operation of the algorithms, the public test collection (Twitter US Airline Sentiment) was also used. It is currently used to test algorithms in this research area. This dataset contains user references to six US airlines: Virgin America, Inc; American Airlines, Inc; Delta Air Lines, Inc; and Southwest Airlines United Airlines and US Airways, Inc. The data presented in the body covers the period of February 2015 and contains the following information:
+\begin{itemize}
+	\item the tweet itself and labeling information;
+	\item the name of the user who posted the tweet; 
+	\item the date the tweet was created.
+\end{itemize}
+n the paper, we are only interested in the tweet itself and its labeling information. The existing dataset contains 11.541 labeled tweets with 7271 negative, 2424 neutral, and 1846 positive messages.
+
+It is worth mentioning that all datasets were splitted in test/train collections with ratio 0.2.
+
+\paragraph{4.2 Results} During the experiment, the proposed algorithms described in Sect. 3 were tested on real ad hoc discussions about four important events and on an open dataset (Twitter US Airline Sentiment). Despite the complex and unpredictable structure of these discussions, it was possible to obtain very good results for the machine learning approach with the teacher. In both cases, the constructed classifiers showed results much better than “random fortune telling” for the three classes -- “positive”, “neutral”, and “negative”.
+
+Table~\cref{tab:classificationBestResults} shows best results for the datasets. According to this table, the complex structure of social ad hoc discussions noticeably complicates the work of classifiers, unlike the Airlines dataset that has a similar message structure across itself. Considering classic machine learning algorithms and simple language models, it is necessary to adapt these models to a specific dataset each time.
+
+\begin{table}[ht]%
+	\centering
+	\caption{The best results of classification}%
+	\label{tab:classificationBestResults}% label всегда желательно идти после caption
+	%	\begin{adjustbox}{width=1\textwidth}
+		%		\small
+		\begin{tabular}{ c  c  c  c  c  c }% Вертикальные полосы не используются принципиально, как и лишние горизонтальные (допускается по ГОСТ 2.105 пункт 4.4.5) % @{} позволяет прижиматься к краям
+			\toprule
+			& Ferguson & Birulyovo & Charlie & Cologne & Airlines \\
+			\hline
+			Accuracy & 0.78 & 0.75 & 0.63 & 0.73 & 0.96\\
+			Precision & 0.78 & 0.69 & 0.59 & 0.69 & 0.94\\
+			Recall & 0.78 & 0.73 & 0.61 & 0.71 & 0.94\\
+			F1 &0.78 & 0.71 & 0.60 & 0.70 & 0.94\\
+			\bottomrule
+		\end{tabular}%
+		%	\end{adjustbox}
+\end{table}
+
+\subsubsection{5 Conclusion}
+
+In this article, a combined approach to sentiment analysis of Twitter user discussion was presented. It includes the use of heuristics, knowledge base, and machine learning approaches. The experiment showed that when studying large and complex ad hoc discussions with unpredictable structure, it is necessary to adjust the algorithms to the data as shown in Sect. 4.2. The main goal of the work was to consider possible options for preliminary data processing and to find out how they affect the results.
+
+In the future, we plan to compare these approaches using modern artificial neural networks on the same datasets.
+
+\subsection{A global public sphere of compassion? \#JeSuisCharlie and \#JeNeSuisPasCharlie on Twitter and their language boundaries}\label{subsec:ch5/sec3/sub5}
 
 \subsubsection{Introduction}
 
@@ -3208,7 +3318,7 @@ From the theoretical viewpoint, these conclusions pose further questions as well
 
 Of course one case study is not enough to make universal conclusions; our work only makes a limited contribution to the field of study of global discourses. But we have shown that emotional hashtags on the same topic have very similar language and echo chamber structure, contrary to expectations, and this contributes to our knowledge of how ad hoc discussions work on the global scale.
 
-\subsection{Constructive Aggression? Multiple Roles of Aggressive Content in Political Discourse on Russian YouTube}\label{subsec:ch5/sec3/sub5}
+\subsection{Constructive Aggression? Multiple Roles of Aggressive Content in Political Discourse on Russian YouTube}\label{subsec:ch5/sec3/sub6}
 
 \subsubsection{1 Introduction}
 
